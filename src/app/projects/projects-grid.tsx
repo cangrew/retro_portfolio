@@ -30,7 +30,7 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
           <button
             key={f}
             onClick={() => setActive(f)}
-            className={`font-pixel text-[7px] leading-tight uppercase border px-2 py-1 transition-none cursor-pointer ${
+            className={`font-pixel text-[8px] leading-tight uppercase border px-2 py-2.5 min-h-[44px] flex items-center transition-none cursor-pointer ${
               active === f
                 ? "retro-inset text-retro-green border-retro-green"
                 : "retro-raised text-retro-fg-dim border-retro-border-lt hover:text-retro-green"
@@ -50,7 +50,7 @@ export default function ProjectsGrid({ projects }: { projects: Project[] }) {
             <Link
               key={project.slug}
               href={`/projects/${project.slug}`}
-              className="retro-raised bg-retro-panel-alt flex flex-col p-4 no-underline group transition-none"
+              className="retro-raised bg-retro-panel-alt flex flex-col p-3 sm:p-4 no-underline group transition-none"
             >
               {/* Top row: badge + date */}
               <div className="flex items-center justify-between gap-2 mb-2">

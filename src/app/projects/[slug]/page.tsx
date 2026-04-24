@@ -79,7 +79,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           )}
 
           {/* MDX content */}
-          <div className="mt-4 prose prose-invert prose-sm max-w-none font-mono
+          <div className="mt-4 overflow-x-auto">
+          <div className="prose prose-invert prose-sm max-w-none font-mono
             prose-headings:font-pixel prose-headings:text-retro-green
             prose-a:text-retro-cyan prose-a:no-underline hover:prose-a:text-retro-green
             prose-code:text-retro-amber prose-code:bg-retro-bg prose-code:px-1
@@ -87,6 +88,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             prose-blockquote:border-l-retro-green prose-blockquote:text-retro-fg-dim
             prose-strong:text-retro-fg">
             <ProjectContent markdown={project.content} />
+          </div>
           </div>
         </RetroWindow>
 

@@ -43,13 +43,13 @@ export default function ContactPage() {
                 href={href}
                 target={href.startsWith("mailto") ? undefined : "_blank"}
                 rel={href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                className="retro-raised bg-retro-panel-alt flex items-center gap-4 px-4 py-3 no-underline group transition-none"
+                className="retro-raised bg-retro-panel-alt flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3.5 no-underline group transition-none min-h-[44px]"
               >
                 <span className="font-pixel text-pixel-xs w-20 shrink-0" style={{ color }}>
                   {label}:
                 </span>
                 <Icon className="w-4 h-4 shrink-0" style={{ color }} />
-                <span className="font-mono text-sm text-retro-fg group-hover:text-retro-cyan">
+                <span className="font-mono text-xs sm:text-sm text-retro-fg group-hover:text-retro-cyan min-w-0 truncate">
                   {display}
                 </span>
                 <span className="ml-auto font-pixel text-pixel-xs" style={{ color }}>[→]</span>

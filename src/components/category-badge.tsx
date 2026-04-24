@@ -16,7 +16,7 @@ export default function CategoryBadge({ category, size = "sm" }: Props) {
   return (
     <span
       className={`font-pixel uppercase border px-1.5 py-0.5 ${text} ${border} ${
-        size === "md" ? "text-pixel-xs" : "text-[7px] leading-tight"
+        size === "md" ? "text-pixel-xs" : "text-[9px] sm:text-[7px] leading-tight"
       }`}
     >
       {label}

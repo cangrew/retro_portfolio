@@ -27,12 +27,12 @@ export default function RetroWindow({
   return (
     <section className={`${borderClass} bg-retro-panel ${className}`}>
       <header className={`retro-titlebar ${titlebarExtra}`}>
-        <span>■ {title}</span>
+        <span className="truncate min-w-0 mr-2">■ {title}</span>
         {showControls && (
           <span className="tracking-wider select-none">[_][□][X]</span>
         )}
       </header>
-      <div className="p-4">{children}</div>
+      <div className="p-3 sm:p-4">{children}</div>
     </section>
   );
 }

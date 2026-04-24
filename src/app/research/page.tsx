@@ -16,8 +16,11 @@ export default function ResearchPage() {
   const publications = getAllPublications();
 
   return (
-    <main className="relative z-10 min-h-screen pt-20 pb-8 px-4 md:px-8">
-      <MatrixRain />
+    <>
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <MatrixRain />
+      </div>
+      <main className="relative z-10 min-h-screen pt-20 pb-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
 
         <RetroWindow title="RESEARCH_INTERESTS.TXT">
@@ -25,7 +28,7 @@ export default function ResearchPage() {
             My research sits at the intersection of{" "}
             <span className="text-neon-green">computer architecture</span> and{" "}
             <span className="text-neon-magenta">hardware security</span>. I work on memory
-            encryption and the secure processor stack — studying how{" "}
+            encryption and the secure processor stack, studying how{" "}
             <span className="text-neon-cyan">Trusted Execution Environments</span> protect
             confidential workloads on modern cloud hardware, and where current designs
             fall short. I use <span className="text-neon-cyan">gem5</span> for
@@ -49,7 +52,7 @@ export default function ResearchPage() {
             <div className="space-y-4">
               {publications.map((pub, idx) => (
                 <div key={idx} className="retro-raised bg-retro-panel-alt p-4 space-y-2">
-                  <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4">
                     <h3 className="font-pixel text-pixel-xs text-retro-green leading-relaxed flex-1">
                       {pub.url ? (
                         <a href={pub.url} target="_blank" rel="noopener noreferrer" className="hover:text-retro-cyan">
@@ -74,10 +77,11 @@ export default function ResearchPage() {
 
         <RetroWindow title="ONGOING_WORK.LOG" showControls={false}>
           <p className="font-mono text-sm text-retro-fg leading-relaxed">
-            Currently focused on memory encryption schemes for secure processors — analyzing
+            Currently focused on memory encryption schemes for secure processors, analyzing
             threat models, designing defenses, and evaluating real-world performance impact
-            using gem5 across standard benchmark suites. Work targets deployment on
-            server-scale TEE hardware.
+            using <span className="text-neon-cyan">gem5</span> on{" "}
+            <span className="text-neon-amber">Azure</span> across standard benchmark suites.
+            Work targets deployment on server-scale TEE hardware.
           </p>
         </RetroWindow>
 
@@ -90,6 +94,7 @@ export default function ResearchPage() {
         </div>
 
       </div>
-    </main>
+      </main>
+    </>
   );
 }

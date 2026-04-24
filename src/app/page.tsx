@@ -40,7 +40,7 @@ export default function HomePage() {
 
           {/* Hero grid */}
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Left — identity */}
+            {/* Left: identity */}
             <div className="space-y-4">
               <div
                 className="font-vt text-vt-2xl text-retro-green"
@@ -63,7 +63,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right — profile card */}
+            {/* Right: profile card */}
             <div className="retro-raised bg-retro-panel-alt p-4 space-y-2">
               <div className="retro-titlebar -mx-4 -mt-4 mb-4">
                 <span>■ PROFILE.TXT</span>

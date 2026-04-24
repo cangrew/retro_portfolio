@@ -20,7 +20,7 @@ const COLOR_CLASSES: Record<NeonColor, string> = {
 };
 
 const BASE =
-  "retro-raised bg-retro-panel-alt font-pixel text-pixel-xs px-4 py-2 no-underline inline-block transition-none active:retro-inset cursor-pointer";
+  "retro-raised bg-retro-panel-alt font-pixel text-pixel-xs px-4 py-2.5 no-underline inline-flex items-center transition-none active:retro-inset cursor-pointer min-h-[44px]";
 
 export default function NeonButton({
   href,

@@ -2,6 +2,9 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
 import { Components } from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 const MarkdownComponents: Components = {
   h1: ({ children }) => (
@@ -50,10 +53,36 @@ const MarkdownComponents: Components = {
       }}
     />
   ),
+  table: ({ children }) => (
+    <div className="overflow-x-auto my-4">
+      <table className="w-full font-mono text-xs border-collapse retro-inset">{children}</table>
+    </div>
+  ),
+  thead: ({ children }) => (
+    <thead className="bg-retro-bg border-b border-retro-green">{children}</thead>
+  ),
+  tbody: ({ children }) => (
+    <tbody>{children}</tbody>
+  ),
+  tr: ({ children }) => (
+    <tr className="border-b border-retro-green/30 even:bg-retro-green/5">{children}</tr>
+  ),
+  th: ({ children }) => (
+    <th className="text-retro-green text-left px-2 py-2 font-pixel text-[9px] leading-tight">{children}</th>
+  ),
+  td: ({ children }) => (
+    <td className="text-retro-fg px-2 py-1.5 text-[11px] leading-snug">{children}</td>
+  ),
 };
 
 export default function MarkdownContent({ markdown }: { markdown: string }) {
   return (
-    <ReactMarkdown components={MarkdownComponents}>{markdown}</ReactMarkdown>
+    <ReactMarkdown
+      remarkPlugins={[remarkGfm, remarkMath]}
+      rehypePlugins={[rehypeKatex]}
+      components={MarkdownComponents}
+    >
+      {markdown}
+    </ReactMarkdown>
   );
 }

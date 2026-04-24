@@ -74,7 +74,7 @@ describe('getContent', () => {
   })
 
   it('returns content including unpublished items by slug', () => {
-    // getContent does not filter by published — consumers decide
+    // getContent does not filter by published  -  consumers decide
     const item = getContent(FIXTURE_DIR, 'draft-post', mapBase)
     expect(item).not.toBeNull()
     expect(item?.published).toBe(false)

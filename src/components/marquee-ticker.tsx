@@ -35,8 +35,8 @@ export default function MarqueeTicker({
           (e.currentTarget as HTMLElement).style.animationPlayState = "running";
         }}
       >
-        <span className="font-mono text-sm text-retro-amber">{content}</span>
-        <span aria-hidden="true" className="font-mono text-sm text-retro-amber">{content}</span>
+        <span className="font-mono text-xs sm:text-sm text-retro-amber">{content}</span>
+        <span aria-hidden="true" className="font-mono text-xs sm:text-sm text-retro-amber">{content}</span>
       </div>
     </div>
   );

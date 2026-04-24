@@ -47,7 +47,7 @@ export default function Navigation() {
           {/* Mobile hamburger */}
           <button
             onClick={() => setMenuOpen((o) => !o)}
-            className="md:hidden retro-raised bg-retro-panel-alt font-pixel text-pixel-xs text-retro-green px-3 py-1 cursor-pointer"
+            className="md:hidden retro-raised bg-retro-panel-alt font-pixel text-pixel-xs text-retro-green px-3 py-2.5 cursor-pointer min-h-[44px]"
             aria-label="Toggle menu"
             aria-expanded={menuOpen}
           >

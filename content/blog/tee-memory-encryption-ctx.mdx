@@ -1,0 +1,132 @@
+---
+title: "From CTR to XTS: How TEE Memory Encryption Traded Freshness for Scale"
+description: The history of memory encryption in Trusted Execution Environments, from Intel SGX's counter-mode engine with integrity trees to the tweakable-cipher designs that power TDX and SEV-SNP today, and the tradeoff that came with the change.
+date: "2025-04-01"
+published: true
+tags: ["Computer Architecture", "Hardware Security", "TEE", "Memory Encryption", "AES"]
+---
+
+The decision to encrypt memory leaving the processor was not obvious when Intel first shipped SGX in 2015. Processors had encrypted storage before, but encrypting every cache line on the way to DRAM, at full memory bandwidth, with no performance budget to spare, was a different problem. The solution that shipped in the first generation of SGX set the template for confidential computing for the next decade, and then got quietly replaced. Understanding why requires walking through both designs.
+
+## SGXv1 and the Memory Encryption Engine
+
+Intel SGX introduced the concept of an *enclave*: a region of memory that the processor protects from software running at any privilege level, including the OS and hypervisor. The threat model extended to physical access. An attacker with a DDR bus interposer or direct access to DRAM modules should learn nothing about enclave contents. This forced the question of memory encryption into the hardware design.
+
+The SGXv1 answer was the **Memory Encryption Engine (MEE)**, which used AES in counter mode. The design made intuitive sense. For each 64-byte cache line, the MEE maintained a counter that incremented on every write-back to DRAM, packed using a split-counter layout (a shared major counter per group of lines plus per-line minor counters) to keep metadata compact. To encrypt a line, the hardware concatenated the physical address with the current counter value and ran it through AES to produce a one-time pad:
+
+$$
+\text{pad} = \text{AES}_K(\text{addr} \,\|\, \text{ctr})
+$$
+$$
+C = \text{pad} \oplus P
+$$
+
+Decryption was identical: recompute the pad, XOR with ciphertext. Encryption and decryption were the same operation.
+
+The critical property was **temporal diversity**. Because the counter changed on every write, the same plaintext value written to the same address at two different points in time produced two completely unrelated ciphertexts. An adversary watching the memory bus saw fresh, uncorrelated ciphertext on every cache eviction. Capturing a ciphertext block and replaying it later would inject stale data with a stale counter. The processor, expecting a different counter value, would decrypt it to garbage.
+
+This was exactly right for the threat model. SGXv1 was designed around the idea that the physical attacker could be active, watching the bus over time, not just taking a single snapshot.
+
+## The Cost of Freshness: The Integrity Tree
+
+Temporal diversity through per-block counters introduced a dependency: the counters themselves had to be trustworthy. An adversary who could roll back a counter to a captured value, while simultaneously replaying the matching ciphertext block, would defeat the whole scheme. The processor would recompute the old pad and recover the original plaintext. The counters had to be protected from replay.
+
+SGXv1 solved this with an **SGX-style integrity tree (SIT)**, a counter-based construction in the lineage of the academic Bonsai Merkle Tree. The per-block counters lived in off-chip DRAM, forming the leaves of the tree. Each internal node stored a MAC that binds its children to a counter at that level, and updating a node requires the parent counter as input (this is one way SIT differs from a pure BMT, where internal nodes are plain hashes of their children). The root of the tree sat in tamper-proof on-chip SRAM, beyond any off-chip adversary's reach.
+
+On every cache miss into protected memory, the MEE performed a tree walk:
+
+1. Fetch the counter from DRAM
+2. Fetch the parent MAC node and verify the counter against it
+3. Continue up to the root, verifying each level
+
+A replayed or modified counter produced a MAC mismatch somewhere on the path from leaf to root. The processor caught the attack.
+
+```
+Root MAC  (on-chip SRAM)
+     |
+     | verified by MAC
+     v
+Internal nodes ... Internal nodes
+     |
+     | verified by MAC
+     v
+Counter leaves (off-chip DRAM)
+     |
+     | used to derive pad
+     v
+Data blocks (off-chip DRAM)
+```
+
+This construction provided both **confidentiality** (CTR mode) and **freshness** (tree verification). The attacker could not read data and could not replay stale data. SGXv1 had a complete answer to the physical adversary.
+
+The scheme worked in practice for SGXv1 because enclave sizes were severely constrained. The processor reserved a region of physical memory called the Enclave Page Cache (EPC), limited to 128 MB in the original hardware. With only 128 MB of protected data, the integrity metadata was manageable: roughly 32 MB for the per-line MACs plus counters and tree nodes, a metadata-to-data ratio of about 1:4 in that specific configuration. The sequential tree walk latency was a real cost on every cache miss, but the working set was small enough that the counter cache stayed warm for most accesses.
+
+SGXv1 shipped with a design that was correct and practical for its constraints.
+
+## The Constraints Change
+
+The constraints did not stay fixed.
+
+The SGX2 ISA extension added dynamic memory management (EAUG, EMODPR, EMODT), which let enclaves grow and shrink their working set at runtime, but it did not change the underlying EPC size: the 128 MB PRMRR ceiling still applied on the client platforms that first shipped SGX2. Meanwhile, Intel TDX and AMD SEV-SNP took the TEE concept from individual user-space enclaves to entire virtual machines, protecting guest VMs from a malicious hypervisor. These workloads needed to protect gigabytes to hundreds of gigabytes of memory, not 128 MB.
+
+At that scale, the integrity-tree math became prohibitive.
+
+Holding a roughly 1:4 metadata ratio at 256 GB of protected memory would mean burning something like 64 GB on integrity tree data. Every one of those gigabytes is DRAM that cannot be used for actual workload data. For a cloud provider trying to pack as many tenant VMs as possible onto a server, losing a quarter of physical memory to encryption metadata is not acceptable. Follow-up academic work (VAULT, Morphable Counters, Penglai-style mountable trees) showed that this ratio can be cut substantially while preserving integrity and freshness, but even the better designs still carry non-trivial storage overhead and more-complex metadata management.
+
+The latency cost scaled just as badly. The integrity tree walk on a counter cache miss serialized a chain of DRAM accesses, each dependent on the previous MAC verification. With a tree of depth five or six covering a large protected region, a single cache miss into cold counter storage triggered five or six sequential 80 ns DRAM reads plus AES operations at each level. LLC miss latencies that were tolerable at small scale became severe once workloads regularly exceeded the counter cache capacity.
+
+The engineering teams building TDX and SEV-SNP faced a real choice: keep counter mode with integrity trees and accept the overhead, or find an alternative.
+
+## The Move to Tweakable Ciphers
+
+The alternative was a family of tweakable block cipher modes, borrowed from full-disk encryption. Intel TDX adopted AES-XTS (the IEEE P1619 standard), and AMD SEV and SEV-SNP adopted AES-XEX, the closely related single-key predecessor. Both share the same core idea: derive a tweak from the physical address and mask the plaintext before and after AES encryption.
+
+For XTS, the tweak is derived from the address:
+
+$$
+T_j = \text{AES}_{K_{\text{tweak}}}(a) \cdot \alpha^j
+$$
+$$
+C_j = \text{AES}_{K_{\text{data}}}(P_j \oplus T_j) \oplus T_j
+$$
+
+`a` is the tweak value (in the memory adaptation, the cache-line physical address), `j` is the 128-bit word index within the 64-byte cache line, `Ktweak` and `Kdata` are independent AES keys, and the multiplication is in GF(2^128) by the primitive element α. XEX is similar but uses a single key and a simpler tweak derivation. In both, every word in every cache line gets a unique mask derived from its address and position. The same plaintext at two different addresses produces unrelated ciphertexts. **Spatial diversity** is guaranteed.
+
+This scheme required no counters, no integrity tree, no off-chip metadata. The storage overhead was essentially zero. The miss latency overhead was minimal: the tweak computation ran on the address alone, which was known before the DRAM fetch completed, so it could proceed in parallel. Read-path critical path latency was nearly identical to unencrypted memory.
+
+This change also unlocked scale. Intel's 3rd Gen Xeon Scalable (Ice Lake Server, 2021) replaced the MEE with the TME-MK engine (which is what TDX uses) and, on those parts, supported Intel SGX enclave capacities up to 512 GB per socket. In other words, it was the move to a stateless tweakable cipher that made large enclaves and large protected VMs possible, not the other way around.
+
+For the scalability problems facing TDX and SEV-SNP, a tweakable mode was exactly the right answer. It protected memory contents from a passive observer at any memory capacity with no operational overhead.
+
+## What Tweakable Modes Do Not Provide
+
+The tradeoff was deliberate and documented. XTS and XEX derive their tweak from the address alone. They carry no temporal information, no counter, no record of how many times a given address has been written. Writing the same plaintext to the same address twice produces identical ciphertext both times, regardless of when the writes occur.
+
+This means these modes provide no temporal diversity. An adversary who captures a valid ciphertext block can replay it at any future time. The processor decrypts it correctly. Nothing in the XTS or XEX datapath distinguishes a freshly written block from a replayed one.
+
+The two vendors handle integrity differently on top of this encryption base, and it is worth being precise about what each actually guarantees.
+
+Intel TDX supports two modes. **Logical Integrity (LI)** relies on the TD-ownership bit stored alongside each cache line and on address-translation controls; it catches software attempts to read or write private memory from outside the TD but does not detect modification by a physical adversary. **Cryptographic Integrity (CI)**, available on hardware that supports it, attaches a 28-bit SHA-3-based MAC to each cache line (stored in ECC metadata) along with the ownership bit. CI mode does detect cache-line modification. What CI does not do is detect replay: because the MAC is stateless (no counter, no version), a captured (ciphertext, MAC) pair remains a valid pair indefinitely, and swapping it back in will verify correctly.
+
+AMD SEV-SNP does not attach a cryptographic MAC to each cache line in the same way. It relies on the Reverse Map Table (RMP) and page-ownership tracking for integrity of ownership and mapping, plus the XEX encryption for confidentiality. A physical adversary who captures and replays ciphertext at the same address is, similarly, not detected by the encryption path.
+
+The comparison:
+
+| Property | SGXv1 MEE (CTR + integrity tree) | TDX (XTS + optional CI MAC) | SEV-SNP (XEX + RMP) |
+|---|---|---|---|
+| Confidentiality | Yes | Yes | Yes |
+| Temporal diversity | Yes | No | No |
+| Cache-line tamper detection | Yes | Yes (in CI mode) | Limited (via RMP/ownership) |
+| Replay resistance | Yes | No | No |
+| Metadata overhead for integrity | ~25% (in-EPC) | MAC in ECC bits | No per-line MAC |
+| Miss latency impact | High | Minimal | Minimal |
+
+SGXv1 was correct but expensive. TDX and SEV-SNP are efficient but incomplete against a replay-capable physical adversary. The industry consciously accepted that incompleteness because the alternative did not scale to the memory capacities these systems needed to support.
+
+## The Problem That Remains
+
+This is the state of memory encryption in production TEEs today. The scalability argument was real and the switch to tweakable modes was the right engineering call for the time. But the threat did not disappear when the defense was weakened. A physical adversary with access to the memory bus can still capture ciphertext values and replay them. TEEs running on XTS or XEX memory encryption do not detect this, with or without a stateless per-line MAC.
+
+The gap between what the threat model requires and what the deployed encryption provides is not a secret. It is an explicit tradeoff that the architecture community has been working to close ever since, looking for schemes that recover temporal diversity at a metadata cost that does not scale linearly with protected memory size.
+
+That is where the interesting work is happening now.

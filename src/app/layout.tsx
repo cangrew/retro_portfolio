@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "katex/dist/katex.min.css";
 import { pressStart2P, vt323, ibmPlexMono } from "@/lib/fonts";
 import CrtOverlay from "@/components/crt-overlay";
 import Starfield from "@/components/starfield";

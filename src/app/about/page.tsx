@@ -27,9 +27,10 @@ export default function AboutPage() {
                 ["CLASS",  "PhD Student"],
                 ["SCHOOL", "UCF"],
                 ["CITY",   "Orlando, FL"],
-                ["FOCUS",  "HW Security"],
+                ["FOCUS",  "Comp. Arch & HW Security"],
                 ["LANG",   "EN / ES / FR"],
-                ["MUSIC",  "Frat. President"],
+                ["GUITAR", "Classical / Electric"],
+                ["ΦΜΑ",   "Mu Eta · Spring 2021"],
               ].map(([k, v]) => (
                 <div key={k} className="font-mono text-xs">
                   <span className="text-retro-green">{k}:</span>{" "}
@@ -42,20 +43,24 @@ export default function AboutPage() {
             <div className="md:col-span-2 space-y-4 font-mono text-sm text-retro-fg leading-relaxed">
               <p>
                 I&apos;m a computer architecture researcher focused on{" "}
-                <span className="text-neon-green">hardware security</span> — specifically how
+                <span className="text-neon-green">hardware security</span>, specifically how
                 modern processors protect confidential workloads through{" "}
                 <span className="text-neon-magenta">Trusted Execution Environments</span> and
                 memory encryption. I study where these defenses succeed and where they break down.
               </p>
               <p>
-                I use the <span className="text-neon-cyan">gem5</span> full-system simulator
-                to evaluate the microarchitectural cost of security mechanisms on real workloads.
-                Before the PhD I built software tools in industry — a CRM system for an
-                insurance firm and data infrastructure projects.
+                I use the <span className="text-neon-cyan">gem5</span> full-system simulator,
+                running large-scale experiments on <span className="text-neon-amber">Azure</span>,
+                to evaluate the microarchitectural cost of security mechanisms across real workloads.
+                I came to the PhD directly from my bachelor&apos;s degree.
               </p>
               <p>
-                Outside research I play music (president of a music fraternity chapter).
-                Fluent in English, Spanish, and French.
+                Outside research I play classical and electric guitar. Metal and Hardcore are my
+                genres of choice. I&apos;m a proud alumnus of{" "}
+                <span className="text-neon-magenta">Phi Mu Alpha Sinfonia</span> (Mu Eta chapter),
+                where I served as chapter president (2022–2023) and Assistant Collegiate Province
+                Representative. I read a lot of science fiction and maintain a running interest in
+                philosophy and religion. Fluent in English, Spanish, and French.
               </p>
             </div>
           </div>
@@ -66,7 +71,7 @@ export default function AboutPage() {
           <div className="space-y-3">
             {SKILLS.map(({ label, pct, color }) => (
               <div key={label} className="flex items-center gap-3">
-                <span className="font-mono text-xs text-retro-fg w-28 shrink-0">{label}</span>
+                <span className="font-mono text-xs text-retro-fg w-24 sm:w-28 shrink-0">{label}</span>
                 <div className="flex-1 retro-inset bg-retro-bg h-4">
                   <div
                     className="h-full transition-none"

@@ -12,7 +12,7 @@ export default function ResumePage() {
           <div className="flex items-start justify-between gap-4 flex-wrap mb-4">
             <div>
               <div
-                className="font-vt text-vt-2xl text-retro-green"
+                className="font-vt text-vt-lg sm:text-vt-2xl text-retro-green"
                 style={{ textShadow: "0 0 10px #39ff14" }}
               >
                 ANDRES DELGADO
@@ -30,8 +30,8 @@ export default function ResumePage() {
               <h2 className="font-pixel text-pixel-xs text-retro-cyan mb-3">EDUCATION</h2>
               <div className="space-y-3">
                 <div className="retro-raised bg-retro-panel-alt p-3">
-                  <div className="flex flex-wrap justify-between gap-1">
-                    <span className="text-retro-green">UCF — PhD, Computer Science</span>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
+                    <span className="text-retro-green">UCF | PhD, Computer Science</span>
                     <span className="text-retro-fg-dim text-xs">Aug 2024 – present</span>
                   </div>
                   <ul className="mt-1 text-xs text-retro-fg-dim space-y-0.5 pl-2">
@@ -40,8 +40,8 @@ export default function ResumePage() {
                   </ul>
                 </div>
                 <div className="retro-raised bg-retro-panel-alt p-3">
-                  <div className="flex flex-wrap justify-between gap-1">
-                    <span className="text-retro-green">UCF — BS, Computer Science + Math Minor</span>
+                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
+                    <span className="text-retro-green">UCF | BS, Computer Science + Math Minor</span>
                     <span className="text-retro-fg-dim text-xs">Aug 2019 – Dec 2023</span>
                   </div>
                   <ul className="mt-1 text-xs text-retro-fg-dim pl-2">
@@ -57,7 +57,7 @@ export default function ResumePage() {
               <div className="space-y-3">
                 {[
                   {
-                    title: "Graduate Research Assistant — UCF, Orlando FL",
+                    title: "Graduate Research Assistant @ UCF, Orlando FL",
                     date: "May 2024 – present",
                     bullets: [
                       "Mastered gem5 architecture simulator for full-system simulation.",
@@ -66,7 +66,7 @@ export default function ResumePage() {
                     ],
                   },
                   {
-                    title: "Developer / Data Analyst — Findway Solutions, Orlando FL",
+                    title: "Developer / Data Analyst @ Findway Solutions, Orlando FL",
                     date: "May 2023 – present",
                     bullets: [
                       "Designed commissions system improving data accessibility and efficiency.",
@@ -76,7 +76,7 @@ export default function ResumePage() {
                   },
                 ].map((job) => (
                   <div key={job.title} className="retro-raised bg-retro-panel-alt p-3">
-                    <div className="flex flex-wrap justify-between gap-1">
+                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
                       <span className="text-retro-green">{job.title}</span>
                       <span className="text-retro-fg-dim text-xs">{job.date}</span>
                     </div>
@@ -99,7 +99,7 @@ export default function ResumePage() {
                   ["Languages",     "English (Native), Spanish (Native), French (Conversational)"],
                 ].map(([k, v]) => (
                   <div key={k} className="flex gap-2">
-                    <span className="text-retro-green w-28 shrink-0">{k}:</span>
+                    <span className="text-retro-green w-24 sm:w-28 shrink-0">{k}:</span>
                     <span className="text-retro-fg-dim">{v}</span>
                   </div>
                 ))}

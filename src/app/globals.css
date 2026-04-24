@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════
-   RETRO DESIGN SYSTEM — CSS VARIABLES
+   RETRO DESIGN SYSTEM  -  CSS VARIABLES
    ═══════════════════════════════════════════════ */
 :root {
   /* Retro palette */
@@ -22,7 +22,7 @@
   --retro-scanline:    rgba(0, 0, 0, 0.18);
   --retro-crt-glow:    rgba(57, 255, 20, 0.05);
 
-  /* Legacy shadcn/ui tokens remapped to retro — keeps existing components alive */
+  /* Legacy shadcn/ui tokens remapped to retro  -  keeps existing components alive */
   --background: #0a0e27;
   --foreground: #e6e6fa;
 }
@@ -51,7 +51,7 @@
     transition-duration: 300ms;
   }
 
-  /* Neon link styling — classic hyperlink treatment */
+  /* Neon link styling  -  classic hyperlink treatment */
   a {
     color: var(--retro-green);
     text-decoration: underline;
@@ -99,7 +99,7 @@
    RETRO COMPONENT UTILITIES
    ═══════════════════════════════════════════════ */
 @layer components {
-  /* Win95 raised bevel — default panel / button at rest */
+  /* Win95 raised bevel  -  default panel / button at rest */
   .retro-raised {
     border-style: solid;
     border-width: 2px;
@@ -110,7 +110,7 @@
     box-shadow: inset 1px 1px 0 rgba(255,255,255,0.12);
   }
 
-  /* Win95 inset bevel — pressed button / input / sunken panel */
+  /* Win95 inset bevel  -  pressed button / input / sunken panel */
   .retro-inset {
     border-style: solid;
     border-width: 2px;
@@ -126,7 +126,7 @@
     border: 4px ridge var(--retro-green);
   }
 
-  /* Double border — outer raised + inner panel */
+  /* Double border  -  outer raised + inner panel */
   .retro-window-border {
     border: 3px solid var(--retro-border-lt);
     outline: 2px solid var(--retro-border-dk);
@@ -187,7 +187,7 @@
 }
 
 /* ═══════════════════════════════════════════════
-   REDUCED MOTION — disable all retro effects
+   REDUCED MOTION  -  disable all retro effects
    ═══════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   *,
