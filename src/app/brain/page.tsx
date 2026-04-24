@@ -22,7 +22,7 @@ export default function BrainPage() {
 
           <div className="mt-3 flex flex-col sm:flex-row flex-wrap gap-x-3 sm:gap-x-6 gap-y-1 font-mono text-xs text-retro-fg-dim">
             <span><span className="text-retro-green">MODE:</span> WIREFRAME</span>
-            <span><span className="text-retro-cyan">MESH:</span> ICOSAHEDRON_D4</span>
+            <span><span className="text-retro-cyan">MESH:</span> BRAIN3D.GLB</span>
             <span><span className="text-retro-magenta">CORE:</span> ONLINE</span>
             <span className="animate-blink text-retro-green">█ RENDERING</span>
           </div>
