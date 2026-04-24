@@ -1,0 +1,15 @@
+# old repo — preserved separately
+portfolio/
+
+# build outputs
+.next/
+node_modules/
+*.tsbuildinfo
+
+# env
+.env
+.env.local
+.env*.local
+
+# misc
+.DS_Store

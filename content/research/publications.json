@@ -1,0 +1,12 @@
+[
+  {
+    "title": "LOaPP: Improving the Performance of Persistent Memory Objects via Low-Overhead at-Rest PMO Protection",
+    "authors": ["Derrick Greenspan", "Naveed Ul Mustafa", "Andres Delgado", "Connor Bramham", "Christopher Prats", "Samu Wallace", "Mark Heinrich", "Yan Solihin"],
+    "venue": "IEEE SEED 2024",
+    "year": 2024,
+    "url": "https://doi.org/10.1109/SEED61283.2024.00023",
+    "doi": "10.1109/SEED61283.2024.00023",
+    "abstract": "Persistent memory objects (PMOs) require protection mechanisms to ensure data integrity at rest. This work proposes LOaPP, a low-overhead approach to at-rest PMO protection that improves performance while maintaining security guarantees for persistent memory workloads.",
+    "type": "conference"
+  }
+]

@@ -1,0 +1,200 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════
+   RETRO DESIGN SYSTEM — CSS VARIABLES
+   ═══════════════════════════════════════════════ */
+:root {
+  /* Retro palette */
+  --retro-bg:          #0a0e27;
+  --retro-bg-tile:     #10163a;
+  --retro-panel:       #1a1f4a;
+  --retro-panel-alt:   #232a5c;
+  --retro-fg:          #e6e6fa;
+  --retro-fg-dim:      #9090c0;
+  --retro-green:       #39ff14;
+  --retro-cyan:        #00ffff;
+  --retro-magenta:     #ff00ff;
+  --retro-amber:       #ffb000;
+  --retro-border-lt:   #d4d4f0;
+  --retro-border-dk:   #0a0a20;
+  --retro-scanline:    rgba(0, 0, 0, 0.18);
+  --retro-crt-glow:    rgba(57, 255, 20, 0.05);
+
+  /* Legacy shadcn/ui tokens remapped to retro — keeps existing components alive */
+  --background: #0a0e27;
+  --foreground: #e6e6fa;
+}
+
+/* ═══════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════ */
+@layer base {
+  html {
+    background-color: var(--retro-bg);
+    color: var(--retro-fg);
+    /* Tiled starfield background */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%230a0e27'/><circle cx='8' cy='12' r='0.6' fill='%2310163a'/><circle cx='40' cy='32' r='0.6' fill='%2310163a'/><circle cx='56' cy='8'  r='0.5' fill='%23232a5c'/><circle cx='16' cy='52' r='0.4' fill='%2310163a'/><circle cx='48' cy='56' r='0.5' fill='%23232a5c'/><circle cx='28' cy='20' r='0.4' fill='%2310163a'/></svg>");
+    background-repeat: repeat;
+    /* Phosphor CRT glow on all text */
+    text-shadow: 0 0 1px currentColor;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-mono), "IBM Plex Mono", "Courier New", monospace;
+    color: var(--retro-fg);
+    background: transparent;
+    transition-property: opacity, transform, filter;
+    transition-timing-function: ease-in-out;
+    transition-duration: 300ms;
+  }
+
+  /* Neon link styling — classic hyperlink treatment */
+  a {
+    color: var(--retro-green);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  a:hover   { color: var(--retro-cyan); }
+  a:visited { color: var(--retro-magenta); }
+  a:focus-visible {
+    outline: 2px solid var(--retro-cyan);
+    outline-offset: 2px;
+  }
+
+  /* Text selection */
+  ::selection {
+    background-color: var(--retro-magenta);
+    color: #000;
+  }
+
+  /* Win95-style scrollbar */
+  ::-webkit-scrollbar       { width: 16px; height: 16px; }
+  ::-webkit-scrollbar-track {
+    background: var(--retro-bg-tile);
+    border-left: 2px solid var(--retro-border-dk);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--retro-panel-alt);
+    border-top:    2px solid var(--retro-border-lt);
+    border-left:   2px solid var(--retro-border-lt);
+    border-bottom: 2px solid var(--retro-border-dk);
+    border-right:  2px solid var(--retro-border-dk);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--retro-fg-dim); }
+
+  /* Legacy helpers */
+  .text-edge-outline { -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
+  .page-transition {
+    opacity: 0;
+    background: black;
+    transform: translateY(40px);
+    filter: blur(4px);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   RETRO COMPONENT UTILITIES
+   ═══════════════════════════════════════════════ */
+@layer components {
+  /* Win95 raised bevel — default panel / button at rest */
+  .retro-raised {
+    border-style: solid;
+    border-width: 2px;
+    border-top-color:    var(--retro-border-lt);
+    border-left-color:   var(--retro-border-lt);
+    border-bottom-color: var(--retro-border-dk);
+    border-right-color:  var(--retro-border-dk);
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.12);
+  }
+
+  /* Win95 inset bevel — pressed button / input / sunken panel */
+  .retro-inset {
+    border-style: solid;
+    border-width: 2px;
+    border-top-color:    var(--retro-border-dk);
+    border-left-color:   var(--retro-border-dk);
+    border-bottom-color: var(--retro-border-lt);
+    border-right-color:  var(--retro-border-lt);
+    box-shadow: inset -1px -1px 0 rgba(255,255,255,0.08);
+  }
+
+  /* Ridge border for top-level windows */
+  .retro-ridge {
+    border: 4px ridge var(--retro-green);
+  }
+
+  /* Double border — outer raised + inner panel */
+  .retro-window-border {
+    border: 3px solid var(--retro-border-lt);
+    outline: 2px solid var(--retro-border-dk);
+    outline-offset: -5px;
+  }
+
+  /* Neon glow variants */
+  .retro-glow-green {
+    box-shadow: 0 0 8px var(--retro-green),
+                0 0 16px rgba(57,255,20,0.5),
+                inset 0 0 4px rgba(57,255,20,0.2);
+  }
+  .retro-glow-cyan {
+    box-shadow: 0 0 8px var(--retro-cyan),
+                0 0 16px rgba(0,255,255,0.5);
+  }
+  .retro-glow-magenta {
+    box-shadow: 0 0 8px var(--retro-magenta),
+                0 0 16px rgba(255,0,255,0.5);
+  }
+  .retro-glow-amber {
+    box-shadow: 0 0 8px var(--retro-amber),
+                0 0 16px rgba(255,176,0,0.5);
+  }
+
+  /* OS-window title bar gradient */
+  .retro-titlebar {
+    background: linear-gradient(90deg, #000080 0%, #1084d0 50%, #000080 100%);
+    color: #fff;
+    font-family: var(--font-pixel), "Press Start 2P", monospace;
+    font-size: 10px;
+    padding: 3px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+  }
+
+  /* Tech-grid overlay for hero sections */
+  .retro-grid-bg {
+    background-image:
+      repeating-linear-gradient(0deg,  transparent, transparent 39px, rgba(0,255,255,0.04) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,255,255,0.04) 40px);
+  }
+
+  /* Blinking cursor appended to typewriter text */
+  .retro-cursor::after {
+    content: "█";
+    animation: blink 1s step-end infinite;
+    color: var(--retro-green);
+  }
+
+  /* Neon text helpers */
+  .text-neon-green   { color: var(--retro-green);   text-shadow: 0 0 8px var(--retro-green); }
+  .text-neon-cyan    { color: var(--retro-cyan);    text-shadow: 0 0 8px var(--retro-cyan); }
+  .text-neon-magenta { color: var(--retro-magenta); text-shadow: 0 0 8px var(--retro-magenta); }
+  .text-neon-amber   { color: var(--retro-amber);   text-shadow: 0 0 8px var(--retro-amber); }
+}
+
+/* ═══════════════════════════════════════════════
+   REDUCED MOTION — disable all retro effects
+   ═══════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

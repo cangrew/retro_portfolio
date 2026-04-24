@@ -1,0 +1,21 @@
+---
+title: BranchPredictionSim
+description: Branch Predictor Simulator capable of simulating Smith, Bimodal and GShare branch predictors.
+date: "2025-01-16"
+url: https://github.com/cangrew/BranchPredictionSim
+published: true
+tags: ["C++", "Simulation", "Computer Architecture"]
+problem: "Modern processors suffer significant performance loss from branch mispredictions, which flush the pipeline and waste in-flight work. Evaluating predictor accuracy across different algorithms and workloads requires a flexible simulation framework."
+approach: "Implemented Smith, Bimodal, and GShare predictors in C++, driven by SPECint95 branch trace files. A meta-predictor (Hybrid) dynamically selects between Bimodal and GShare using a chooser table."
+results: "GShare achieved ~3.2% misprediction rate on SPECint95 traces, a 33% improvement over Bimodal alone. The Hybrid predictor reduced this further to ~2.9%."
+---
+
+**BranchPredictionSim** is a branch predictor simulator designed to evaluate various branch prediction techniques commonly used in modern processors. This simulator models different predictors and analyzes their effectiveness using SPECint95 benchmark traces.
+
+## Features
+- **Smith Predictor**: Implements an n-bit counter predictor with configurable bit-width.
+- **Bimodal Predictor**: Uses program counter bits to index a table of counters for branch prediction.
+- **GShare Predictor**: Incorporates global branch history to improve prediction accuracy.
+- **Hybrid Predictor**: Combines Bimodal and GShare predictors with a chooser table to select the best prediction strategy dynamically.
+
+The simulator processes branch trace files, records prediction outcomes, and calculates misprediction rates, offering insights into the performance of different prediction strategies. Code is close source until end of the spring 2025 semester.

@@ -1,0 +1,33 @@
+---
+title: Cache_Simulator
+description: Multi-level cache hierarchy simulator with configurable replacement policies, write policies, and inclusion properties.
+date: "2025-01-21"
+url: https://github.com/cangrew/Cache_Simulator
+published: true
+tags: ["C++", "Simulation", "Computer Architecture", "Memory Systems"]
+problem: "Understanding cache hierarchy behavior requires a flexible simulator that supports varied configurations — different sizes, associativity, replacement policies, and inclusion properties — to evaluate tradeoffs before committing to hardware designs."
+approach: "Built a trace-driven simulator in C++ accepting 8 command-line parameters. Implemented LRU and FIFO replacement policies, write-back with write-allocate, and both inclusive and non-inclusive multi-level cache hierarchies."
+results: "Successfully reproduced expected cache performance curves from SPECint traces. The simulator accurately measures L1/L2 miss rates, writeback counts, and total memory traffic across diverse cache configurations."
+---
+
+CacheSim is a cache hierarchy simulator written in C++ designed to model multi-level cache systems and analyze their performance under different configurations. This project implements a flexible cache simulator that allows experimentation with various cache sizes, associativity levels, replacement policies, and inclusion properties. Using trace-driven simulation, CacheSim helps evaluate the impact of cache design decisions on system performance.
+
+## Features
+- **Flexible Cache Configurations**: Supports multiple levels of cache (L1 and L2) with configurable parameters such as size, associativity, and block size.
+- **Replacement Policies**: Implements **LRU (Least Recently Used) and FIFO (First In First Out)
+- **Write Policy**: Uses **Write-Back with Write-Allocate (WBWA)**, ensuring efficient memory operations and reduced write latency.
+- **Multi-Level Cache Simulation**: Models **inclusive and non-inclusive** caching strategies to explore different memory hierarchy designs.
+
+## Simulation Workflow
+1. **Configuration Setup**: CacheSim accepts 8 command-line arguments to specify cache hierarchy parameters:
+   ```
+   sim_cache <BLOCKSIZE> <L1_SIZE> <L1_ASSOC> <L2_SIZE> <L2_ASSOC> <REPLACEMENT_POLICY> <INCLUSION_PROPERTY> <trace_file>
+   ```
+2. **Trace Processing**: Reads memory access traces and simulates cache operations.
+3. **Performance Evaluation**: Computes **L1 and L2 miss rates, writeback counts, and total memory traffic**.
+4. **Graph Generation**: Produces plots analyzing cache performance for different configurations.
+
+This simulator is an essential tool for evaluating cache efficiency, helping optimize memory hierarchy designs for real-world applications. Closed source until end of semester.
+
+
+    
