@@ -5,7 +5,7 @@ import NeonButton from "@/components/neon-button";
 const SKILLS = [
   { label: "C / C++",     pct: 90, color: "var(--retro-green)" },
   { label: "Python",      pct: 85, color: "var(--retro-cyan)" },
-  { label: "gem5 / Sim",  pct: 80, color: "var(--retro-magenta)" },
+  { label: "HW Security", pct: 80, color: "var(--retro-magenta)" },
   { label: "TypeScript",  pct: 70, color: "var(--retro-amber)" },
   { label: "Linux / Sys", pct: 85, color: "var(--retro-green)" },
 ];
@@ -27,7 +27,7 @@ export default function AboutPage() {
                 ["CLASS",  "PhD Student"],
                 ["SCHOOL", "UCF"],
                 ["CITY",   "Orlando, FL"],
-                ["FOCUS",  "CXL / Arch."],
+                ["FOCUS",  "HW Security"],
                 ["LANG",   "EN / ES / FR"],
                 ["MUSIC",  "Frat. President"],
               ].map(([k, v]) => (
@@ -41,17 +41,17 @@ export default function AboutPage() {
             {/* Bio */}
             <div className="md:col-span-2 space-y-4 font-mono text-sm text-retro-fg leading-relaxed">
               <p>
-                I&apos;m a computer architecture researcher interested in how memory systems
-                evolve as computing becomes more heterogeneous. My focus is on{" "}
-                <span className="text-neon-green">CXL (Compute Express Link)</span> — an open
-                interconnect standard that enables processors to share memory with accelerators
-                over a PCIe-based fabric.
+                I&apos;m a computer architecture researcher focused on{" "}
+                <span className="text-neon-green">hardware security</span> — specifically how
+                modern processors protect confidential workloads through{" "}
+                <span className="text-neon-magenta">Trusted Execution Environments</span> and
+                memory encryption. I study where these defenses succeed and where they break down.
               </p>
               <p>
-                I work with the <span className="text-neon-cyan">gem5</span> full-system
-                simulator to model CXL-based memory systems. Before the PhD I built software
-                tools in industry — a CRM system for an insurance firm and data infrastructure
-                projects.
+                I use the <span className="text-neon-cyan">gem5</span> full-system simulator
+                to evaluate the microarchitectural cost of security mechanisms on real workloads.
+                Before the PhD I built software tools in industry — a CRM system for an
+                insurance firm and data infrastructure projects.
               </p>
               <p>
                 Outside research I play music (president of a music fraternity chapter).

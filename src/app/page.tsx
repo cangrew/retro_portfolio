@@ -51,7 +51,7 @@ export default function HomePage() {
 
               <p className="font-mono text-sm text-retro-fg-dim">
                 <TypewriterText
-                  text="> PhD student in Computer Architecture and Security @ UCF"
+                  text="> CS PhD student in Computer Architecture @UCF"
                   speed={30}
                 />
               </p>

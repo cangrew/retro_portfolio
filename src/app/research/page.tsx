@@ -5,9 +5,10 @@ import NeonButton from "@/components/neon-button";
 import MatrixRain from "@/components/matrix-rain";
 
 const INTERESTS = [
-  "CXL interconnect simulation and performance characterization",
-  "Persistent memory systems and protection mechanisms",
-  "Memory hierarchy design and optimization",
+  "Hardware security in Trusted Execution Environments (TEEs)",
+  "Memory encryption and secure processor architecture",
+  "Confidential computing on cloud and server-scale systems",
+  "Microarchitectural security and side-channel resilience",
   "Computer architecture simulation (gem5)",
 ];
 
@@ -21,11 +22,14 @@ export default function ResearchPage() {
 
         <RetroWindow title="RESEARCH_INTERESTS.TXT">
           <p className="font-mono text-sm text-retro-fg leading-relaxed mb-4">
-            My research focuses on simulation frameworks for the emerging{" "}
-            <span className="text-neon-green">CXL (Compute Express Link)</span> interconnect
-            standard, with an emphasis on memory-centric computing and heterogeneous memory
-            hierarchies. I work with <span className="text-neon-cyan">gem5</span> to model and
-            evaluate CXL-based memory systems at scale.
+            My research sits at the intersection of{" "}
+            <span className="text-neon-green">computer architecture</span> and{" "}
+            <span className="text-neon-magenta">hardware security</span>. I work on memory
+            encryption and the secure processor stack — studying how{" "}
+            <span className="text-neon-cyan">Trusted Execution Environments</span> protect
+            confidential workloads on modern cloud hardware, and where current designs
+            fall short. I use <span className="text-neon-cyan">gem5</span> for
+            microarchitectural evaluation.
           </p>
           <ul className="space-y-2">
             {INTERESTS.map((item) => (
@@ -70,10 +74,10 @@ export default function ResearchPage() {
 
         <RetroWindow title="ONGOING_WORK.LOG" showControls={false}>
           <p className="font-mono text-sm text-retro-fg leading-relaxed">
-            Currently developing and extending simulation infrastructure for CXL memory expanders
-            and disaggregated memory systems in gem5. Research goals include characterizing
-            performance tradeoffs of CXL-attached memory versus local DRAM across diverse
-            workload classes.
+            Currently focused on memory encryption schemes for secure processors — analyzing
+            threat models, designing defenses, and evaluating real-world performance impact
+            using gem5 across standard benchmark suites. Work targets deployment on
+            server-scale TEE hardware.
           </p>
         </RetroWindow>
 

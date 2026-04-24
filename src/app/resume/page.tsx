@@ -17,18 +17,6 @@ export default function ResumePage() {
               >
                 ANDRES DELGADO
               </div>
-              <div className="flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-retro-fg-dim mt-1">
-                <a href="mailto:andresdaviddelgado@gmail.com" className="hover:text-retro-cyan">
-                  andresdaviddelgado@gmail.com
-                </a>
-                <span>(954) 774-4820</span>
-                <a href="https://andresddelgado.com" target="_blank" rel="noopener noreferrer" className="hover:text-retro-cyan">
-                  andresddelgado.com
-                </a>
-                <a href="https://linkedin.com/in/andresddelgado" target="_blank" rel="noopener noreferrer" className="hover:text-retro-cyan">
-                  linkedin/andresddelgado
-                </a>
-              </div>
             </div>
             <NeonButton href="/resume/resume.pdf" color="amber" external>[↓ PDF]</NeonButton>
           </div>

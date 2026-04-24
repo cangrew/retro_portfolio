@@ -7,6 +7,9 @@ export interface BaseContent {
   content: string
 }
 
+export type ProjectCategory = "personal" | "research" | "professional";
+export const PROJECT_CATEGORIES = ["personal", "research", "professional"] as const satisfies readonly ProjectCategory[];
+
 export interface Project extends BaseContent {
   url?: string
   private?: boolean
@@ -16,6 +19,7 @@ export interface Project extends BaseContent {
   problem?: string
   approach?: string
   results?: string
+  category: ProjectCategory
 }
 
 export interface BlogPost extends BaseContent {

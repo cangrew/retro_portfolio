@@ -4,6 +4,7 @@ import ProjectContent from "@/components/md-content";
 import RetroWindow from "@/components/retro-window";
 import NeonButton from "@/components/neon-button";
 import PixelDivider from "@/components/pixel-divider";
+import CategoryBadge from "@/components/category-badge";
 
 export function generateStaticParams() {
   return getAllProjects().map((p) => ({ slug: p.slug }));
@@ -36,6 +37,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <div className="font-mono text-xs text-retro-fg-dim mb-4 space-y-0.5">
             <div><span className="text-retro-green">title:</span> {project.title}</div>
             <div><span className="text-retro-green">date:</span>  {project.date.slice(0, 10)}</div>
+            <div className="flex gap-2 items-center">
+              <span className="text-retro-green">category:</span>
+              <CategoryBadge category={project.category} size="md" />
+            </div>
             {project.url && (
               <div>
                 <span className="text-retro-green">url:</span>{" "}
