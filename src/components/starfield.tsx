@@ -64,6 +64,7 @@ export default function Starfield() {
 
   return (
     <canvas
+      id="starfield"
       ref={canvasRef}
       className="fixed inset-0 z-0 pointer-events-none"
       aria-hidden="true"

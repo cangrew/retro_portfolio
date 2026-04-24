@@ -22,7 +22,7 @@ export default function VisitorCounter() {
       <span className="font-pixel text-pixel-xs text-retro-fg-dim">VISITORS:</span>
       <span
         className="font-vt text-vt-lg text-retro-amber"
-        style={{ textShadow: "0 0 6px #ffb000" }}
+        style={{ textShadow: "0 0 6px var(--retro-amber)" }}
         suppressHydrationWarning
       >
         {display}

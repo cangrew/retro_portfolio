@@ -21,7 +21,7 @@ export default function PixelDivider({
         className={`h-1 w-full ${className}`}
         style={{
           background:
-            "repeating-linear-gradient(90deg, #39ff14 0px, #39ff14 8px, #00ffff 8px, #00ffff 16px)",
+            "repeating-linear-gradient(90deg, var(--retro-green) 0px, var(--retro-green) 8px, var(--retro-cyan) 8px, var(--retro-cyan) 16px)",
         }}
       />
     );

@@ -44,7 +44,7 @@ export default function HomePage() {
             <div className="space-y-4">
               <div
                 className="font-vt text-vt-2xl text-retro-green"
-                style={{ textShadow: "0 0 12px #39ff14" }}
+                style={{ textShadow: "0 0 12px var(--retro-green)" }}
               >
                 ANDRES<br />DELGADO
               </div>

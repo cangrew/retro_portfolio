@@ -3,6 +3,7 @@
 export default function CrtOverlay() {
   return (
     <div
+      id="crt-overlay"
       aria-hidden="true"
       className="fixed inset-0 z-[9999] pointer-events-none animate-scanline-flicker"
       style={{
