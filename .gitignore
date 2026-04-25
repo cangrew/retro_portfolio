@@ -13,3 +13,6 @@ node_modules/
 
 # misc
 .DS_Store
+
+# source 3D asset (converted to public/models/brain.glb)
+brain3D.3mf

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   WebGLRenderer,
   Scene,
@@ -17,21 +17,26 @@ import {
   Mesh,
   AdditiveBlending,
 } from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { createBrainGeometry } from "@/lib/brain-geometry";
+import { extractBrainGeometry } from "@/lib/brain-loader";
 
 interface Props {
   className?: string;
   heightClass?: string;
 }
 
+type Status = "loading" | "ready" | "fallback";
+
 export default function BrainScene({ className = "", heightClass = "h-[70vh]" }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
+  const [status, setStatus] = useState<Status>("loading");
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
 
-    // WebGL feature detection → ASCII fallback
     const testCanvas = document.createElement("canvas");
     const hasWebGL = !!(
       testCanvas.getContext("webgl2") || testCanvas.getContext("webgl")
@@ -55,42 +60,88 @@ export default function BrainScene({ className = "", heightClass = "h-[70vh]" }:
     const group = new Group();
     scene.add(group);
 
-    const isMobile = window.innerWidth < 768;
-    const brainGeo = createBrainGeometry({
-      widthSegs: isMobile ? 48 : 80,
-      heightSegs: isMobile ? 36 : 60,
-    });
+    // Inner group with fixed orientation correction for the GLB mesh
+    // (3MF ships face-down; pitch back -90° around X so it stands upright).
+    const meshGroup = new Group();
+    meshGroup.rotation.x = -Math.PI / 2;
+    group.add(meshGroup);
 
-    // Neon green wireframe
-    const wireGeo = new WireframeGeometry(brainGeo);
-    const wireMat = new LineBasicMaterial({ color: 0x39ff14, transparent: true, opacity: 0.85 });
-    group.add(new LineSegments(wireGeo, wireMat));
+    const disposables: Array<{ dispose: () => void }> = [];
+    let cancelled = false;
 
-    // Fake bloom: second pass slightly larger, very faint
-    const glowGeo = new WireframeGeometry(brainGeo);
-    const glowMat = new LineBasicMaterial({ color: 0x39ff14, transparent: true, opacity: 0.18, blending: AdditiveBlending });
-    const glowMesh = new LineSegments(glowGeo, glowMat);
-    glowMesh.scale.setScalar(1.04);
-    group.add(glowMesh);
+    const buildScene = (brainGeo: BufferGeometry) => {
+      if (cancelled) {
+        brainGeo.dispose();
+        return;
+      }
+      disposables.push(brainGeo);
 
-    // Cyan particle halo
-    const pts = brainGeo.attributes.position;
-    const ptsGeo = new BufferGeometry();
-    ptsGeo.setAttribute("position", new Float32BufferAttribute(pts.array.slice() as Float32Array, 3));
-    const ptsMat = new PointsMaterial({
-      color: 0x00ffff,
-      size: 0.03,
-      transparent: true,
-      opacity: 0.7,
-      blending: AdditiveBlending,
-      sizeAttenuation: true,
-    });
-    group.add(new Points(ptsGeo, ptsMat));
+      const wireGeo = new WireframeGeometry(brainGeo);
+      const wireMat = new LineBasicMaterial({ color: 0x39ff14, transparent: true, opacity: 0.55 });
+      meshGroup.add(new LineSegments(wireGeo, wireMat));
+      disposables.push(wireGeo, wireMat);
 
-    // Magenta core
-    const coreGeo = new SphereGeometry(0.28, 8, 6);
-    const coreMat = new MeshBasicMaterial({ color: 0xff00ff, wireframe: true });
-    group.add(new Mesh(coreGeo, coreMat));
+      const glowGeo = new WireframeGeometry(brainGeo);
+      const glowMat = new LineBasicMaterial({
+        color: 0x39ff14,
+        transparent: true,
+        opacity: 0.15,
+        blending: AdditiveBlending,
+      });
+      const glowMesh = new LineSegments(glowGeo, glowMat);
+      glowMesh.scale.setScalar(1.04);
+      meshGroup.add(glowMesh);
+      disposables.push(glowGeo, glowMat);
+
+      const pts = brainGeo.attributes.position;
+      const ptsGeo = new BufferGeometry();
+      ptsGeo.setAttribute(
+        "position",
+        new Float32BufferAttribute(pts.array.slice() as Float32Array, 3),
+      );
+      const ptsMat = new PointsMaterial({
+        color: 0x00ffff,
+        size: 0.025,
+        transparent: true,
+        opacity: 0.6,
+        blending: AdditiveBlending,
+        sizeAttenuation: true,
+      });
+      meshGroup.add(new Points(ptsGeo, ptsMat));
+      disposables.push(ptsGeo, ptsMat);
+
+      const coreGeo = new SphereGeometry(0.28, 8, 6);
+      const coreMat = new MeshBasicMaterial({ color: 0xff00ff, wireframe: true });
+      meshGroup.add(new Mesh(coreGeo, coreMat));
+      disposables.push(coreGeo, coreMat);
+    };
+
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath("/draco/");
+    dracoLoader.setDecoderConfig({ type: "wasm" });
+
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
+
+    gltfLoader
+      .loadAsync("/models/brain.glb")
+      .then((gltf) => {
+        const geo = extractBrainGeometry(gltf.scene);
+        buildScene(geo);
+        if (!cancelled) setStatus("ready");
+      })
+      .catch(() => {
+        const isMobile = window.innerWidth < 768;
+        const fallback = createBrainGeometry({
+          widthSegs: isMobile ? 48 : 80,
+          heightSegs: isMobile ? 36 : 60,
+        });
+        buildScene(fallback);
+        if (!cancelled) setStatus("fallback");
+      })
+      .finally(() => {
+        dracoLoader.dispose();
+      });
 
     const resize = () => {
       const w = mount.clientWidth;
@@ -125,29 +176,25 @@ export default function BrainScene({ className = "", heightClass = "h-[70vh]" }:
     animate();
 
     return () => {
+      cancelled = true;
       cancelAnimationFrame(rafId);
       document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
-      brainGeo.dispose();
-      wireGeo.dispose();
-      glowGeo.dispose();
-      ptsGeo.dispose();
-      coreGeo.dispose();
-      wireMat.dispose();
-      glowMat.dispose();
-      ptsMat.dispose();
-      coreMat.dispose();
+      for (const d of disposables) d.dispose();
       renderer.dispose();
       if (mount.contains(renderer.domElement)) mount.removeChild(renderer.domElement);
     };
   }, []);
 
   return (
-    <div
-      ref={mountRef}
-      className={`w-full ${heightClass} ${className}`}
-      aria-label="3D rotating digital brain"
-    />
+    <div className={`relative w-full ${heightClass} ${className}`} aria-label="3D rotating digital brain">
+      <div ref={mountRef} className="absolute inset-0" />
+      {status === "loading" && (
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center font-mono text-xs text-retro-green animate-blink">
+          █ LOADING NEURAL MESH...
+        </div>
+      )}
+    </div>
   );
 }
 
