@@ -12,6 +12,24 @@ const INTERESTS = [
   "Computer architecture simulation (gem5)",
 ];
 
+const GENEALOGY = [
+  { name: "Andres Delgado",     cred: "PhD Student",           school: "U. Central Florida", self: true },
+  { name: "Yan Solihin",        cred: "Ph.D. 2002",            school: "U. Illinois Urbana-Champaign" },
+  { name: "Josep Torrellas",    cred: "Ph.D. 1992",            school: "Stanford" },
+  { name: "John Hennessy",      cred: "Ph.D. 1977",            school: "SUNY Stony Brook" },
+  { name: "Dick Kieburtz",      cred: "Ph.D. 1961",            school: "U. Washington" },
+  { name: "Akira Ishimaru",     cred: "Ph.D. 1958",            school: "U. Washington" },
+  { name: "Gedaliah Held",      cred: "Ph.D. 1954",            school: "U.C. Berkeley" },
+  { name: "Samuel Silver",      cred: "Ph.D. 1940",            school: "MIT" },
+  { name: "John Slater",        cred: "Ph.D. 1923",            school: "Harvard" },
+  { name: "Percy Bridgman",     cred: "Ph.D. 1908",            school: "Harvard" },
+  { name: "Wallace Sabine",     cred: "A.M. 1888",             school: "Harvard" },
+  { name: "John Trowbridge",    cred: "S.D. 1873",             school: "Harvard" },
+  { name: "Joseph Lovering",    cred: "A.B. 1833",             school: "Harvard" },
+  { name: "Benjamin Peirce",    cred: "A.B. 1829",             school: "Harvard" },
+  { name: "Nathaniel Bowditch", cred: "M.A. 1802 (Honorary)",  school: "Harvard" },
+];
+
 export default function ResearchPage() {
   const publications = getAllPublications();
 
@@ -83,6 +101,30 @@ export default function ResearchPage() {
             <span className="text-neon-amber">Azure</span> across standard benchmark suites.
             Work targets deployment on server-scale TEE hardware.
           </p>
+        </RetroWindow>
+
+        <RetroWindow title="ACADEMIC_GENEALOGY.TXT" showControls={false}>
+          <p className="font-mono text-sm text-retro-fg leading-relaxed mb-4">
+            My academic lineage, traced through my advisor{" "}
+            <span className="text-neon-cyan">Yan Solihin</span> and his advisor{" "}
+            <span className="text-neon-magenta">Josep Torrellas</span>, back through{" "}
+            <span className="text-neon-green">John Hennessy</span> to the 19th-century
+            Harvard mathematicians.
+          </p>
+          <ol className="space-y-2">
+            {GENEALOGY.map((person) => (
+              <li key={person.name} className="flex gap-2 font-mono text-sm text-retro-fg-dim">
+                <span className="text-retro-green shrink-0">▶</span>
+                <span>
+                  <span className={person.self ? "text-neon-green" : "text-retro-fg"}>
+                    {person.name}
+                  </span>
+                  {", "}
+                  {person.cred}, {person.school}
+                </span>
+              </li>
+            ))}
+          </ol>
         </RetroWindow>
 
         <PixelDivider variant="stars" />
