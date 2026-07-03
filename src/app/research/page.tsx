@@ -27,8 +27,8 @@ const GENEALOGY = [
     year: "2002",
     degree: "Ph.D.",
     school: "U. Illinois Urbana-Champaign",
-    work: "Invented counter-mode memory encryption and the Bonsai Merkle Tree; pioneered cache fairness and QoS.",
-    impact: "Shaped Intel SGX and Cache Allocation Technology; wrote a standard multicore-architecture textbook.",
+    work: "Developed split-counter memory encryption and the Bonsai Merkle Tree for efficient secure processors; advanced cache fairness and QoS.",
+    impact: "Influenced Intel SGX's memory-encryption engine; IEEE Fellow who wrote a standard multicore-architecture textbook.",
   },
   {
     name: "Josep Torrellas",
@@ -124,7 +124,7 @@ const GENEALOGY = [
     degree: "A.B.",
     school: "Harvard",
     work: "Pioneered linear associative algebra and celestial mechanics.",
-    impact: "A father of American mathematics; helped establish the U.S. Coast Survey.",
+    impact: "A father of American mathematics; later led the U.S. Coast Survey.",
   },
   {
     name: "Nathaniel Bowditch",
