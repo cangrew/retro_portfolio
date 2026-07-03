@@ -13,21 +13,127 @@ const INTERESTS = [
 ];
 
 const GENEALOGY = [
-  { name: "Andres Delgado",     cred: "PhD Student",           school: "U. Central Florida", self: true },
-  { name: "Yan Solihin",        cred: "Ph.D. 2002",            school: "U. Illinois Urbana-Champaign" },
-  { name: "Josep Torrellas",    cred: "Ph.D. 1992",            school: "Stanford" },
-  { name: "John Hennessy",      cred: "Ph.D. 1977",            school: "SUNY Stony Brook" },
-  { name: "Dick Kieburtz",      cred: "Ph.D. 1961",            school: "U. Washington" },
-  { name: "Akira Ishimaru",     cred: "Ph.D. 1958",            school: "U. Washington" },
-  { name: "Gedaliah Held",      cred: "Ph.D. 1954",            school: "U.C. Berkeley" },
-  { name: "Samuel Silver",      cred: "Ph.D. 1940",            school: "MIT" },
-  { name: "John Slater",        cred: "Ph.D. 1923",            school: "Harvard" },
-  { name: "Percy Bridgman",     cred: "Ph.D. 1908",            school: "Harvard" },
-  { name: "Wallace Sabine",     cred: "A.M. 1888",             school: "Harvard" },
-  { name: "John Trowbridge",    cred: "S.D. 1873",             school: "Harvard" },
-  { name: "Joseph Lovering",    cred: "A.B. 1833",             school: "Harvard" },
-  { name: "Benjamin Peirce",    cred: "A.B. 1829",             school: "Harvard" },
-  { name: "Nathaniel Bowditch", cred: "M.A. 1802 (Honorary)",  school: "Harvard" },
+  {
+    name: "Andres Delgado",
+    year: "NOW",
+    degree: "PhD Student",
+    school: "U. Central Florida",
+    work: "Memory encryption and Trusted Execution Environments for secure processors, evaluated in gem5.",
+    impact: "Strengthening confidential computing on cloud and server-scale hardware.",
+    self: true,
+  },
+  {
+    name: "Yan Solihin",
+    year: "2002",
+    degree: "Ph.D.",
+    school: "U. Illinois Urbana-Champaign",
+    work: "Invented counter-mode memory encryption and the Bonsai Merkle Tree; pioneered cache fairness and QoS.",
+    impact: "Shaped Intel SGX and Cache Allocation Technology; wrote a standard multicore-architecture textbook.",
+  },
+  {
+    name: "Josep Torrellas",
+    year: "1992",
+    degree: "Ph.D.",
+    school: "Stanford",
+    work: "Pioneered thread-level speculation and the Bulk Multicore architecture for parallel programmability.",
+    impact: "Ideas influenced IBM Blue Gene and commercial shared-memory multiprocessors.",
+  },
+  {
+    name: "John Hennessy",
+    year: "1977",
+    degree: "Ph.D.",
+    school: "SUNY Stony Brook",
+    work: "Pioneered RISC through the MIPS processor and co-wrote Computer Architecture: A Quantitative Approach.",
+    impact: "2017 Turing Award; RISC underpins billions of modern chips. Later Stanford president and Alphabet chairman.",
+  },
+  {
+    name: "Dick Kieburtz",
+    year: "1961",
+    degree: "Ph.D.",
+    school: "U. Washington",
+    work: "Advanced functional programming and formal methods; contributed to the Haskell language report.",
+    impact: "ACM Fellow who shaped purely functional language design and program-transformation research.",
+  },
+  {
+    name: "Akira Ishimaru",
+    year: "1958",
+    degree: "Ph.D.",
+    school: "U. Washington",
+    work: "Built the foundational theory of wave propagation and scattering in random media.",
+    impact: "Underpins radar, remote sensing, optics, and imaging through turbulent media.",
+  },
+  {
+    name: "Gedaliah Held",
+    year: "1954",
+    degree: "Ph.D.",
+    school: "U.C. Berkeley",
+    work: "Applied electromagnetics and microwave research at the University of Washington.",
+    impact: "Mentored the next generation of wave-propagation theorists.",
+  },
+  {
+    name: "Samuel Silver",
+    year: "1940",
+    degree: "Ph.D.",
+    school: "MIT",
+    work: "Authored Microwave Antenna Theory and Design and founded Berkeley's Space Sciences Laboratory.",
+    impact: "The standard reference for antenna engineering; advanced radar and space science.",
+  },
+  {
+    name: "John Slater",
+    year: "1923",
+    degree: "Ph.D.",
+    school: "Harvard",
+    work: "Developed the Slater determinant and the quantum theory of atoms, molecules, and solids.",
+    impact: "A cornerstone of modern quantum chemistry and solid-state physics.",
+  },
+  {
+    name: "Percy Bridgman",
+    year: "1908",
+    degree: "Ph.D.",
+    school: "Harvard",
+    work: "Founded high-pressure physics and formulated the philosophy of operationalism.",
+    impact: "1946 Nobel Prize in Physics; opened materials science under extreme conditions.",
+  },
+  {
+    name: "Wallace Sabine",
+    year: "1888",
+    degree: "A.M.",
+    school: "Harvard",
+    work: "Founded architectural acoustics and derived the reverberation-time equation.",
+    impact: "Designed Boston Symphony Hall; the 'sabin' unit still bears his name.",
+  },
+  {
+    name: "John Trowbridge",
+    year: "1873",
+    degree: "S.D.",
+    school: "Harvard",
+    work: "Built Harvard's physics research program and its Jefferson Physical Laboratory.",
+    impact: "Helped turn U.S. physics into a research discipline and trained a generation of physicists.",
+  },
+  {
+    name: "Joseph Lovering",
+    year: "1833",
+    degree: "A.B.",
+    school: "Harvard",
+    work: "Researched terrestrial magnetism, meteorology, and electricity over a 50-year professorship.",
+    impact: "Advanced experimental physics in 19th-century America.",
+  },
+  {
+    name: "Benjamin Peirce",
+    year: "1829",
+    degree: "A.B.",
+    school: "Harvard",
+    work: "Pioneered linear associative algebra and celestial mechanics.",
+    impact: "A father of American mathematics; helped establish the U.S. Coast Survey.",
+  },
+  {
+    name: "Nathaniel Bowditch",
+    year: "1802",
+    degree: "M.A. (Hon.)",
+    school: "Harvard",
+    work: "Wrote The New American Practical Navigator and translated Laplace's celestial mechanics.",
+    impact: "Founded modern maritime navigation; 'Bowditch' still sails aboard U.S. Navy ships.",
+  },
 ];
 
 export default function ResearchPage() {
@@ -104,26 +210,58 @@ export default function ResearchPage() {
         </RetroWindow>
 
         <RetroWindow title="ACADEMIC_GENEALOGY.TXT" showControls={false}>
-          <p className="font-mono text-sm text-retro-fg leading-relaxed mb-4">
-            My academic lineage, traced through my advisor{" "}
-            <span className="text-neon-cyan">Yan Solihin</span> and his advisor{" "}
-            <span className="text-neon-magenta">Josep Torrellas</span>, back through{" "}
-            <span className="text-neon-green">John Hennessy</span> to the 19th-century
-            Harvard mathematicians.
+          <p className="font-mono text-sm text-retro-fg leading-relaxed mb-6">
+            My academic lineage &mdash; advisor to advisor &mdash; traced from today back
+            through <span className="text-neon-cyan">Yan Solihin</span> and{" "}
+            <span className="text-neon-magenta">Josep Torrellas</span>, then{" "}
+            <span className="text-neon-green">John Hennessy</span>, all the way to the
+            19th-century Harvard mathematicians. Each node lists the person&apos;s major
+            contribution and its impact.
           </p>
-          <ol className="space-y-2">
-            {GENEALOGY.map((person) => (
-              <li key={person.name} className="flex gap-2 font-mono text-sm text-retro-fg-dim">
-                <span className="text-retro-green shrink-0">▶</span>
-                <span>
-                  <span className={person.self ? "text-neon-green" : "text-retro-fg"}>
-                    {person.name}
-                  </span>
-                  {", "}
-                  {person.cred}, {person.school}
-                </span>
-              </li>
-            ))}
+          <ol className="relative">
+            {GENEALOGY.map((person, i) => {
+              const isLast = i === GENEALOGY.length - 1;
+              return (
+                <li key={person.name} className="relative flex gap-3 sm:gap-4">
+                  {/* Year + spine rail */}
+                  <div className="flex flex-col items-center shrink-0 w-12 sm:w-16">
+                    <span className="font-pixel text-pixel-xs text-retro-amber leading-none text-center w-full">
+                      {person.year}
+                    </span>
+                    <span
+                      className="mt-2 w-3 h-3 rotate-45 border-2 border-retro-green bg-retro-panel shrink-0"
+                      style={{ boxShadow: "0 0 6px var(--retro-green)" }}
+                    />
+                    {!isLast && <span className="flex-1 w-0.5 bg-retro-green/30 mt-1" />}
+                  </div>
+                  {/* Content */}
+                  <div className={`min-w-0 ${isLast ? "" : "pb-6"}`}>
+                    <p className="font-mono text-sm">
+                      <span
+                        className={
+                          person.self
+                            ? "text-neon-green font-bold"
+                            : "text-retro-fg font-bold"
+                        }
+                      >
+                        {person.name}
+                      </span>
+                      <span className="text-retro-fg-dim">
+                        {" · "}
+                        {person.degree}, {person.school}
+                      </span>
+                    </p>
+                    <p className="font-mono text-xs sm:text-sm text-retro-fg mt-1 leading-relaxed">
+                      {person.work}
+                    </p>
+                    <p className="font-mono text-xs text-retro-fg-dim mt-1 leading-relaxed">
+                      <span className="text-retro-cyan">IMPACT ▸ </span>
+                      {person.impact}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
           </ol>
         </RetroWindow>
 
