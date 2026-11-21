@@ -41,6 +41,17 @@ MDX body content is rendered client-side via `react-markdown` in `src/components
 
 Dark theme (black/zinc palette). Custom Tailwind animations defined in `tailwind.config.ts`: fade-in, title, fade-left, fade-right. Uses `@tailwindcss/typography` plugin. shadcn/ui configured (zinc base color, lucide icons, `@/components/ui` alias).
 
+### Design system
+
+The terminal design system is the root of every page; see `/design` for the live reference.
+
+- Tokens: `src/design-system/tokens.ts` (colors per theme, type scale, layout, motion). `tailwind.config.ts` turns them into CSS variables and utilities (`bg-pane`, `text-fg-muted`, `border-accent`, `duration-fast`). Do not hard-code hex colors; add a token.
+- Themes: `dark` (default) and `light`, switched by next-themes via `data-theme` on `<html>` (`src/lib/theme/theme-provider.tsx`). The Win95 theme is retired.
+- Font: JetBrains Mono only, with ligatures (`src/lib/fonts.ts`).
+- Components: `src/components/ui` (Button, Pane, PaneGrid, Badge, Card, Tabs, Dialog, Tooltip, Menu, Prompt, PromptHeading, Kbd, ThemeSwitcher), built on Base UI and styled with cva.
+- `tokens.test.ts` enforces WCAG AA contrast for every text color.
+- The `--retro-*` variables and `retro-*` classes in `globals.css` are legacy aliases kept until pages are rebuilt.
+
 ### External Services
 
 - Vercel Analytics (`@vercel/analytics`)

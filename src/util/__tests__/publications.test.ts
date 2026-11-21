@@ -25,7 +25,7 @@ describe('getAllPublications', () => {
   beforeEach(() => {
     existsSyncSpy = vi.spyOn(fs, 'existsSync').mockReturnValue(true)
     vi.spyOn(fs, 'readFileSync').mockReturnValue(
-      JSON.stringify(mockPublications) as unknown as Buffer
+      JSON.stringify(mockPublications) as never
     )
   })
 

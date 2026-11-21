@@ -2,56 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ═══════════════════════════════════════════════
-   WIN95 THEME  (default)
-   ═══════════════════════════════════════════════ */
-:root,
-[data-theme="win95"] {
-  --retro-bg:          #0a0e27;
-  --retro-bg-tile:     #10163a;
-  --retro-panel:       #1a1f4a;
-  --retro-panel-alt:   #232a5c;
-  --retro-fg:          #e6e6fa;
-  --retro-fg-dim:      #9090c0;
-  --retro-green:       #39ff14;
-  --retro-cyan:        #00ffff;
-  --retro-magenta:     #ff00ff;
-  --retro-amber:       #ffb000;
-  --retro-border-lt:   #d4d4f0;
-  --retro-border-dk:   #0a0a20;
-  --retro-scanline:    rgba(0, 0, 0, 0.18);
-  --retro-crt-glow:    rgba(57, 255, 20, 0.05);
-  --retro-glow-a50:    rgba(57, 255, 20, 0.5);
-  --retro-glow-a20:    rgba(57, 255, 20, 0.2);
-
-  /* Legacy shadcn/ui tokens remapped to retro */
-  --background: #0a0e27;
-  --foreground: #e6e6fa;
-}
+/*
+ * Design tokens (--color-*, --text-*, --duration-*, …) are generated from
+ * src/design-system/tokens.ts by the Tailwind config. Do not hard-code
+ * colors here; add a token instead.
+ */
 
 /* ═══════════════════════════════════════════════
-   ARCH LINUX THEME
+   LEGACY ALIASES
+   The old --retro-* variables now point at the design-system tokens, so
+   pages that still use `text-retro-*` render in the terminal palette.
+   Remove once every page is rebuilt on src/components/ui.
    ═══════════════════════════════════════════════ */
-[data-theme="arch"] {
-  --retro-bg:          #0c0c0c;
-  --retro-bg-tile:     #111111;
-  --retro-panel:       #161616;
-  --retro-panel-alt:   #1f1f1f;
-  --retro-fg:          #cdd6f4;
-  --retro-fg-dim:      #6c7086;
-  --retro-green:       #1793d1;
-  --retro-cyan:        #89dceb;
-  --retro-magenta:     #cba6f7;
-  --retro-amber:       #f9e2af;
-  --retro-border-lt:   #313244;
-  --retro-border-dk:   #0a0a0a;
-  --retro-scanline:    rgba(0, 0, 0, 0);
-  --retro-crt-glow:    rgba(23, 147, 209, 0.03);
-  --retro-glow-a50:    rgba(23, 147, 209, 0.3);
-  --retro-glow-a20:    rgba(23, 147, 209, 0.1);
+:root {
+  --retro-bg:        rgb(var(--color-canvas));
+  --retro-bg-tile:   rgb(var(--color-pane));
+  --retro-panel:     rgb(var(--color-pane));
+  --retro-panel-alt: rgb(var(--color-chrome));
+  --retro-fg:        rgb(var(--color-fg));
+  --retro-fg-dim:    rgb(var(--color-fg-muted));
+  --retro-green:     rgb(var(--color-accent));
+  --retro-cyan:      rgb(var(--color-ansi-cyan));
+  --retro-magenta:   rgb(var(--color-ansi-magenta));
+  --retro-amber:     rgb(var(--color-ansi-yellow));
+  --retro-border-lt: rgb(var(--color-line));
+  --retro-border-dk: rgb(var(--color-line));
 
-  --background: #0c0c0c;
-  --foreground: #cdd6f4;
+  --background: rgb(var(--color-canvas));
+  --foreground: rgb(var(--color-fg));
 }
 
 /* ═══════════════════════════════════════════════
@@ -59,246 +37,134 @@
    ═══════════════════════════════════════════════ */
 @layer base {
   html {
-    background-color: var(--retro-bg);
-    color: var(--retro-fg);
-    /* Win95: tiled starfield background */
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'><rect width='64' height='64' fill='%230a0e27'/><circle cx='8' cy='12' r='0.6' fill='%2310163a'/><circle cx='40' cy='32' r='0.6' fill='%2310163a'/><circle cx='56' cy='8'  r='0.5' fill='%23232a5c'/><circle cx='16' cy='52' r='0.4' fill='%2310163a'/><circle cx='48' cy='56' r='0.5' fill='%23232a5c'/><circle cx='28' cy='20' r='0.4' fill='%2310163a'/></svg>");
-    background-repeat: repeat;
-    /* Phosphor CRT glow on all text */
-    text-shadow: 0 0 1px currentColor;
+    background-color: rgb(var(--color-canvas));
+    color: rgb(var(--color-fg));
     scroll-behavior: smooth;
   }
 
   body {
-    font-family: var(--font-mono), "IBM Plex Mono", "Courier New", monospace;
-    color: var(--retro-fg);
+    @apply font-mono text-base;
+    font-feature-settings: "calt" 1, "liga" 1;
+    font-variant-ligatures: contextual common-ligatures;
+    -webkit-font-smoothing: antialiased;
     background: transparent;
+    /* Clearance for the fixed status bar */
+    padding-bottom: var(--statusbar);
     transition-property: opacity, transform, filter;
-    transition-timing-function: ease-in-out;
+    transition-timing-function: var(--ease-out);
     transition-duration: 300ms;
   }
 
-  a {
-    color: var(--retro-green);
-    text-decoration: underline;
-    text-underline-offset: 2px;
+  /* Any element carrying data-theme becomes a themed surface (used on /design). */
+  [data-theme] {
+    color: rgb(var(--color-fg));
   }
-  a:hover   { color: var(--retro-cyan); }
-  a:visited { color: var(--retro-magenta); }
-  a:focus-visible {
-    outline: 2px solid var(--retro-cyan);
+
+  /* :where() keeps these at zero specificity so utilities always win. */
+  :where(a) {
+    color: rgb(var(--color-accent));
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  :where(a:hover) { color: rgb(var(--color-ansi-cyan)); }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--color-accent));
     outline-offset: 2px;
   }
 
   ::selection {
-    background-color: var(--retro-magenta);
-    color: #000;
+    background-color: var(--selection);
+    color: inherit;
   }
 
-  /* Win95-style chunky scrollbar */
-  ::-webkit-scrollbar       { width: 16px; height: 16px; }
-  ::-webkit-scrollbar-track {
-    background: var(--retro-bg-tile);
-    border-left: 2px solid var(--retro-border-dk);
+  code, kbd, samp, pre {
+    font-family: inherit;
   }
-  ::-webkit-scrollbar-thumb {
-    background: var(--retro-panel-alt);
-    border-top:    2px solid var(--retro-border-lt);
-    border-left:   2px solid var(--retro-border-lt);
-    border-bottom: 2px solid var(--retro-border-dk);
-    border-right:  2px solid var(--retro-border-dk);
-  }
-  ::-webkit-scrollbar-thumb:hover { background: var(--retro-fg-dim); }
 
-  .text-edge-outline { -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
+  /* Thin terminal scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-line-strong)) transparent;
+  }
+  ::-webkit-scrollbar       { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgb(var(--color-line-strong)); }
+  ::-webkit-scrollbar-thumb:hover { background: rgb(var(--color-fg-subtle)); }
+
+  .text-edge-outline { -webkit-text-stroke: 1px rgb(var(--color-fg) / 0.3); }
   .page-transition {
     opacity: 0;
-    background: black;
     transform: translateY(40px);
     filter: blur(4px);
   }
 }
 
 /* ═══════════════════════════════════════════════
-   RETRO COMPONENT UTILITIES
+   LEGACY COMPONENT UTILITIES
+   Flat terminal versions of the old Win95 classes. New code should use the
+   components in src/components/ui instead.
    ═══════════════════════════════════════════════ */
 @layer components {
   .retro-raised {
-    border-style: solid;
-    border-width: 2px;
-    border-top-color:    var(--retro-border-lt);
-    border-left-color:   var(--retro-border-lt);
-    border-bottom-color: var(--retro-border-dk);
-    border-right-color:  var(--retro-border-dk);
-    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.12);
+    border: 1px solid rgb(var(--color-line));
   }
 
   .retro-inset {
-    border-style: solid;
-    border-width: 2px;
-    border-top-color:    var(--retro-border-dk);
-    border-left-color:   var(--retro-border-dk);
-    border-bottom-color: var(--retro-border-lt);
-    border-right-color:  var(--retro-border-lt);
-    box-shadow: inset -1px -1px 0 rgba(255,255,255,0.08);
+    border: 1px solid rgb(var(--color-line));
   }
 
   .retro-ridge {
-    border: 4px ridge var(--retro-green);
+    border: 1px solid rgb(var(--color-accent));
   }
 
   .retro-window-border {
-    border: 3px solid var(--retro-border-lt);
-    outline: 2px solid var(--retro-border-dk);
-    outline-offset: -5px;
+    border: 1px solid rgb(var(--color-line));
   }
 
-  .retro-glow-green {
-    box-shadow: 0 0 8px var(--retro-green),
-                0 0 16px var(--retro-glow-a50),
-                inset 0 0 4px var(--retro-glow-a20);
-  }
-  .retro-glow-cyan {
-    box-shadow: 0 0 8px var(--retro-cyan),
-                0 0 16px var(--retro-glow-a50);
-  }
-  .retro-glow-magenta {
-    box-shadow: 0 0 8px var(--retro-magenta),
-                0 0 16px var(--retro-glow-a50);
-  }
+  .retro-glow-green,
+  .retro-glow-cyan,
+  .retro-glow-magenta,
   .retro-glow-amber {
-    box-shadow: 0 0 8px var(--retro-amber),
-                0 0 16px var(--retro-glow-a50);
+    box-shadow: none;
   }
 
-  /* Win95 OS-window title bar */
   .retro-titlebar {
-    background: linear-gradient(90deg, #000080 0%, #1084d0 50%, #000080 100%);
-    color: #fff;
-    font-family: var(--font-pixel), "Press Start 2P", monospace;
-    font-size: 10px;
-    padding: 3px 6px;
+    background: rgb(var(--color-chrome));
+    color: rgb(var(--color-fg-muted));
+    font-size: var(--text-xs);
+    padding: 3px 8px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid rgb(var(--color-line));
     user-select: none;
   }
 
   .retro-grid-bg {
     background-image:
-      repeating-linear-gradient(0deg,  transparent, transparent 39px, rgba(0,255,255,0.04) 40px),
-      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(0,255,255,0.04) 40px);
+      repeating-linear-gradient(0deg,  transparent, transparent 39px, rgb(var(--color-line) / 0.35) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgb(var(--color-line) / 0.35) 40px);
   }
 
   .retro-cursor::after {
-    content: "█";
-    animation: blink 1s step-end infinite;
-    color: var(--retro-green);
+    content: "▊";
+    animation: blink 1s var(--ease-steps) infinite;
+    color: rgb(var(--color-accent));
   }
 
-  .text-neon-green   { color: var(--retro-green);   text-shadow: 0 0 8px var(--retro-green); }
-  .text-neon-cyan    { color: var(--retro-cyan);    text-shadow: 0 0 8px var(--retro-cyan); }
-  .text-neon-magenta { color: var(--retro-magenta); text-shadow: 0 0 8px var(--retro-magenta); }
-  .text-neon-amber   { color: var(--retro-amber);   text-shadow: 0 0 8px var(--retro-amber); }
-}
-
-/* ═══════════════════════════════════════════════
-   ARCH THEME OVERRIDES
-   ═══════════════════════════════════════════════ */
-
-/* Flat terminal background, no phosphor glow */
-html[data-theme="arch"] {
-  background-image: none;
-  text-shadow: none;
-}
-
-/* Flat single-pixel borders instead of Win95 bevels */
-[data-theme="arch"] .retro-raised {
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--retro-border-lt);
-  box-shadow: none;
-}
-
-[data-theme="arch"] .retro-inset {
-  border-width: 1px;
-  border-style: solid;
-  border-color: var(--retro-border-dk);
-  box-shadow: none;
-}
-
-[data-theme="arch"] .retro-ridge {
-  border: 1px solid var(--retro-green);
-}
-
-[data-theme="arch"] .retro-window-border {
-  border: 1px solid var(--retro-border-lt);
-  outline: none;
-}
-
-/* Flat monospace title bar instead of Win95 gradient */
-[data-theme="arch"] .retro-titlebar {
-  background: var(--retro-panel-alt);
-  font-family: var(--font-mono), "IBM Plex Mono", monospace;
-  font-size: 12px;
-  border-bottom: 1px solid var(--retro-border-lt);
-}
-
-/* No neon glows */
-[data-theme="arch"] .text-neon-green,
-[data-theme="arch"] .text-neon-cyan,
-[data-theme="arch"] .text-neon-magenta,
-[data-theme="arch"] .text-neon-amber {
-  text-shadow: none;
-}
-
-[data-theme="arch"] .retro-glow-green,
-[data-theme="arch"] .retro-glow-cyan,
-[data-theme="arch"] .retro-glow-magenta,
-[data-theme="arch"] .retro-glow-amber {
-  box-shadow: none;
-}
-
-/* Terminal-style thin scrollbar */
-[data-theme="arch"] ::-webkit-scrollbar { width: 6px; height: 6px; }
-[data-theme="arch"] ::-webkit-scrollbar-track {
-  background: var(--retro-bg);
-  border-left: none;
-}
-[data-theme="arch"] ::-webkit-scrollbar-thumb {
-  background: var(--retro-fg-dim);
-  border: none;
-}
-[data-theme="arch"] ::-webkit-scrollbar-thumb:hover {
-  background: var(--retro-fg);
-}
-
-/* Arch cursor: partial block instead of filled block */
-[data-theme="arch"] .retro-cursor::after {
-  content: "▊";
-}
-
-/* Suppress CRT overlay and canvas starfield via CSS before React hydrates */
-[data-theme="arch"] #crt-overlay,
-[data-theme="arch"] #starfield { display: none; }
-
-/* Suppress neon hover glow on buttons */
-[data-theme="arch"] .hover\:shadow-retro-green:hover,
-[data-theme="arch"] .hover\:shadow-retro-cyan:hover,
-[data-theme="arch"] .hover\:shadow-retro-magenta:hover,
-[data-theme="arch"] .hover\:shadow-retro-amber:hover {
-  box-shadow: none;
-}
-
-/* Extra bottom clearance for i3 status bar */
-[data-theme="arch"] body {
-  padding-bottom: 1.5rem;
+  .text-neon-green   { color: rgb(var(--color-accent)); }
+  .text-neon-cyan    { color: rgb(var(--color-ansi-cyan)); }
+  .text-neon-magenta { color: rgb(var(--color-ansi-magenta)); }
+  .text-neon-amber   { color: rgb(var(--color-ansi-yellow)); }
 }
 
 /* ═══════════════════════════════════════════════
    REDUCED MOTION
    ═══════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *,
   *::before,
   *::after {

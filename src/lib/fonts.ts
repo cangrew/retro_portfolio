@@ -1,22 +1,16 @@
-import { Press_Start_2P, VT323, IBM_Plex_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 
-export const pressStart2P = Press_Start_2P({
-  weight: "400",
+/**
+ * JetBrains Mono is the site's only typeface. Its ligatures live in the
+ * `calt` feature, which globals.css turns on for the whole page.
+ *
+ * next/font needs literal options, so the variable name is repeated here;
+ * it must match FONT_FAMILY.variable in src/design-system/tokens.ts.
+ */
+export const jetbrainsMono = JetBrains_Mono({
+  weight: ["400", "500", "700"],
+  style: ["normal", "italic"],
   subsets: ["latin"],
-  variable: "--font-pixel",
-  display: "swap",
-});
-
-export const vt323 = VT323({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-vt",
-  display: "swap",
-});
-
-export const ibmPlexMono = IBM_Plex_Mono({
-  weight: ["400", "500"],
-  subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });

@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useTheme } from "@/lib/theme/theme-provider";
 
 const WORKSPACES = [
   { n: 1, name: "home",     href: "/" },
@@ -13,14 +12,11 @@ const WORKSPACES = [
 ];
 
 export default function I3StatusBar() {
-  const { theme } = useTheme();
-  const pathname  = usePathname();
-
-  if (theme !== "arch") return null;
+  const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-0 inset-x-0 z-50 bg-retro-panel border-t border-retro-border-lt font-mono flex items-center justify-between px-3 h-6 text-xs">
-      <div className="flex items-center gap-0.5">
+    <div className="fixed bottom-0 inset-x-0 z-50 bg-chrome border-t border-line font-mono flex items-center justify-between gap-3 overflow-hidden px-3 h-statusbar text-2xs">
+      <div className="flex min-w-0 items-center gap-0.5 overflow-hidden">
         {WORKSPACES.map(({ n, name, href }) => {
           const active =
             href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -38,7 +34,7 @@ export default function I3StatusBar() {
           );
         })}
       </div>
-      <div className="flex items-center gap-3 text-retro-fg-dim">
+      <div className="hidden sm:flex shrink-0 items-center gap-3 text-retro-fg-dim">
         <span className="text-retro-green">arch</span>
         <span>x86_64</span>
         <span suppressHydrationWarning>
