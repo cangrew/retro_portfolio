@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import path from 'path'
 import { getAllContent, getContent } from '../content'
-import { Project } from '../types'
+import { Project, ProjectCategory } from '../types'
 
 const PROJECT_FIXTURE_DIR = path.join(process.cwd(), 'src/test/fixtures/projects')
 
@@ -21,6 +21,7 @@ function mapProject(data: Record<string, unknown>, slug: string, content: string
     problem: data.problem ? String(data.problem) : undefined,
     approach: data.approach ? String(data.approach) : undefined,
     results: data.results ? String(data.results) : undefined,
+    category: (data.category ?? 'personal') as ProjectCategory,
   }
 }
 
