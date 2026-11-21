@@ -1,46 +1,43 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import type { ThemeName } from "./types";
-import { DEFAULT_THEME, STORAGE_KEY } from "./types";
+import { useEffect, useState, type ReactNode } from "react";
+import { ThemeProvider as NextThemesProvider, useTheme as useNextTheme } from "next-themes";
+import { DEFAULT_THEME, THEMES, THEME_STORAGE_KEY, type ThemeName } from "@/design-system/tokens";
 
-interface ThemeContextValue {
-  theme: ThemeName;
-  setTheme: (t: ThemeName) => void;
-  toggleTheme: () => void;
-}
-
-const ThemeContext = createContext<ThemeContextValue>({
-  theme: DEFAULT_THEME,
-  setTheme: () => {},
-  toggleTheme: () => {},
-});
-
+/**
+ * Theme switching via next-themes. It sets `data-theme` on <html> before the
+ * first paint, so there is no flash and no hand-written inline script.
+ */
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeName>(DEFAULT_THEME);
-
-  useEffect(() => {
-    const attr = document.documentElement.dataset.theme as ThemeName | undefined;
-    if (attr === "arch" || attr === "win95") setThemeState(attr);
-  }, []);
-
-  const setTheme = (t: ThemeName) => {
-    setThemeState(t);
-    document.documentElement.dataset.theme = t;
-    try {
-      localStorage.setItem(STORAGE_KEY, t);
-    } catch {}
-  };
-
-  const toggleTheme = () => setTheme(theme === "win95" ? "arch" : "win95");
-
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
+    <NextThemesProvider
+      attribute="data-theme"
+      themes={[...THEMES]}
+      defaultTheme={DEFAULT_THEME}
+      enableSystem={false}
+      storageKey={THEME_STORAGE_KEY}
+      disableTransitionOnChange
+    >
       {children}
-    </ThemeContext.Provider>
+    </NextThemesProvider>
   );
 }
 
-export function useTheme() {
-  return useContext(ThemeContext);
+function isThemeName(value: string | undefined): value is ThemeName {
+  return (THEMES as readonly string[]).includes(value ?? "");
+}
+
+/**
+ * The active theme, typed. `theme` is undefined until mounted on the client,
+ * because the server cannot know what the visitor picked.
+ */
+export function useTheme(): { theme: ThemeName | undefined; setTheme: (t: ThemeName) => void } {
+  const { resolvedTheme, setTheme } = useNextTheme();
+  // Report nothing until mounted so the first client render matches the server.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return {
+    theme: mounted && isThemeName(resolvedTheme) ? resolvedTheme : undefined,
+    setTheme,
+  };
 }

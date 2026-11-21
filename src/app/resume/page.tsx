@@ -13,7 +13,7 @@ export default function ResumePage() {
             <div>
               <div
                 className="font-vt text-vt-lg sm:text-vt-2xl text-retro-green"
-                style={{ textShadow: "0 0 10px #39ff14" }}
+               
               >
                 ANDRES DELGADO
               </div>
