@@ -1,136 +1,125 @@
-import RetroWindow from "@/components/retro-window";
-import PixelDivider from "@/components/pixel-divider";
-import NeonButton from "@/components/neon-button";
+import { PageHeader } from "@/components/content/page-header";
+import { Section } from "@/components/ui/section";
+import { KeyValue } from "@/components/ui/key-value";
+import { buttonVariants } from "@/components/ui/button-variants";
+
+interface Entry {
+  title: string;
+  where: string;
+  date: string;
+  bullets: string[];
+}
+
+const EDUCATION: Entry[] = [
+  {
+    title: "PhD, Computer Science",
+    where: "University of Central Florida",
+    date: "Aug 2024 – present",
+    bullets: ["GPA 3.9/4.0", "Parallel architecture, resilient systems, advanced security, complexity"],
+  },
+  {
+    title: "BS, Computer Science, minor in Mathematics",
+    where: "University of Central Florida",
+    date: "Aug 2019 – Dec 2023",
+    bullets: ["GPA 3.5/4.0"],
+  },
+];
+
+const EXPERIENCE: Entry[] = [
+  {
+    title: "Graduate Research Assistant",
+    where: "UCF, Orlando FL",
+    date: "May 2024 – present",
+    bullets: [
+      "Mastered the gem5 architecture simulator for full-system simulation.",
+      "Contributed to Linux-based simulation frameworks for the CXL interconnect.",
+      "Developed Linux modules for persistent memory management in CXL systems.",
+    ],
+  },
+  {
+    title: "Developer / Data Analyst",
+    where: "Findway Solutions, Orlando FL",
+    date: "May 2023 – present",
+    bullets: [
+      "Designed a commissions system that improved data accessibility and efficiency.",
+      "Led the migration from Excel to a database.",
+      "Maintained IT operations across the organization.",
+    ],
+  },
+];
+
+const SKILLS = [
+  ["programming", "C/C++ (advanced), Python (advanced), Java, TypeScript"],
+  ["web", "Next.js, React, Node.js"],
+  ["tools", "gem5, LLVM, Git, Linux, Docker"],
+  ["languages", "English (native), Spanish (native), French (conversational)"],
+] as const;
+
+function Entries({ entries }: { entries: Entry[] }) {
+  return (
+    <ul className="space-y-5">
+      {entries.map((e) => (
+        <li key={e.title + e.date}>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+            <p>
+              <span className="font-medium text-fg">{e.title}</span>
+              <span className="text-fg-muted"> · {e.where}</span>
+            </p>
+            <span className="text-sm text-fg-subtle">{e.date}</span>
+          </div>
+          <ul className="mt-1 list-['-_'] space-y-0.5 pl-5 text-sm text-fg-muted marker:text-fg-subtle">
+            {e.bullets.map((b) => (
+              <li key={b} className="pl-1">
+                {b}
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export default function ResumePage() {
   return (
-    <main>
-      <div className="max-w-4xl mx-auto space-y-6">
-        <RetroWindow title="RESUME.TXT">
+    <main className="space-y-10">
+      <PageHeader
+        title="Resume"
+        actions={
+          <a href="/resume/resume.pdf" className={buttonVariants({ variant: "secondary", size: "sm" })}>
+            resume.pdf ↓
+          </a>
+        }
+      >
+        Andres Delgado, PhD student in computer architecture.
+      </PageHeader>
 
-          {/* Header */}
-          <div className="flex items-start justify-between gap-4 flex-wrap mb-4">
-            <div>
-              <div
-                className="font-vt text-vt-lg sm:text-vt-2xl text-retro-green"
-               
-              >
-                ANDRES DELGADO
-              </div>
-            </div>
-            <NeonButton href="/resume/resume.pdf" color="amber" external>[↓ PDF]</NeonButton>
-          </div>
+      <Section title="experience">
+        <Entries entries={EXPERIENCE} />
+      </Section>
 
-          <PixelDivider variant="pixel-line" className="-mx-4" />
+      <Section title="education">
+        <Entries entries={EDUCATION} />
+      </Section>
 
-          <div className="space-y-6 mt-4 font-mono text-sm">
+      <Section title="skills">
+        <KeyValue items={SKILLS} />
+      </Section>
 
-            {/* Education */}
-            <section>
-              <h2 className="font-pixel text-pixel-xs text-retro-cyan mb-3">EDUCATION</h2>
-              <div className="space-y-3">
-                <div className="retro-raised bg-retro-panel-alt p-3">
-                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
-                    <span className="text-retro-green">UCF | PhD, Computer Science</span>
-                    <span className="text-retro-fg-dim text-xs">Aug 2024 – present</span>
-                  </div>
-                  <ul className="mt-1 text-xs text-retro-fg-dim space-y-0.5 pl-2">
-                    <li>▶ GPA: 3.9/4.0</li>
-                    <li>▶ Parallel Arch · Resilient Systems · Adv. Security · Complexity</li>
-                  </ul>
-                </div>
-                <div className="retro-raised bg-retro-panel-alt p-3">
-                  <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
-                    <span className="text-retro-green">UCF | BS, Computer Science + Math Minor</span>
-                    <span className="text-retro-fg-dim text-xs">Aug 2019 – Dec 2023</span>
-                  </div>
-                  <ul className="mt-1 text-xs text-retro-fg-dim pl-2">
-                    <li>▶ GPA: 3.5/4.0</li>
-                  </ul>
-                </div>
-              </div>
-            </section>
-
-            {/* Experience */}
-            <section>
-              <h2 className="font-pixel text-pixel-xs text-retro-cyan mb-3">EXPERIENCE</h2>
-              <div className="space-y-3">
-                {[
-                  {
-                    title: "Graduate Research Assistant @ UCF, Orlando FL",
-                    date: "May 2024 – present",
-                    bullets: [
-                      "Mastered gem5 architecture simulator for full-system simulation.",
-                      "Contributed to Linux-based simulation frameworks for CXL interconnect.",
-                      "Developed Linux modules for persistent memory management in CXL systems.",
-                    ],
-                  },
-                  {
-                    title: "Developer / Data Analyst @ Findway Solutions, Orlando FL",
-                    date: "May 2023 – present",
-                    bullets: [
-                      "Designed commissions system improving data accessibility and efficiency.",
-                      "Led migration from Excel to robust database infrastructure.",
-                      "Maintained IT operations across the organization.",
-                    ],
-                  },
-                ].map((job) => (
-                  <div key={job.title} className="retro-raised bg-retro-panel-alt p-3">
-                    <div className="flex flex-col sm:flex-row sm:justify-between gap-1">
-                      <span className="text-retro-green">{job.title}</span>
-                      <span className="text-retro-fg-dim text-xs">{job.date}</span>
-                    </div>
-                    <ul className="mt-1 text-xs text-retro-fg-dim space-y-0.5 pl-2">
-                      {job.bullets.map((b) => <li key={b}>▶ {b}</li>)}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Skills */}
-            <section>
-              <h2 className="font-pixel text-pixel-xs text-retro-cyan mb-3">SKILLS</h2>
-              <div className="retro-raised bg-retro-panel-alt p-3 space-y-1 text-xs">
-                {[
-                  ["Programming",    "C/C++ (Advanced), Python (Advanced), Java, TypeScript"],
-                  ["Web/Frameworks", "Next.js, React, Node.js"],
-                  ["Tools",         "gem5, LLVM, Git, Linux, Docker"],
-                  ["Languages",     "English (Native), Spanish (Native), French (Conversational)"],
-                ].map(([k, v]) => (
-                  <div key={k} className="flex gap-2">
-                    <span className="text-retro-green w-24 sm:w-28 shrink-0">{k}:</span>
-                    <span className="text-retro-fg-dim">{v}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Publications */}
-            <section>
-              <h2 className="font-pixel text-pixel-xs text-retro-cyan mb-3">PUBLICATIONS</h2>
-              <div className="retro-raised bg-retro-panel-alt p-3 space-y-2 text-xs">
-                <p className="text-retro-green leading-relaxed">
-                  LOaPP: Improving the Performance of Persistent Memory Objects via Low-Overhead
-                  at-Rest PMO Protection
-                </p>
-                <p className="text-retro-fg-dim">
-                  Greenspan, Mustafa, Delgado, Bramham, Prats, Wallace, Heinrich, Solihin
-                </p>
-                <a
-                  href="https://doi.org/10.1109/SEED61283.2024.00023"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-retro-cyan hover:text-retro-green"
-                >
-                  10.1109/SEED61283.2024.00023 · SEED 2024
-                </a>
-              </div>
-            </section>
-
-          </div>
-        </RetroWindow>
-      </div>
+      <Section title="publications">
+        <div className="space-y-1">
+          <p className="font-medium">
+            LOaPP: Improving the Performance of Persistent Memory Objects via Low-Overhead at-Rest PMO Protection
+          </p>
+          <p className="text-sm text-fg-muted">Greenspan, Mustafa, Delgado, Bramham, Prats, Wallace, Heinrich, Solihin</p>
+          <p className="text-sm text-fg-subtle">
+            SEED 2024 ·{" "}
+            <a href="https://doi.org/10.1109/SEED61283.2024.00023" target="_blank" rel="noopener noreferrer">
+              10.1109/SEED61283.2024.00023
+            </a>
+          </p>
+        </div>
+      </Section>
     </main>
   );
 }

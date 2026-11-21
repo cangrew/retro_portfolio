@@ -23,7 +23,7 @@ MDX body content is rendered client-side via `react-markdown` in `src/components
 
 ### Routing
 
-- `/` -- Landing page with animated particles background, name, and nav links
+- `/` -- Home: name, recent projects and posts, profile
 - `/projects` -- Project grid listing all published projects
 - `/projects/[slug]` -- Individual project detail (SSG via `generateStaticParams`)
 - `/about` -- About page
@@ -31,15 +31,14 @@ MDX body content is rendered client-side via `react-markdown` in `src/components
 
 ### Key Components
 
-- `particles.tsx` -- Canvas-based particle animation used as background across pages
 - `shell/` -- The site frame (see Site shell below)
-- `retro-window.tsx` -- Legacy wrapper that now renders a `Pane`; use `Pane` in new code
-- `project_grid.tsx` -- Grid layout for project cards
-- `card.tsx` / `ui/3d-card.tsx` -- Project card components
+- `content/` -- Page building blocks: `PageHeader`, `Category`, `Tags`, and `prose-styles.ts` (Markdown classes shared by `md-content.tsx` and `src/mdx-components.tsx`)
+- `md-content.tsx` -- Renders project and post Markdown with react-markdown
+- `brain-scene.tsx` -- three.js wireframe brain on /brain; colors come from the theme tokens
 
 ### Styling
 
-Dark theme (black/zinc palette). Custom Tailwind animations defined in `tailwind.config.ts`: fade-in, title, fade-left, fade-right. Uses `@tailwindcss/typography` plugin. shadcn/ui configured (zinc base color, lucide icons, `@/components/ui` alias).
+Tailwind utilities generated from the design tokens only; there are no legacy `retro-*` classes, fonts or animations left. Uses `@tailwindcss/typography` plugin.
 
 ### Design system
 
@@ -48,10 +47,11 @@ The terminal design system is the root of every page; see `/design` for the live
 - Tokens: `src/design-system/tokens.ts` (colors per theme, type scale, layout, motion). `tailwind.config.ts` turns them into CSS variables and utilities (`bg-pane`, `text-fg-muted`, `border-accent`, `duration-fast`). Do not hard-code hex colors; add a token.
 - Themes: `dark` (default) and `light`, switched by next-themes via `data-theme` on `<html>` (`src/lib/theme/theme-provider.tsx`). The Win95 theme is retired.
 - Font: JetBrains Mono only, with ligatures (`src/lib/fonts.ts`).
-- Components: `src/components/ui` (Button, Pane, PaneGrid, Badge, Card, Tabs, Dialog, Tooltip, Menu, Prompt, PromptHeading, Kbd, ThemeSwitcher), built on Base UI and styled with cva.
+- Components: `src/components/ui` (Button, Pane, PaneGrid, Section, RowList, KeyValue, Meter, Badge, Tabs, Dialog, Tooltip, Menu, Kbd, ThemeSwitcher), built on Base UI and styled with cva.
+- Class strings that server components need (`buttonVariants`, `rowClass`) live in files without "use client" (`button-variants.ts`, `row-styles.ts`). Importing a value from a "use client" module into a server component gives a client reference, not the value.
 - `tokens.test.ts` enforces WCAG AA contrast for every text color.
-- The `--retro-*` variables and `retro-*` classes in `globals.css` are legacy aliases kept until pages are rebuilt.
 - Style: borrow the component style of TUI tools (panels with the title set into the border, accent border on the focused panel, key hints along the bottom). Never fake app chrome such as window controls or imitation git panels.
+- Inside a pane, split content with `Section` (a rule with the title set in), list things with `RowList` rows and a `bg-chrome` header row, and show facts with `KeyValue`. No nested boxes, cards, bevels, glows, marquees, shell-prompt headings or `[x]` corners; popups close with esc, shown as a hint in the bottom border.
 
 ### Site shell
 

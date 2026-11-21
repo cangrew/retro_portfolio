@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Command } from "cmdk";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Kbd } from "@/components/ui/kbd";
-import { Prompt } from "@/components/ui/prompt";
 import { useTheme } from "@/lib/theme/theme-provider";
 import { PAGES, type SearchIndex } from "./site-map";
 import { useShell } from "./shell-context";
@@ -54,7 +53,7 @@ function Item({
  */
 /**
  * Plain substring matching instead of cmdk's fuzzy scoring, which ranks
- * "cd ~/research" first for "cache" because the letters appear in order.
+ * "page research" first for "cache" because the letters appear in order.
  * A whole-query match ranks above a match on every word.
  */
 export function matchCommand(value: string, search: string, keywords?: string[]) {
@@ -85,32 +84,38 @@ export function CommandPalette({ index }: { index: SearchIndex }) {
         title="command"
         initialFocus={inputRef}
         className="top-[12vh] w-[40rem] translate-y-0"
-        bodyClassName="gap-0 p-0 pt-2"
+        bodyClassName="gap-0 p-0 pb-3 pt-2"
+        hints={
+          <>
+            <span className="text-accent">↑↓</span> move <span className="text-accent">enter</span> run
+          </>
+        }
       >
         <Command label="Command palette" loop filter={matchCommand} className="flex min-h-0 flex-col">
           <div className="flex items-center gap-2 border-b border-line px-3">
-            <Prompt aria-hidden className="text-sm" />
+            <span aria-hidden className="text-sm font-bold text-accent">:</span>
             <Command.Input
               ref={inputRef}
               value={query}
               onValueChange={setQuery}
-              placeholder="cd projects, open a post, theme light…"
+              placeholder="go to a page, project or post"
               className="h-11 min-w-0 flex-1 bg-transparent text-sm text-fg caret-accent outline-none placeholder:text-fg-subtle"
             />
           </div>
           <Command.List className="max-h-[min(60vh,26rem)] overflow-y-auto overscroll-contain py-1">
             <Command.Empty className="px-3 py-6 text-sm text-fg-muted">
-              zsh: command not found: <span className="text-ansi-red">{query}</span>
+              no matches for <span className="text-fg">{query}</span>
             </Command.Empty>
 
             <Command.Group heading="pages" className={groupClass}>
               {PAGES.map((p) => (
                 <Item
                   key={p.href}
-                  value={`cd ${p.label}`}
+                  value={`page ${p.label}`}
                   keywords={[p.slug]}
                   onSelect={() => go(p.href)}
-                  command={<>cd ~{p.href === "/" ? "" : p.href}</>}
+                  command={p.label}
+                  label={p.href === "/" ? "~" : `~${p.href}`}
                   hint={<Kbd>{p.key}</Kbd>}
                 />
               ))}
@@ -124,8 +129,8 @@ export function CommandPalette({ index }: { index: SearchIndex }) {
                     value={`open project ${p.title} ${p.slug}`}
                     keywords={p.description ? [p.description] : undefined}
                     onSelect={() => go(`/projects/${p.slug}`)}
-                    command="open"
-                    label={p.title}
+                    command={p.title}
+                    label={p.description}
                   />
                 ))}
               </Command.Group>
@@ -136,10 +141,9 @@ export function CommandPalette({ index }: { index: SearchIndex }) {
                 {index.posts.map((p) => (
                   <Item
                     key={p.slug}
-                    value={`less post ${p.title} ${p.slug}`}
+                    value={`post ${p.title} ${p.slug}`}
                     onSelect={() => go(`/blog/${p.slug}`)}
-                    command="less"
-                    label={p.title}
+                    command={p.title}
                     hint={p.date}
                   />
                 ))}
@@ -150,23 +154,23 @@ export function CommandPalette({ index }: { index: SearchIndex }) {
               <Item
                 value={`theme ${theme === "light" ? "dark" : "light"}`}
                 onSelect={() => run(() => setTheme(theme === "light" ? "dark" : "light"))}
-                command={<>theme {theme === "light" ? "dark" : "light"}</>}
+                command={<>{theme === "light" ? "dark" : "light"} theme</>}
                 label="switch the color theme"
                 hint={shortcutsEnabled ? <Kbd>t</Kbd> : undefined}
               />
               <Item
-                value="cat resume.pdf"
+                value="resume pdf"
                 keywords={["cv", "download"]}
                 onSelect={() => run(() => window.open("/resume/resume.pdf", "_blank", "noopener"))}
-                command="cat resume.pdf"
-                label="open the PDF"
+                command="resume.pdf"
+                label="open in a new tab"
               />
               <Item
                 value="help keys"
                 keywords={["shortcuts", "keyboard"]}
                 onSelect={() => run(() => setHelpOpen(true))}
-                command="help"
-                label="keyboard shortcuts"
+                command="keybindings"
+                label="every key the site listens to"
                 hint={shortcutsEnabled ? <Kbd>?</Kbd> : undefined}
               />
               <Item
@@ -177,11 +181,6 @@ export function CommandPalette({ index }: { index: SearchIndex }) {
               />
             </Command.Group>
           </Command.List>
-          <div className="flex flex-wrap gap-x-4 gap-y-1 border-t border-line px-3 py-1.5 text-2xs text-fg-subtle">
-            <span><span className="text-accent">↑↓</span> move</span>
-            <span><span className="text-accent">enter</span> run</span>
-            <span><span className="text-accent">esc</span> close</span>
-          </div>
         </Command>
       </DialogContent>
     </Dialog>

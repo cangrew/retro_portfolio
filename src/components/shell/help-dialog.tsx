@@ -20,7 +20,7 @@ export function HelpDialog() {
   const { helpOpen, setHelpOpen, shortcutsEnabled, setShortcutsEnabled } = useShell();
   return (
     <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
-      <DialogContent title="man shortcuts">
+      <DialogContent title="keybindings">
         <DialogDescription>The site is keyboard first. Everything also works with a mouse or touch.</DialogDescription>
         <table className="w-full text-sm">
           <tbody className="divide-y divide-line">

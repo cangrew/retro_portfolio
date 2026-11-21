@@ -40,10 +40,11 @@ export function MobileDrawer({ className }: { className?: string }) {
             )}
           >
             <Drawer.Content className="flex flex-col">
-              <div className="flex h-pane-header items-center justify-between border-b border-accent bg-chrome px-3">
-                <Drawer.Title className="text-xs font-medium text-accent">pages</Drawer.Title>
-                <Drawer.Close aria-label="Close navigation" className="text-xs text-fg-subtle hover:text-ansi-red">
-                  [x]
+              <div className="flex items-center gap-2 px-3 pb-1 pt-3 text-xs">
+                <Drawer.Title className="shrink-0 font-bold text-accent">pages</Drawer.Title>
+                <span aria-hidden className="h-px flex-1 bg-line" />
+                <Drawer.Close aria-label="Close navigation" className="-my-2 shrink-0 px-1 py-2 text-fg-subtle hover:text-fg">
+                  close
                 </Drawer.Close>
               </div>
               <nav aria-label="Pages">

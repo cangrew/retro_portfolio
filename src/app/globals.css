@@ -9,30 +9,6 @@
  */
 
 /* ═══════════════════════════════════════════════
-   LEGACY ALIASES
-   The old --retro-* variables now point at the design-system tokens, so
-   pages that still use `text-retro-*` render in the terminal palette.
-   Remove once every page is rebuilt on src/components/ui.
-   ═══════════════════════════════════════════════ */
-:root {
-  --retro-bg:        rgb(var(--color-canvas));
-  --retro-bg-tile:   rgb(var(--color-pane));
-  --retro-panel:     rgb(var(--color-pane));
-  --retro-panel-alt: rgb(var(--color-chrome));
-  --retro-fg:        rgb(var(--color-fg));
-  --retro-fg-dim:    rgb(var(--color-fg-muted));
-  --retro-green:     rgb(var(--color-accent));
-  --retro-cyan:      rgb(var(--color-ansi-cyan));
-  --retro-magenta:   rgb(var(--color-ansi-magenta));
-  --retro-amber:     rgb(var(--color-ansi-yellow));
-  --retro-border-lt: rgb(var(--color-line));
-  --retro-border-dk: rgb(var(--color-line));
-
-  --background: rgb(var(--color-canvas));
-  --foreground: rgb(var(--color-fg));
-}
-
-/* ═══════════════════════════════════════════════
    BASE STYLES
    ═══════════════════════════════════════════════ */
 @layer base {
@@ -50,9 +26,6 @@
     background: transparent;
     /* Clearance for the fixed status bar */
     padding-bottom: var(--statusbar);
-    transition-property: opacity, transform, filter;
-    transition-timing-function: var(--ease-out);
-    transition-duration: 300ms;
   }
 
   /* Any element carrying data-theme becomes a themed surface (used on /design). */
@@ -92,72 +65,6 @@
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgb(var(--color-line-strong)); }
   ::-webkit-scrollbar-thumb:hover { background: rgb(var(--color-fg-subtle)); }
-
-  .text-edge-outline { -webkit-text-stroke: 1px rgb(var(--color-fg) / 0.3); }
-  .page-transition {
-    opacity: 0;
-    transform: translateY(40px);
-    filter: blur(4px);
-  }
-}
-
-/* ═══════════════════════════════════════════════
-   LEGACY COMPONENT UTILITIES
-   Flat terminal versions of the old Win95 classes. New code should use the
-   components in src/components/ui instead.
-   ═══════════════════════════════════════════════ */
-@layer components {
-  .retro-raised {
-    border: 1px solid rgb(var(--color-line));
-  }
-
-  .retro-inset {
-    border: 1px solid rgb(var(--color-line));
-  }
-
-  .retro-ridge {
-    border: 1px solid rgb(var(--color-accent));
-  }
-
-  .retro-window-border {
-    border: 1px solid rgb(var(--color-line));
-  }
-
-  .retro-glow-green,
-  .retro-glow-cyan,
-  .retro-glow-magenta,
-  .retro-glow-amber {
-    box-shadow: none;
-  }
-
-  .retro-titlebar {
-    background: rgb(var(--color-chrome));
-    color: rgb(var(--color-fg-muted));
-    font-size: var(--text-xs);
-    padding: 3px 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid rgb(var(--color-line));
-    user-select: none;
-  }
-
-  .retro-grid-bg {
-    background-image:
-      repeating-linear-gradient(0deg,  transparent, transparent 39px, rgb(var(--color-line) / 0.35) 40px),
-      repeating-linear-gradient(90deg, transparent, transparent 39px, rgb(var(--color-line) / 0.35) 40px);
-  }
-
-  .retro-cursor::after {
-    content: "▊";
-    animation: blink 1s var(--ease-steps) infinite;
-    color: rgb(var(--color-accent));
-  }
-
-  .text-neon-green   { color: rgb(var(--color-accent)); }
-  .text-neon-cyan    { color: rgb(var(--color-ansi-cyan)); }
-  .text-neon-magenta { color: rgb(var(--color-ansi-magenta)); }
-  .text-neon-amber   { color: rgb(var(--color-ansi-yellow)); }
 }
 
 /* ═══════════════════════════════════════════════

@@ -5,10 +5,13 @@ import type { ThemeName } from "@/design-system/tokens";
 import { ThemeScope } from "@/components/theme/theme-scope";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge, BADGE_TONES } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Pane, PaneGrid } from "@/components/ui/pane";
 import { useShell } from "@/components/shell/shell-context";
-import { Prompt, PromptHeading } from "@/components/ui/prompt";
+import { Section } from "@/components/ui/section";
+import { KeyValue } from "@/components/ui/key-value";
+import { Meter } from "@/components/ui/meter";
+import { RowList } from "@/components/ui/row-list";
+import { rowClass, rowMuted, rowSubtle } from "@/components/ui/row-styles";
 import { Kbd } from "@/components/ui/kbd";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
 import {
@@ -104,7 +107,7 @@ function Gallery() {
           </Specimen>
           <Specimen label="link styled as a button" code={`<Link className={buttonVariants({ variant: "secondary" })} />`}>
             <a href="#components" className={buttonVariants({ variant: "secondary", size: "sm" })}>
-              cd ~/projects
+              projects
             </a>
           </Specimen>
         </div>
@@ -124,28 +127,47 @@ function Gallery() {
         </div>
       </Pane>
 
-      <Pane title="prompt.tsx">
-        <div className="space-y-5">
-          <Specimen label="PromptHeading" code={`<PromptHeading level={1} path="~/projects" cursor>projects</PromptHeading>`}>
-            <PromptHeading level={1} path="~/projects" cursor>
-              projects
-            </PromptHeading>
+      <Pane title="content">
+        <div className="space-y-6">
+          <Specimen label="Section" code={`<Section title="publications" meta="3 total">…</Section>`}>
+            <Section title="publications" meta="3 total" className="w-full">
+              <p className="text-sm text-fg-muted">A rule with the title set in. Splits one pane without nesting boxes.</p>
+            </Section>
           </Specimen>
-          <Specimen label="levels 2 to 4">
-            <div className="space-y-2">
-              <PromptHeading level={2} path="~/blog">
-                writing
-              </PromptHeading>
-              <PromptHeading level={3} path="~/research">
-                publications
-              </PromptHeading>
-              <PromptHeading level={4} path="~">
-                about
-              </PromptHeading>
+          <Specimen label="RowList" code={`<RowList><li><Link className={rowClass}>…</Link></li></RowList>`}>
+            <div className="w-full">
+              <div className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-x-3 bg-chrome px-2 py-1 text-xs font-bold text-fg-muted">
+                <span>date</span>
+                <span>name</span>
+              </div>
+              <RowList className="mx-2">
+                {[
+                  ["2025-03", "Cache_Simulator", "multi-level cache hierarchy simulator"],
+                  ["2024-11", "gem5_pmo", "persistent memory objects in gem5"],
+                ].map(([date, name, desc]) => (
+                  <li key={name}>
+                    <a href="#components" className={`${rowClass} grid grid-cols-[4.5rem_minmax(0,1fr)]`}>
+                      <span className={rowSubtle}>{date}</span>
+                      <span className="truncate">
+                        {name} <span className={rowMuted}>{desc}</span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </RowList>
+              <p className="mt-2 text-xs text-fg-subtle">Tab into the list, then ↑↓ or j/k. Hover is chrome; the selected row fills with accent.</p>
             </div>
           </Specimen>
-          <Specimen label="Prompt and Kbd">
-            <Prompt path="~/src" /> <span>make test</span>
+          <Specimen label="KeyValue and Meter" code={`<KeyValue items={[["school", "UCF"]]} /> <Meter label="C / C++" value={90} />`}>
+            <div className="grid w-full gap-6 sm:grid-cols-2">
+              <KeyValue items={[["role", "PhD student"], ["school", "UCF"], ["focus", "hw security"]]} />
+              <div className="space-y-1">
+                <Meter label="C / C++" value={90} cells={14} />
+                <Meter label="TypeScript" value={70} cells={14} />
+              </div>
+            </div>
+          </Specimen>
+          <Specimen label="Kbd">
             <span className="text-fg-subtle">press</span>
             <Kbd>⌘</Kbd>
             <Kbd>K</Kbd>
@@ -168,38 +190,6 @@ function Gallery() {
             <p className="text-sm text-fg-muted">A bare box with no title.</p>
           </Pane>
         </PaneGrid>
-      </Specimen>
-
-      <Specimen label="Card" code={`<Card interactive as="article">…</Card>`}>
-        <div className="grid w-full gap-pane-gap sm:grid-cols-2">
-          <Card interactive as="article">
-            <CardHeader>
-              <div className="flex gap-2">
-                <Badge tone="magenta" variant="bracket">
-                  RESEARCH
-                </Badge>
-                <span className="text-xs text-fg-subtle">2024</span>
-              </div>
-              <CardTitle>
-                <a href="#components" className="text-fg no-underline after:absolute after:inset-0 hover:text-accent">
-                  gem5_pmo
-                </a>
-              </CardTitle>
-              <CardDescription>Persistent memory objects in gem5, for the LOaPP paper.</CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Badge>c++</Badge>
-              <Badge>gem5</Badge>
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Static card</CardTitle>
-              <CardDescription>No hover state; for content that is not a link.</CardDescription>
-            </CardHeader>
-            <CardContent>Cards have no title bar. Use a Pane when the block is a &quot;window&quot;.</CardContent>
-          </Card>
-        </div>
       </Specimen>
 
       <Pane title="tabs.tsx">
@@ -234,13 +224,13 @@ function Gallery() {
 
       <Pane title="overlays">
         <div className="space-y-5">
-          <Specimen label="Dialog" code={`<DialogContent title="~/contact — new message">…</DialogContent>`}>
+          <Specimen label="Dialog" code={`<DialogContent title="new message">…</DialogContent>`}>
             <Dialog>
               <DialogTrigger className={buttonVariants({ variant: "secondary", size: "sm" })}>open dialog</DialogTrigger>
-              <DialogContent title="~/contact — new message">
+              <DialogContent title="new message">
                 <DialogDescription>
-                  Dialogs are panes that float: accent border, title bar, [x] to close. Esc and clicking outside also
-                  close them, and focus returns to the trigger.
+                  Dialogs are panes that float: accent border, the title set into the top edge and the close hint
+                  into the bottom. Esc and clicking outside close them, and focus returns to the trigger.
                 </DialogDescription>
                 <DialogFooter>
                   <DialogClose className={buttonVariants({ variant: "ghost", size: "sm" })}>cancel</DialogClose>

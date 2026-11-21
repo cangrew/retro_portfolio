@@ -1,10 +1,12 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject, getAllProjects } from "@/util/mdx";
-import ProjectContent from "@/components/md-content";
-import RetroWindow from "@/components/retro-window";
-import NeonButton from "@/components/neon-button";
-import PixelDivider from "@/components/pixel-divider";
-import CategoryBadge from "@/components/category-badge";
+import MarkdownContent from "@/components/md-content";
+import { PageHeader } from "@/components/content/page-header";
+import { Category } from "@/components/content/category";
+import { Tags } from "@/components/content/tags";
+import { Section } from "@/components/ui/section";
+import { KeyValue } from "@/components/ui/key-value";
 
 export function generateStaticParams() {
   return getAllProjects().map((p) => ({ slug: p.slug }));
@@ -22,78 +24,43 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const project = await getProject(slug);
   if (!project) notFound();
 
+  const details = [
+    ["date", project.date.slice(0, 10)],
+    ["category", <Category key="c" category={project.category} />],
+    ...(project.url
+      ? [["url", <a key="u" href={project.url} target="_blank" rel="noopener noreferrer" className="break-all">{project.url}</a>] as const]
+      : []),
+    ...(project.tags?.length ? [["tags", <Tags key="t" tags={project.tags} />] as const] : []),
+  ] as const;
+
+  const caseStudy = [
+    ["problem", project.problem],
+    ["approach", project.approach],
+    ["results", project.results],
+  ].filter(([, v]) => v) as [string, string][];
+
   return (
-    <main>
-      <div className="max-w-3xl mx-auto space-y-6">
-        <RetroWindow title={`PROJECTS/${slug}`}>
-          {/* Terminal header */}
-          <div className="font-mono text-xs text-retro-fg-dim -mx-4 -mt-4 mb-4 px-4 py-2 bg-retro-bg retro-inset">
-            <span className="text-retro-green">$</span>{" "}
-            <span className="text-retro-cyan">cat</span>{" "}
-            <span className="text-retro-fg">projects/{slug}.mdx</span>
-          </div>
+    <main className="space-y-10">
+      <p className="text-sm">
+        <Link href="/projects">← projects</Link>
+      </p>
+      <PageHeader title={project.title}>{project.description}</PageHeader>
 
-          {/* Frontmatter */}
-          <div className="font-mono text-xs text-retro-fg-dim mb-4 space-y-0.5">
-            <div><span className="text-retro-green">title:</span> {project.title}</div>
-            <div><span className="text-retro-green">date:</span>  {project.date.slice(0, 10)}</div>
-            <div className="flex gap-2 items-center">
-              <span className="text-retro-green">category:</span>
-              <CategoryBadge category={project.category} size="md" />
-            </div>
-            {project.url && (
-              <div>
-                <span className="text-retro-green">url:</span>{" "}
-                <a href={project.url} target="_blank" rel="noopener noreferrer"
-                  className="text-retro-cyan hover:text-retro-green">
-                  {project.url}
-                </a>
-              </div>
-            )}
-            {project.tags && project.tags.length > 0 && (
-              <div className="flex gap-1 items-center flex-wrap">
-                <span className="text-retro-green">tags:</span>
-                {project.tags.map((tag) => (
-                  <span key={tag} className="text-retro-cyan border border-retro-cyan px-1">{tag}</span>
-                ))}
-              </div>
-            )}
-          </div>
+      <KeyValue items={details} />
 
-          <PixelDivider variant="ascii" className="-mx-4" />
+      {caseStudy.length > 0 && (
+        <div className="grid gap-8 md:grid-cols-3">
+          {caseStudy.map(([label, value]) => (
+            <Section key={label} title={label}>
+              <p className="text-sm leading-relaxed text-fg-muted">{value}</p>
+            </Section>
+          ))}
+        </div>
+      )}
 
-          {/* Case study blocks */}
-          {(project.problem || project.approach || project.results) && (
-            <div className="grid md:grid-cols-3 gap-4 my-4">
-              {[
-                { label: "PROBLEM",  value: project.problem,  color: "var(--retro-magenta)" },
-                { label: "APPROACH", value: project.approach, color: "var(--retro-cyan)" },
-                { label: "RESULTS",  value: project.results,  color: "var(--retro-green)" },
-              ].filter((s) => s.value).map(({ label, value, color }) => (
-                <div key={label} className="retro-raised bg-retro-panel-alt p-3 space-y-1">
-                  <div className="font-pixel text-pixel-xs" style={{ color }}>{label}</div>
-                  <p className="font-mono text-xs text-retro-fg-dim leading-relaxed">{value}</p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* MDX content */}
-          <div className="mt-4 overflow-x-auto">
-          <div className="prose prose-invert prose-sm max-w-none font-mono
-            prose-headings:font-pixel prose-headings:text-retro-green
-            prose-a:text-retro-cyan prose-a:no-underline hover:prose-a:text-retro-green
-            prose-code:text-retro-amber prose-code:bg-retro-bg prose-code:px-1
-            prose-pre:bg-retro-bg prose-pre:border prose-pre:border-retro-border-lt
-            prose-blockquote:border-l-retro-green prose-blockquote:text-retro-fg-dim
-            prose-strong:text-retro-fg">
-            <ProjectContent markdown={project.content} />
-          </div>
-          </div>
-        </RetroWindow>
-
-        <NeonButton href="/projects" color="cyan">[← BACK TO PROJECTS]</NeonButton>
-      </div>
+      <article className="max-w-prose min-w-0">
+        <MarkdownContent markdown={project.content} />
+      </article>
     </main>
   );
 }

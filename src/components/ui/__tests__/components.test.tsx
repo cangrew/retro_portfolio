@@ -4,8 +4,9 @@ import { describe, it, expect } from "vitest";
 import { Button } from "../button";
 import { Badge } from "../badge";
 import { Pane } from "../pane";
-import { Card, CardTitle } from "../card";
-import { PromptHeading } from "../prompt";
+import { Section } from "../section";
+import { Meter } from "../meter";
+import { KeyValue } from "../key-value";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "../tabs";
 import { Dialog, DialogContent, DialogDescription, DialogTrigger } from "../dialog";
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "../menu";
@@ -73,26 +74,32 @@ describe("Pane", () => {
   });
 });
 
-describe("Card", () => {
-  it("renders the requested element and title level", () => {
+describe("Section", () => {
+  it("labels the section with its title", () => {
     render(
-      <Card as="article">
-        <CardTitle as="h2">gem5_pmo</CardTitle>
-      </Card>,
+      <Section title="publications" meta="3 total">
+        <p>body</p>
+      </Section>,
     );
-    expect(screen.getByRole("article")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 2, name: "gem5_pmo" })).toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "publications" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "publications" })).toBeInTheDocument();
   });
 });
 
-describe("PromptHeading", () => {
-  it("exposes only the heading text to assistive tech", () => {
-    render(
-      <PromptHeading level={1} path="~/projects" cursor>
-        projects
-      </PromptHeading>,
-    );
-    expect(screen.getByRole("heading", { level: 1, name: "projects" })).toBeInTheDocument();
+describe("Meter", () => {
+  it("exposes its value and draws a proportional text bar", () => {
+    const { container } = render(<Meter label="C / C++" value={75} cells={8} />);
+    const meter = screen.getByRole("meter", { name: "C / C++" });
+    expect(meter).toHaveAttribute("aria-valuenow", "75");
+    expect(container.textContent).toContain("[||||||··]");
+  });
+});
+
+describe("KeyValue", () => {
+  it("renders terms and values", () => {
+    render(<KeyValue items={[["school", "UCF"]]} />);
+    expect(screen.getByText("school").tagName).toBe("DT");
+    expect(screen.getByText("UCF").tagName).toBe("DD");
   });
 });
 

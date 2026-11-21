@@ -1,100 +1,75 @@
-import RetroWindow from "@/components/retro-window";
-import PixelDivider from "@/components/pixel-divider";
-import NeonButton from "@/components/neon-button";
+import Link from "next/link";
+import { PageHeader } from "@/components/content/page-header";
+import { Section } from "@/components/ui/section";
+import { KeyValue } from "@/components/ui/key-value";
+import { Meter } from "@/components/ui/meter";
 
 const SKILLS = [
-  { label: "C / C++",     pct: 90, color: "var(--retro-green)" },
-  { label: "Python",      pct: 85, color: "var(--retro-cyan)" },
-  { label: "HW Security", pct: 80, color: "var(--retro-magenta)" },
-  { label: "TypeScript",  pct: 70, color: "var(--retro-amber)" },
-  { label: "Linux / Sys", pct: 85, color: "var(--retro-green)" },
+  { label: "C / C++", pct: 90 },
+  { label: "Python", pct: 85 },
+  { label: "Linux / Sys", pct: 85 },
+  { label: "HW Security", pct: 80 },
+  { label: "TypeScript", pct: 70 },
 ];
+
+const FACTS = [
+  ["name", "Andres Delgado"],
+  ["role", "PhD student"],
+  ["school", "UCF"],
+  ["city", "Orlando, FL"],
+  ["focus", "comp. arch, hw security"],
+  ["speaks", "English, Spanish, French"],
+  ["plays", "classical and electric guitar"],
+  ["ΦΜΑ", "Mu Eta, spring 2021"],
+] as const;
+
+const accent = "text-accent";
 
 export default function AboutPage() {
   return (
-    <main>
-      <div className="max-w-4xl mx-auto space-y-6">
+    <main className="space-y-10">
+      <PageHeader title="About">Researcher in computer architecture and hardware security.</PageHeader>
 
-        <RetroWindow title="ABOUT.EXE">
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Stats panel */}
-            <div className="retro-raised bg-retro-panel-alt p-4 space-y-3">
-              <div className="retro-titlebar -mx-4 -mt-4 mb-4">
-                <span>■ STATS.TXT</span>
-              </div>
-              {[
-                ["NAME",   "Andres Delgado"],
-                ["CLASS",  "PhD Student"],
-                ["SCHOOL", "UCF"],
-                ["CITY",   "Orlando, FL"],
-                ["FOCUS",  "Comp. Arch & HW Security"],
-                ["LANG",   "EN / ES / FR"],
-                ["GUITAR", "Classical / Electric"],
-                ["ΦΜΑ",   "Mu Eta · Spring 2021"],
-              ].map(([k, v]) => (
-                <div key={k} className="font-mono text-xs">
-                  <span className="text-retro-green">{k}:</span>{" "}
-                  <span className="text-retro-fg">{v}</span>
-                </div>
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,20rem)]">
+        <Section title="bio">
+          <div className="max-w-prose space-y-4 leading-relaxed">
+            <p>
+              I&apos;m a computer architecture researcher focused on <span className={accent}>hardware security</span>,
+              specifically how modern processors protect confidential workloads through Trusted Execution Environments
+              and memory encryption. I study where these defenses succeed and where they break down.
+            </p>
+            <p>
+              I use the gem5 full-system simulator, running large-scale experiments on Azure, to evaluate the
+              microarchitectural cost of security mechanisms across real workloads. I came to the PhD directly from my
+              bachelor&apos;s degree.
+            </p>
+            <p>
+              Outside research I play classical and electric guitar. Metal and Hardcore are my genres of choice.
+              I&apos;m a proud alumnus of Phi Mu Alpha Sinfonia (Mu Eta chapter), where I served as chapter president
+              (2022–2023) and Assistant Collegiate Province Representative. I read a lot of science fiction and maintain
+              a running interest in philosophy and religion. Fluent in English, Spanish, and French.
+            </p>
+          </div>
+        </Section>
+
+        <div className="min-w-0 space-y-10">
+          <Section title="facts">
+            <KeyValue items={FACTS} />
+          </Section>
+          <Section title="skills">
+            <div className="space-y-1">
+              {SKILLS.map((s) => (
+                <Meter key={s.label} label={s.label} value={s.pct} cells={16} />
               ))}
             </div>
-
-            {/* Bio */}
-            <div className="md:col-span-2 space-y-4 font-mono text-sm text-retro-fg leading-relaxed">
-              <p>
-                I&apos;m a computer architecture researcher focused on{" "}
-                <span className="text-neon-green">hardware security</span>, specifically how
-                modern processors protect confidential workloads through{" "}
-                <span className="text-neon-magenta">Trusted Execution Environments</span> and
-                memory encryption. I study where these defenses succeed and where they break down.
-              </p>
-              <p>
-                I use the <span className="text-neon-cyan">gem5</span> full-system simulator,
-                running large-scale experiments on <span className="text-neon-amber">Azure</span>,
-                to evaluate the microarchitectural cost of security mechanisms across real workloads.
-                I came to the PhD directly from my bachelor&apos;s degree.
-              </p>
-              <p>
-                Outside research I play classical and electric guitar. Metal and Hardcore are my
-                genres of choice. I&apos;m a proud alumnus of{" "}
-                <span className="text-neon-magenta">Phi Mu Alpha Sinfonia</span> (Mu Eta chapter),
-                where I served as chapter president (2022–2023) and Assistant Collegiate Province
-                Representative. I read a lot of science fiction and maintain a running interest in
-                philosophy and religion. Fluent in English, Spanish, and French.
-              </p>
-            </div>
-          </div>
-        </RetroWindow>
-
-        {/* Skills */}
-        <RetroWindow title="SKILLS.DAT" showControls={false}>
-          <div className="space-y-3">
-            {SKILLS.map(({ label, pct, color }) => (
-              <div key={label} className="flex items-center gap-3">
-                <span className="font-mono text-xs text-retro-fg w-24 sm:w-28 shrink-0">{label}</span>
-                <div className="flex-1 retro-inset bg-retro-bg h-4">
-                  <div
-                    className="h-full transition-none"
-                    style={{ width: `${pct}%`, background: color, boxShadow: `0 0 6px ${color}` }}
-                  />
-                </div>
-                <span className="font-vt text-vt-md w-10 text-right" style={{ color }}>
-                  {pct}%
-                </span>
-              </div>
-            ))}
-          </div>
-        </RetroWindow>
-
-        <PixelDivider variant="stars" />
-
-        <div className="flex flex-wrap gap-3 justify-center">
-          <NeonButton href="/research" color="cyan">[RESEARCH &amp; PUBS →]</NeonButton>
-          <NeonButton href="/resume"   color="green">[FULL RESUME →]</NeonButton>
-          <NeonButton href="/projects" color="magenta">[PROJECTS →]</NeonButton>
+          </Section>
         </div>
-
       </div>
+
+      <p className="text-sm text-fg-subtle">
+        see also: <Link href="/research">research</Link>, <Link href="/resume">resume</Link>,{" "}
+        <Link href="/projects">projects</Link>
+      </p>
     </main>
   );
 }

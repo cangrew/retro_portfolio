@@ -42,9 +42,19 @@ export default function BrainScene({ className = "", heightClass = "h-[70vh]" }:
       testCanvas.getContext("webgl2") || testCanvas.getContext("webgl")
     );
     if (!hasWebGL) {
-      mount.innerHTML = `<pre class="font-pixel text-retro-green text-xs leading-tight p-4 select-none" aria-label="ASCII brain">${ASCII_BRAIN}</pre>`;
+      mount.innerHTML = `<pre class="text-accent text-xs leading-tight p-4 select-none" aria-label="ASCII brain">${ASCII_BRAIN}</pre>`;
       return;
     }
+
+    // Colors come from the theme tokens ("23 147 209" channels), not hex literals.
+    const styles = getComputedStyle(mount);
+    const token = (name: string) => {
+      const [r, g, b] = styles.getPropertyValue(`--color-${name}`).trim().split(/\s+/).map(Number);
+      return ((r << 16) | (g << 8) | b) >>> 0;
+    };
+    const accent = token("accent");
+    const cyan = token("ansi-cyan");
+    const magenta = token("ansi-magenta");
 
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -77,13 +87,13 @@ export default function BrainScene({ className = "", heightClass = "h-[70vh]" }:
       disposables.push(brainGeo);
 
       const wireGeo = new WireframeGeometry(brainGeo);
-      const wireMat = new LineBasicMaterial({ color: 0x39ff14, transparent: true, opacity: 0.55 });
+      const wireMat = new LineBasicMaterial({ color: accent, transparent: true, opacity: 0.55 });
       meshGroup.add(new LineSegments(wireGeo, wireMat));
       disposables.push(wireGeo, wireMat);
 
       const glowGeo = new WireframeGeometry(brainGeo);
       const glowMat = new LineBasicMaterial({
-        color: 0x39ff14,
+        color: accent,
         transparent: true,
         opacity: 0.15,
         blending: AdditiveBlending,
@@ -100,7 +110,7 @@ export default function BrainScene({ className = "", heightClass = "h-[70vh]" }:
         new Float32BufferAttribute(pts.array.slice() as Float32Array, 3),
       );
       const ptsMat = new PointsMaterial({
-        color: 0x00ffff,
+        color: cyan,
         size: 0.025,
         transparent: true,
         opacity: 0.6,
@@ -111,7 +121,7 @@ export default function BrainScene({ className = "", heightClass = "h-[70vh]" }:
       disposables.push(ptsGeo, ptsMat);
 
       const coreGeo = new SphereGeometry(0.28, 8, 6);
-      const coreMat = new MeshBasicMaterial({ color: 0xff00ff, wireframe: true });
+      const coreMat = new MeshBasicMaterial({ color: magenta, wireframe: true });
       meshGroup.add(new Mesh(coreGeo, coreMat));
       disposables.push(coreGeo, coreMat);
     };
@@ -187,11 +197,11 @@ export default function BrainScene({ className = "", heightClass = "h-[70vh]" }:
   }, []);
 
   return (
-    <div className={`relative w-full ${heightClass} ${className}`} aria-label="3D rotating digital brain">
+    <div className={`relative w-full ${heightClass} ${className}`} role="img" aria-label="A rotating wireframe brain">
       <div ref={mountRef} className="absolute inset-0" />
       {status === "loading" && (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center font-mono text-xs text-retro-green animate-blink">
-          █ LOADING NEURAL MESH...
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center text-xs text-fg-subtle">
+          loading mesh…
         </div>
       )}
     </div>

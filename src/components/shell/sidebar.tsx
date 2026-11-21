@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { onRowListKeyDown } from "@/components/ui/row-list";
 import { usePathname } from "next/navigation";
-import type { KeyboardEvent } from "react";
 import { Pane } from "@/components/ui/pane";
 import { cn } from "@/lib/utils";
 import { PAGES, pageForPath } from "./site-map";
@@ -15,20 +15,6 @@ const LINKS = [
 ];
 
 /** Arrow keys (and j/k) move between links in a list, like a TUI list view. */
-function onListKeyDown(e: KeyboardEvent<HTMLUListElement>) {
-  const links = Array.from(e.currentTarget.querySelectorAll<HTMLAnchorElement>("a"));
-  const i = links.indexOf(document.activeElement as HTMLAnchorElement);
-  if (i === -1) return;
-  let next = -1;
-  if (e.key === "ArrowDown" || e.key === "j") next = (i + 1) % links.length;
-  else if (e.key === "ArrowUp" || e.key === "k") next = (i - 1 + links.length) % links.length;
-  else if (e.key === "Home") next = 0;
-  else if (e.key === "End") next = links.length - 1;
-  if (next === -1) return;
-  e.preventDefault();
-  links[next].focus();
-}
-
 const rowClass = "flex items-center justify-between gap-3 px-2 py-0.5 text-sm no-underline outline-none";
 
 export function Sidebar({ focused }: { focused: boolean }) {
@@ -43,7 +29,7 @@ export function Sidebar({ focused }: { focused: boolean }) {
       </Link>
 
       <Pane as="nav" aria-label="Pages" title="pages" focused={focused} padding="none" footer={current ? `${current.key} of ${PAGES.length}` : undefined}>
-        <ul className="py-3" onKeyDown={onListKeyDown}>
+        <ul className="py-3" onKeyDown={onRowListKeyDown}>
           {PAGES.map((p) => {
             const active = p === current;
             return (
@@ -70,7 +56,7 @@ export function Sidebar({ focused }: { focused: boolean }) {
       </Pane>
 
       <Pane as="div" title="links" padding="none">
-        <ul className="py-3" onKeyDown={onListKeyDown}>
+        <ul className="py-3" onKeyDown={onRowListKeyDown}>
           {LINKS.map((l) => (
             <li key={l.label}>
               <a
