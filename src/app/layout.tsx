@@ -28,11 +28,15 @@ export const metadata: Metadata = {
   },
 };
 
-/** What the command palette can jump to, read from the MDX content at build time. */
+/** What the command palette can jump to: published MDX content only, read at build time. */
 function searchIndex(): SearchIndex {
   return {
-    projects: getAllProjects().map((p) => ({ slug: p.slug, title: p.title, description: p.description })),
-    posts: getAllBlogPosts().map((p) => ({ slug: p.slug, title: p.title, date: p.date })),
+    projects: getAllProjects()
+      .filter((p) => p.published)
+      .map((p) => ({ slug: p.slug, title: p.title, description: p.description })),
+    posts: getAllBlogPosts()
+      .filter((p) => p.published)
+      .map((p) => ({ slug: p.slug, title: p.title, date: p.date })),
   };
 }
 
