@@ -30,7 +30,7 @@ export default function HomePage() {
     .slice(0, 3);
 
   return (
-    <main className="relative z-10 min-h-screen pt-16 pb-8 px-4 md:px-8">
+    <main>
       <Analytics />
 
       <div className="max-w-5xl mx-auto space-y-6">

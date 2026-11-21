@@ -32,8 +32,8 @@ MDX body content is rendered client-side via `react-markdown` in `src/components
 ### Key Components
 
 - `particles.tsx` -- Canvas-based particle animation used as background across pages
-- `navigation.tsx` -- Client component with intersection observer for scroll-based styling, responsive mobile menu
-- `transition_link.tsx` -- Custom Link wrapper with page transition animation
+- `shell/` -- The site frame (see Site shell below)
+- `retro-window.tsx` -- Legacy wrapper that now renders a `Pane`; use `Pane` in new code
 - `project_grid.tsx` -- Grid layout for project cards
 - `card.tsx` / `ui/3d-card.tsx` -- Project card components
 
@@ -51,6 +51,20 @@ The terminal design system is the root of every page; see `/design` for the live
 - Components: `src/components/ui` (Button, Pane, PaneGrid, Badge, Card, Tabs, Dialog, Tooltip, Menu, Prompt, PromptHeading, Kbd, ThemeSwitcher), built on Base UI and styled with cva.
 - `tokens.test.ts` enforces WCAG AA contrast for every text color.
 - The `--retro-*` variables and `retro-*` classes in `globals.css` are legacy aliases kept until pages are rebuilt.
+- Style: borrow the component style of TUI tools (panels with the title set into the border, accent border on the focused panel, key hints along the bottom). Never fake app chrome such as window controls or imitation git panels.
+
+### Site shell
+
+`src/components/shell`, mounted once in `src/app/layout.tsx` via `AppShell`:
+
+- `site-map.ts` -- Pages and their number keys (1-8), `shellPath()`, the palette's `SearchIndex` type.
+- `sidebar.tsx` (desktop pages and links panes), `mobile-bar.tsx` + `mobile-drawer.tsx` (Base UI Drawer), `key-hints.tsx` (bottom bar).
+- `command-palette.tsx` -- cmdk inside a Dialog; `:`, `/`, Cmd/Ctrl+K. Uses substring matching (`matchCommand`), not cmdk's fuzzy score.
+- `use-shortcuts.ts` -- Global keys. Single-key shortcuts can be turned off (WCAG 2.1.4), stored in localStorage `shortcuts`; Cmd/Ctrl+K always works.
+- `help-dialog.tsx` -- The `?` key table.
+- `path-label.tsx` -- Prints the current path; remounts after hydration because the 404 page renders as `/_not-found` on the server.
+- Page transitions: `src/app/template.tsx` (motion), client navigations only, respects reduced motion.
+- Pages render a bare `<main>`; the shell supplies the frame and padding.
 
 ### External Services
 

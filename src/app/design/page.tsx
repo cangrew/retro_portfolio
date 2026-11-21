@@ -30,16 +30,16 @@ const CONTENTS = [
 
 const PRINCIPLES = [
   ["One typeface", "JetBrains Mono with ligatures, for headings, body and UI alike."],
-  ["Tiles, not cards floating in space", "Panes with 1px lines and square corners, tiled with small gaps."],
-  ["Accent means focus", "Arch blue marks the focused pane, the active tab, the primary action and links."],
+  ["Panels, like a TUI", "One flat background, 1px boxes with the title set into the border, square corners. Borrow the components of terminal tools, never a copy of one."],
+  ["Accent means focus", "Arch blue marks the focused panel, the selected row, the active tab, the primary action and links."],
   ["Prompts as headings", "Section titles read like commands typed at a shell."],
-  ["Keyboard first", "Every control is reachable by Tab and shows a 2px accent focus ring."],
+  ["Keyboard first", "Number keys jump between pages, : or ⌘K opens the command palette, and every control shows a focus ring. Key hints run along the bottom."],
   ["Readable before clever", "Every text color passes WCAG AA; motion is short and respects reduced motion."],
 ] as const;
 
 export default function DesignPage() {
   return (
-    <main className="mx-auto max-w-[96rem] space-y-16 px-4 pb-16 pt-20 sm:px-6">
+    <main className="space-y-16">
       <header className="space-y-4">
         <PromptHeading level={1} path="~/design" cursor>
           design system

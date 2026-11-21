@@ -6,7 +6,8 @@ import { ThemeScope } from "@/components/theme/theme-scope";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge, BADGE_TONES } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Pane, PaneControls, PaneGrid } from "@/components/ui/pane";
+import { Pane, PaneGrid } from "@/components/ui/pane";
+import { useShell } from "@/components/shell/shell-context";
 import { Prompt, PromptHeading } from "@/components/ui/prompt";
 import { Kbd } from "@/components/ui/kbd";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@/components/ui/tabs";
@@ -63,10 +64,24 @@ function MenuDemo() {
   );
 }
 
+function ShellSpecimen() {
+  const { setPaletteOpen, setHelpOpen } = useShell();
+  return (
+    <Specimen label="Shell: command palette and key help (also : and ?)">
+      <Button size="sm" bracketed onClick={() => setPaletteOpen(true)}>
+        command
+      </Button>
+      <Button size="sm" variant="ghost" onClick={() => setHelpOpen(true)}>
+        help
+      </Button>
+    </Specimen>
+  );
+}
+
 function Gallery() {
   return (
     <div className="space-y-pane-gap">
-      <Pane title="button.tsx" meta={<PaneControls />}>
+      <Pane title="button.tsx">
         <div className="space-y-5">
           <Specimen label="variants" code={`<Button variant="primary">deploy</Button>`}>
             <Button variant="primary">deploy</Button>
@@ -138,19 +153,19 @@ function Gallery() {
         </div>
       </Pane>
 
-      <Specimen label="Pane and PaneGrid" code={`<PaneGrid cols={2}><Pane title="~/a" focused>…</Pane></PaneGrid>`}>
-        <PaneGrid cols={2} className="w-full">
-          <Pane title="~/projects — zsh" focused meta={<PaneControls />}>
-            <p className="text-sm">Focused pane: accent border, like the active window in i3.</p>
+      <Specimen label="Pane and PaneGrid" code={`<Pane title="projects" index={2} meta="10 total" footer="1 of 10" focused>…</Pane>`}>
+        <PaneGrid cols={2} className="w-full pt-2">
+          <Pane title="projects" index={2} meta="10 total" footer="1 of 10" focused>
+            <p className="text-sm">Focused: accent border and title. index adds a [n] hotkey label.</p>
           </Pane>
-          <Pane title="htop" meta={<span>2/4</span>}>
-            <p className="text-sm text-fg-muted">Unfocused pane.</p>
+          <Pane title="links" index={3} meta="sort: name">
+            <p className="text-sm text-fg-muted">Unfocused panel.</p>
           </Pane>
           <Pane title="build failed" tone="danger">
             <p className="text-sm text-ansi-red">error: tone=&quot;danger&quot;</p>
           </Pane>
           <Pane>
-            <p className="text-sm text-fg-muted">A bare pane with no title bar.</p>
+            <p className="text-sm text-fg-muted">A bare box with no title.</p>
           </Pane>
         </PaneGrid>
       </Specimen>
@@ -254,6 +269,7 @@ function Gallery() {
           <Specimen label="ThemeSwitcher (switches the page theme)">
             <ThemeSwitcher />
           </Specimen>
+          <ShellSpecimen />
         </div>
       </Pane>
     </div>

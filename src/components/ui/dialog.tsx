@@ -16,10 +16,19 @@ export interface DialogContentProps extends Omit<WithClassName<ComponentPropsWit
   title: ReactNode;
   /** Hide the [x] close control (keep a DialogClose somewhere else). */
   hideClose?: boolean;
+  /** Classes for the body under the title bar (padding, gap). */
+  bodyClassName?: string;
 }
 
-/** A modal pane: accent border, title bar with [x], dimmed backdrop. */
-export function DialogContent({ title, hideClose = false, className, children, ...props }: DialogContentProps) {
+/** A modal panel: accent border with the title and [x] set into it, dimmed backdrop. */
+export function DialogContent({
+  title,
+  hideClose = false,
+  className,
+  bodyClassName,
+  children,
+  ...props
+}: DialogContentProps) {
   const container = usePortalContainer();
   return (
     <BaseDialog.Portal container={container}>
@@ -40,18 +49,20 @@ export function DialogContent({ title, hideClose = false, className, children, .
         )}
         {...props}
       >
-        <header className="flex h-pane-header shrink-0 items-center justify-between gap-3 border-b border-accent bg-chrome px-3">
-          <BaseDialog.Title className="min-w-0 truncate text-xs font-medium text-accent">{title}</BaseDialog.Title>
+        <div className="absolute inset-x-2 top-0 flex -translate-y-1/2 items-center justify-between gap-3 text-xs">
+          <BaseDialog.Title className="min-w-0 truncate bg-overlay px-1 font-bold leading-none text-accent">
+            {title}
+          </BaseDialog.Title>
           {!hideClose && (
             <BaseDialog.Close
               aria-label="Close"
-              className="text-xs text-fg-subtle hover:text-ansi-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+              className="bg-overlay px-1 leading-none text-fg-subtle hover:text-ansi-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
             >
               [x]
             </BaseDialog.Close>
           )}
-        </header>
-        <div className="flex min-h-0 flex-col gap-4 overflow-y-auto p-pane-padding">{children}</div>
+        </div>
+        <div className={cn("flex min-h-0 flex-col gap-4 overflow-y-auto p-pane-padding pt-6", bodyClassName)}>{children}</div>
       </BaseDialog.Popup>
     </BaseDialog.Portal>
   );

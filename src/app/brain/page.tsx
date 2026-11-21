@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function BrainPage() {
   return (
-    <main className="relative z-10 min-h-screen pt-20 pb-8 px-4 md:px-8">
+    <main>
       <div className="max-w-4xl mx-auto space-y-4">
         <RetroWindow title="NEURAL.EXE :: DIGITAL MIND v1.0">
           <div className="font-mono text-xs text-retro-fg-dim -mx-4 -mt-4 mb-4 px-4 py-2 bg-retro-bg retro-inset">

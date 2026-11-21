@@ -160,9 +160,9 @@ export const TYPE_SCALE = [
  * layout tokens sit on top of it for the terminal frame.
  */
 export const LAYOUT = {
-  "pane-gap": { value: "0.5rem", usage: "Gap between tiled panes, like i3 gaps" },
+  "pane-gap": { value: "0.875rem", usage: "Gap between panes; leaves room for titles set in the border" },
   "pane-padding": { value: "1rem", usage: "Padding inside a pane body" },
-  "pane-header": { value: "1.75rem", usage: "Height of a pane title bar" },
+  "pane-header": { value: "1.75rem", usage: "Height of the mobile top bar" },
   "statusbar": { value: "1.5rem", usage: "Height of the bottom status bar" },
   "content-max": { value: "72rem", usage: "Max width of page content" },
   "prose-max": { value: "72ch", usage: "Max width of long-form text" },

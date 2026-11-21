@@ -9,7 +9,7 @@ export default function ProjectsPage() {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <main className="relative z-10 min-h-screen pt-20 pb-8 px-4 md:px-8">
+    <main>
       <div className="max-w-5xl mx-auto space-y-6">
         <RetroWindow title="PROJECTS/">
           <PixelDivider variant="pixel-line" className="-mx-4 -mt-4 mb-4" />

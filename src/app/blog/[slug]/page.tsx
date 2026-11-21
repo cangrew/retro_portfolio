@@ -22,7 +22,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   if (!post) notFound();
 
   return (
-    <main className="relative z-10 min-h-screen pt-20 pb-8 px-4 md:px-8">
+    <main>
       <div className="max-w-3xl mx-auto space-y-6">
         <RetroWindow title={`BLOG/${slug}.md`}>
           {/* Terminal read header */}

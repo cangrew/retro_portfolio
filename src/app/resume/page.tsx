@@ -4,7 +4,7 @@ import NeonButton from "@/components/neon-button";
 
 export default function ResumePage() {
   return (
-    <main className="relative z-10 min-h-screen pt-20 pb-8 px-4 md:px-8">
+    <main>
       <div className="max-w-4xl mx-auto space-y-6">
         <RetroWindow title="RESUME.TXT">
 

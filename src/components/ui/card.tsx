@@ -2,7 +2,7 @@ import type { ComponentPropsWithoutRef } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const cardVariants = cva("flex min-w-0 flex-col gap-3 border border-line bg-pane p-pane-padding text-fg", {
+const cardVariants = cva("flex min-w-0 flex-col gap-3 border border-line bg-canvas p-pane-padding text-fg", {
   variants: {
     /**
      * For cards that are links or contain one main link. The border lights up
