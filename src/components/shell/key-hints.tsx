@@ -32,7 +32,7 @@ export function KeyHints() {
           <>
             <Hint k={`1-${PAGES.length}`}>pages</Hint>
             <Sep />
-            <Hint k="↑↓">move</Hint>
+            <Hint k="←→ ↑↓">move</Hint>
             <Sep />
             <Hint k=":" onClick={() => setPaletteOpen(true)}>command</Hint>
             <Sep />

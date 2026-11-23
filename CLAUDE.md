@@ -50,7 +50,7 @@ The terminal design system is the root of every page; see `/design` for the live
 - Components: `src/components/ui` (Button, Pane, PaneGrid, Section, RowList, KeyValue, Meter, Badge, Tabs, Dialog, Tooltip, Menu, Kbd, ThemeSwitcher), built on Base UI and styled with cva.
 - Class strings that server components need (`buttonVariants`, `rowClass`) live in files without "use client" (`button-variants.ts`, `row-styles.ts`). Importing a value from a "use client" module into a server component gives a client reference, not the value.
 - `tokens.test.ts` enforces WCAG AA contrast for every text color.
-- Style: borrow the component style of TUI tools (panels with the title set into the border, accent border on the focused panel, key hints along the bottom). Never fake app chrome such as window controls or imitation git panels.
+- Style: borrow the component style of TUI tools (panels with the title set into the border, accent border on the focused panel, the menu as a top panel of tabs, key hints along the bottom). Never fake app chrome such as window controls or imitation git panels.
 - Inside a pane, split content with `Section` (a rule with the title set in), list things with `RowList` rows and a `bg-chrome` header row, and show facts with `KeyValue`. No nested boxes, cards, bevels, glows, marquees, shell-prompt headings or `[x]` corners; popups close with esc, shown as a hint in the bottom border.
 
 ### Site shell
@@ -58,7 +58,7 @@ The terminal design system is the root of every page; see `/design` for the live
 `src/components/shell`, mounted once in `src/app/layout.tsx` via `AppShell`:
 
 - `site-map.ts` -- Pages and their number keys (1-8), `shellPath()`, the palette's `SearchIndex` type.
-- `sidebar.tsx` (desktop pages and links panes), `mobile-bar.tsx` + `mobile-drawer.tsx` (Base UI Drawer), `key-hints.tsx` (bottom bar).
+- `top-bar.tsx` (the menu: a panel across the top with the name in its border, outside links on the right of the border, and pages as numbered tabs; ←→ or h/l move between tabs; shown from `lg`), `mobile-bar.tsx` + `mobile-drawer.tsx` (Base UI Drawer, below `lg`), `key-hints.tsx` (bottom bar).
 - `command-palette.tsx` -- cmdk inside a Dialog; `:`, `/`, Cmd/Ctrl+K. Uses substring matching (`matchCommand`), not cmdk's fuzzy score.
 - `use-shortcuts.ts` -- Global keys. Single-key shortcuts can be turned off (WCAG 2.1.4), stored in localStorage `shortcuts`; Cmd/Ctrl+K always works.
 - `help-dialog.tsx` -- The `?` key table.

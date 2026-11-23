@@ -10,6 +10,8 @@ const ROWS: [keys: string[], action: string][] = [
   [["⌘K", "Ctrl+K"], "command palette"],
   [[":", "/"], "command palette"],
   [[`1-${PAGES.length}`], "jump to a page"],
+  [["←", "→", "h", "l"], "move between menu tabs"],
+  [["↑", "↓", "j", "k"], "move through a list"],
   [["t"], "switch theme"],
   [["?"], "this help"],
   [["Esc"], "close a dialog"],
