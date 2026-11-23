@@ -3,14 +3,13 @@ export const PAGES = [
   { key: "1", slug: "home", href: "/", label: "home" },
   { key: "2", slug: "projects", href: "/projects", label: "projects" },
   { key: "3", slug: "blog", href: "/blog", label: "blog" },
-  { key: "4", slug: "research", href: "/research", label: "research" },
-  { key: "5", slug: "brain", href: "/brain", label: "brain" },
-  { key: "6", slug: "resume", href: "/resume", label: "resume" },
-  { key: "7", slug: "about", href: "/about", label: "about" },
-  { key: "8", slug: "contact", href: "/contact", label: "contact" },
+  { key: "4", slug: "contact", href: "/contact", label: "contact" },
 ] as const;
 
 export type Page = (typeof PAGES)[number];
+
+/** Sections of the homepage the command palette can jump to. */
+export const HOME_SECTIONS = ["about", "research", "projects", "experience", "writing", "education", "skills"] as const;
 
 /** The page a path belongs to: "/projects/foo" → projects. */
 export function pageForPath(pathname: string): Page | undefined {

@@ -23,18 +23,19 @@ MDX body content is rendered client-side via `react-markdown` in `src/components
 
 ### Routing
 
-- `/` -- Home: name, recent projects and posts, profile
-- `/projects` -- Project grid listing all published projects
-- `/projects/[slug]` -- Individual project detail (SSG via `generateStaticParams`)
-- `/about` -- About page
-- `/contact` -- Contact page
+Four tabs: home, projects, blog, contact. Less is more: a visitor should get the gist from the homepage alone.
+
+- `/` -- Home: an extended resume (about, research and publications, experience, selected projects, recent posts, profile, education, skills). The facts live in `src/data/profile.ts`.
+- `/projects`, `/projects/[slug]` -- All published projects; detail pages are SSG via `generateStaticParams`
+- `/blog`, `/blog/[slug]` -- Posts
+- `/contact` -- Contact channels
+- `/about`, `/research`, `/resume` and `/brain` were folded into the homepage; `next.config.ts` redirects them. `/design` is the unlisted design-system reference.
 
 ### Key Components
 
 - `shell/` -- The site frame (see Site shell below)
 - `content/` -- Page building blocks: `PageHeader`, `Category`, `Tags`, and `prose-styles.ts` (Markdown classes shared by `md-content.tsx` and `src/mdx-components.tsx`)
 - `md-content.tsx` -- Renders project and post Markdown with react-markdown
-- `brain-scene.tsx` -- three.js wireframe brain on /brain; colors come from the theme tokens
 
 ### Styling
 
@@ -57,7 +58,7 @@ The terminal design system is the root of every page; see `/design` for the live
 
 `src/components/shell`, mounted once in `src/app/layout.tsx` via `AppShell`:
 
-- `site-map.ts` -- Pages and their number keys (1-8), `shellPath()`, the palette's `SearchIndex` type.
+- `site-map.ts` -- Pages and their number keys (1-4), and the homepage sections the palette can jump to, `shellPath()`, the palette's `SearchIndex` type.
 - `top-bar.tsx` (the menu: a panel across the top with the name in its border, outside links on the right of the border, and pages as numbered tabs; ←→ or h/l move between tabs; shown from `lg`), `mobile-bar.tsx` + `mobile-drawer.tsx` (Base UI Drawer, below `lg`), `key-hints.tsx` (bottom bar).
 - `command-palette.tsx` -- cmdk inside a Dialog; `:`, `/`, Cmd/Ctrl+K. Uses substring matching (`matchCommand`), not cmdk's fuzzy score.
 - `use-shortcuts.ts` -- Global keys. Single-key shortcuts can be turned off (WCAG 2.1.4), stored in localStorage `shortcuts`; Cmd/Ctrl+K always works.

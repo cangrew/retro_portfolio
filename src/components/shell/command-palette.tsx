@@ -6,7 +6,7 @@ import { Command } from "cmdk";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Kbd } from "@/components/ui/kbd";
 import { useTheme } from "@/lib/theme/theme-provider";
-import { PAGES, type SearchIndex } from "./site-map";
+import { HOME_SECTIONS, PAGES, type SearchIndex } from "./site-map";
 import { useShell } from "./shell-context";
 
 const groupClass = cn(
@@ -117,6 +117,18 @@ export function CommandPalette({ index }: { index: SearchIndex }) {
                   command={p.label}
                   label={p.href === "/" ? "~" : `~${p.href}`}
                   hint={<Kbd>{p.key}</Kbd>}
+                />
+              ))}
+            </Command.Group>
+
+            <Command.Group heading="home" className={groupClass}>
+              {HOME_SECTIONS.map((id) => (
+                <Item
+                  key={id}
+                  value={`section ${id}`}
+                  onSelect={() => go(`/#${id}`)}
+                  command={id}
+                  label={`~#${id}`}
                 />
               ))}
             </Command.Group>

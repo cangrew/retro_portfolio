@@ -2,12 +2,9 @@ import { PageHeader } from "@/components/content/page-header";
 import { Section } from "@/components/ui/section";
 import { RowList } from "@/components/ui/row-list";
 import { rowClass, rowMuted, rowSubtle } from "@/components/ui/row-styles";
+import { LINKS } from "@/data/profile";
 
-const CHANNELS = [
-  { label: "email", display: "andresdaviddelgado@gmail.com", href: "mailto:andresdaviddelgado@gmail.com" },
-  { label: "github", display: "github.com/cangrew", href: "https://github.com/cangrew" },
-  { label: "linkedin", display: "linkedin.com/in/andresddelgado", href: "https://linkedin.com/in/andresddelgado" },
-];
+const CHANNELS = LINKS.filter((l) => l.label !== "resume");
 
 export default function ContactPage() {
   return (

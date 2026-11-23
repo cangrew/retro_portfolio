@@ -6,6 +6,15 @@ import createMDX from '@next/mdx'
 const nextConfig: NextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   devIndicators: false,
+  // These pages were folded into the homepage; keep old links working.
+  async redirects() {
+    return [
+      { source: "/about", destination: "/#about", permanent: true },
+      { source: "/research", destination: "/#research", permanent: true },
+      { source: "/resume", destination: "/#experience", permanent: true },
+      { source: "/brain", destination: "/", permanent: true },
+    ];
+  },
 };
 
 const withMDX = createMDX({
