@@ -40,10 +40,9 @@ describe('BlogPage', () => {
     expect(screen.getByText('5m')).toBeInTheDocument()
   })
 
-  it('renders post tags', () => {
+  it('leaves tags to the post page', () => {
     render(<BlogPage />)
-    expect(screen.getByText('TypeScript')).toBeInTheDocument()
-    expect(screen.getByText('Testing')).toBeInTheDocument()
+    expect(screen.queryByText('TypeScript')).not.toBeInTheDocument()
   })
 
   it('links each post to its slug URL', () => {

@@ -28,7 +28,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     ["date", project.date.slice(0, 10)],
     ["category", <Category key="c" category={project.category} />],
     ...(project.url
-      ? [["url", <a key="u" href={project.url} target="_blank" rel="noopener noreferrer" className="break-all">{project.url}</a>] as const]
+      ? [
+          [
+            "link",
+            <a key="u" href={project.url} target="_blank" rel="noopener noreferrer" className="break-all">
+              {project.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
+            </a>,
+          ] as const,
+        ]
       : []),
     ...(project.tags?.length ? [["tags", <Tags key="t" tags={project.tags} />] as const] : []),
   ] as const;
@@ -41,26 +48,31 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="space-y-10">
-      <p className="text-sm">
-        <Link href="/projects">← projects</Link>
-      </p>
-      <PageHeader title={project.title}>{project.description}</PageHeader>
+      <div className="space-y-3">
+        <p className="text-sm">
+          <Link href="/projects">← projects</Link>
+        </p>
+        <PageHeader title={project.title}>{project.description}</PageHeader>
+      </div>
 
-      <KeyValue items={details} />
-
-      {caseStudy.length > 0 && (
-        <div className="grid gap-8 md:grid-cols-3">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
+        <div className="min-w-0 space-y-10">
           {caseStudy.map(([label, value]) => (
             <Section key={label} title={label}>
-              <p className="text-sm leading-relaxed text-fg-muted">{value}</p>
+              <p className="max-w-prose text-sm leading-relaxed text-fg-muted">{value}</p>
             </Section>
           ))}
+          <article className="max-w-prose min-w-0">
+            <MarkdownContent markdown={project.content} />
+          </article>
         </div>
-      )}
 
-      <article className="max-w-prose min-w-0">
-        <MarkdownContent markdown={project.content} />
-      </article>
+        <aside className="order-first min-w-0 lg:order-none">
+          <Section title="details">
+            <KeyValue items={details} />
+          </Section>
+        </aside>
+      </div>
     </main>
   );
 }
