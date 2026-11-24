@@ -42,9 +42,11 @@ export function AppShell({ index, children }: { index: SearchIndex; children: Re
           if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setNavFocused(false);
         }}
       >
-        <TopBar focused={navFocused} />
+        <div className="mx-auto max-w-content">
+          <TopBar focused={navFocused} />
+        </div>
       </header>
-      <div className="px-pane-gap pb-pane-gap pt-[calc(var(--pane-gap)*1.5)] lg:pt-2">
+      <div className="mx-auto max-w-content px-pane-gap box-content pb-[calc(var(--pane-gap)*2)] pt-[calc(var(--pane-gap)*1.5)] lg:pt-2">
         <Pane
           as="div"
           id="content"

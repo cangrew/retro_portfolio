@@ -33,14 +33,14 @@
     color: rgb(var(--color-fg));
   }
 
-  /* :where() keeps these at zero specificity so utilities always win. */
-  :where(a) {
+  /* Element selectors beat preflight's `a { color: inherit }`; utilities (classes) still win. */
+  a {
     color: rgb(var(--color-accent));
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
   }
-  :where(a:hover) { color: rgb(var(--color-ansi-cyan)); }
+  a:hover { color: rgb(var(--color-ansi-cyan)); }
 
   :focus-visible {
     outline: 2px solid rgb(var(--color-accent));

@@ -65,7 +65,7 @@ export const PALETTES: Record<ThemeName, ColorPalette> = {
     overlay: "#18181b",
     fg: "#cdd6f4",
     "fg-muted": "#a6adc8",
-    "fg-subtle": "#8a8fa8",
+    "fg-subtle": "#9399b2",
     line: "#313244",
     "line-strong": "#62657d",
     accent: "#1793d1",
@@ -164,7 +164,7 @@ export const LAYOUT = {
   "pane-padding": { value: "1rem", usage: "Padding inside a pane body" },
   "pane-header": { value: "1.75rem", usage: "Height of the mobile top bar" },
   "statusbar": { value: "1.5rem", usage: "Height of the bottom status bar" },
-  "content-max": { value: "72rem", usage: "Max width of page content" },
+  "content-max": { value: "80rem", usage: "Max width of the site frame: top bar, page pane and status bar" },
   "prose-max": { value: "72ch", usage: "Max width of long-form text" },
 } as const;
 
