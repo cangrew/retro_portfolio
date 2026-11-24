@@ -36,7 +36,7 @@ export function AppShell({ index, children }: { index: SearchIndex; children: Re
       </a>
       <MobileBar />
       <header
-        className="sticky top-0 z-40 hidden bg-canvas px-pane-gap pb-pane-gap pt-[calc(var(--pane-gap)*1.5)] lg:block"
+        className="sticky top-0 z-40 hidden bg-canvas p-pane-gap lg:block"
         onFocus={() => setNavFocused(true)}
         onBlur={(e) => {
           if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setNavFocused(false);

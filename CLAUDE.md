@@ -59,7 +59,7 @@ The terminal design system is the root of every page; see `/design` for the live
 `src/components/shell`, mounted once in `src/app/layout.tsx` via `AppShell`:
 
 - `site-map.ts` -- Pages and their number keys (1-4), and the homepage sections the palette can jump to, `shellPath()`, the palette's `SearchIndex` type.
-- `top-bar.tsx` (the menu: a panel across the top with the name in its border, outside links on the right of the border, and pages as numbered tabs; ←→ or h/l move between tabs; shown from `lg`), `mobile-bar.tsx` + `mobile-drawer.tsx` (Base UI Drawer, below `lg`), `key-hints.tsx` (bottom bar).
+- `top-bar.tsx` (the menu: one row across the top with pages as numbered tabs on the left and outside links on the right, no name; ←→ or h/l move between tabs; shown from `lg`), `mobile-bar.tsx` (shows the current page, not the name) + `mobile-drawer.tsx` (Base UI Drawer, below `lg`), `key-hints.tsx` (bottom bar).
 - `command-palette.tsx` -- cmdk inside a Dialog; `:`, `/`, Cmd/Ctrl+K. Uses substring matching (`matchCommand`), not cmdk's fuzzy score.
 - `use-shortcuts.ts` -- Global keys. Single-key shortcuts can be turned off (WCAG 2.1.4), stored in localStorage `shortcuts`; Cmd/Ctrl+K always works.
 - `help-dialog.tsx` -- The `?` key table.

@@ -20,12 +20,10 @@ function Entries({ entries }: { entries: Entry[] }) {
     <ul className="space-y-4">
       {entries.map((e) => (
         <li key={e.title + e.date}>
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-            <p>
-              <span className="font-medium text-fg">{e.title}</span>
-              <span className="text-fg-muted"> · {e.where}</span>
-            </p>
-            <span className="text-sm text-fg-subtle">{e.date}</span>
+          <p className="font-medium text-fg">{e.title}</p>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 text-sm">
+            <span className="text-fg-muted">{e.where}</span>
+            <span className="text-fg-subtle">{e.date}</span>
           </div>
           <ul className="mt-1 list-['-_'] space-y-0.5 pl-5 text-sm text-fg-muted marker:text-fg-subtle">
             {e.bullets.map((b) => (
@@ -64,7 +62,7 @@ export default function HomePage() {
         <div className="min-w-0 space-y-12">
           <header className="space-y-4">
             <h1 className="text-3xl font-bold text-fg sm:text-4xl">Andres Delgado</h1>
-            <p className="max-w-prose text-lg leading-relaxed text-fg-muted">
+            <p className="max-w-prose leading-relaxed text-fg-muted sm:text-lg">
               PhD student in computer architecture at UCF. I study how processors keep confidential workloads safe:
               trusted execution environments, memory encryption, and what those defenses cost.
             </p>
