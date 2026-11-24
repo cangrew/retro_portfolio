@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { THEMES } from "@/design-system/tokens";
-import { PromptHeading } from "@/components/ui/prompt";
+import { PageHeader } from "@/components/content/page-header";
 import { Pane } from "@/components/ui/pane";
 import { ComponentGallery } from "./component-gallery";
 import { DesignSection } from "./specimen";
@@ -30,20 +30,19 @@ const CONTENTS = [
 
 const PRINCIPLES = [
   ["One typeface", "JetBrains Mono with ligatures, for headings, body and UI alike."],
-  ["Tiles, not cards floating in space", "Panes with 1px lines and square corners, tiled with small gaps."],
-  ["Accent means focus", "Arch blue marks the focused pane, the active tab, the primary action and links."],
-  ["Prompts as headings", "Section titles read like commands typed at a shell."],
-  ["Keyboard first", "Every control is reachable by Tab and shows a 2px accent focus ring."],
+  ["Panels, like a TUI", "One flat background, 1px boxes with the title set into the border, square corners. Borrow the components of terminal tools, never a copy of one."],
+  ["No window chrome", "Nothing a terminal app wouldn't draw: no title bars, no [x] corners, no bevels, glows, marquees or cards. Popups close with esc, shown as a hint in the border."],
+  ["Accent means focus", "Arch blue marks the focused panel, the selected row, the active tab, the primary action and links."],
+  ["Rows, not cards", "Content sits in lists and tables with a header row; the selected row fills with accent. Sections inside a pane are rules with the title set in."],
+  ["Keyboard first", "Number keys jump between pages, : or ⌘K opens the command palette, and every control shows a focus ring. Key hints run along the bottom."],
   ["Readable before clever", "Every text color passes WCAG AA; motion is short and respects reduced motion."],
 ] as const;
 
 export default function DesignPage() {
   return (
-    <main className="mx-auto max-w-[96rem] space-y-16 px-4 pb-16 pt-20 sm:px-6">
+    <main className="space-y-16">
       <header className="space-y-4">
-        <PromptHeading level={1} path="~/design" cursor>
-          design system
-        </PromptHeading>
+        <PageHeader title="Design system" />
         <p className="max-w-prose text-fg-muted">
           The tokens and components every page is built from. Values live in{" "}
           <code className="text-fg">src/design-system/tokens.ts</code>, components in{" "}

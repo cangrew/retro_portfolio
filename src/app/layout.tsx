@@ -3,8 +3,10 @@ import "./globals.css";
 import "katex/dist/katex.min.css";
 import { jetbrainsMono } from "@/lib/fonts";
 import { ThemeProvider } from "@/lib/theme/theme-provider";
-import Navigation from "@/components/navigation";
-import I3StatusBar from "@/components/arch/i3-status-bar";
+import { AppShell } from "@/components/shell/app-shell";
+import type { SearchIndex } from "@/components/shell/site-map";
+import { getAllProjects } from "@/util/mdx";
+import { getAllBlogPosts } from "@/util/blog";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 export const metadata: Metadata = {
@@ -26,6 +28,18 @@ export const metadata: Metadata = {
   },
 };
 
+/** What the command palette can jump to: published MDX content only, read at build time. */
+function searchIndex(): SearchIndex {
+  return {
+    projects: getAllProjects()
+      .filter((p) => p.published)
+      .map((p) => ({ slug: p.slug, title: p.title, description: p.description })),
+    posts: getAllBlogPosts()
+      .filter((p) => p.published)
+      .map((p) => ({ slug: p.slug, title: p.title, date: p.date })),
+  };
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -37,9 +51,7 @@ export default function RootLayout({
       <body className="bg-canvas font-mono text-fg">
         <ThemeProvider>
           <TooltipProvider>
-            <Navigation />
-            <div className="relative z-10">{children}</div>
-            <I3StatusBar />
+            <AppShell index={searchIndex()}>{children}</AppShell>
           </TooltipProvider>
         </ThemeProvider>
       </body>

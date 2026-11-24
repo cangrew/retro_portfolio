@@ -2,18 +2,24 @@ import { useId, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const paneVariants = cva("flex min-w-0 flex-col border bg-pane text-fg", {
+/*
+ * A TUI panel: a 1px box on the page background with its title set into the
+ * top border, like the panels in lazygit or k9s. The focused panel's border
+ * and title turn accent.
+ */
+
+const paneVariants = cva("relative flex min-w-0 flex-col border bg-canvas text-fg", {
   variants: {
-    /** A focused pane gets the accent border, like the active window in i3. */
     focused: {
       true: "border-accent",
       false: "border-line",
     },
     tone: {
       default: "",
-      danger: "border-ansi-red",
+      danger: "",
     },
   },
+  compoundVariants: [{ tone: "danger", focused: false, className: "border-ansi-red" }],
   defaultVariants: { focused: false, tone: "default" },
 });
 
@@ -21,28 +27,36 @@ const bodyVariants = cva("min-w-0 flex-1", {
   variants: {
     padding: {
       none: "",
-      sm: "p-3",
-      md: "p-pane-padding",
+      sm: "px-3 pb-3 pt-4",
+      md: "p-pane-padding pt-5",
     },
   },
   defaultVariants: { padding: "md" },
 });
 
+/** The label that sits on a border: title on the top edge, meta on the right or bottom. */
+const legend = "bg-canvas px-1 leading-none";
+
 export interface PaneProps
   extends Omit<ComponentPropsWithoutRef<"section">, "title">,
     VariantProps<typeof paneVariants>,
     VariantProps<typeof bodyVariants> {
-  /** Shown in the title bar, e.g. "~/projects" or "zsh". Omit for a bare pane. */
+  /** Set into the top border, e.g. "projects" or "~/blog". Omit for a bare box. */
   title?: ReactNode;
-  /** Right side of the title bar: window controls, a count, actions. */
+  /** Hotkey shown before the title as [1]. */
+  index?: number | string;
+  /** Set into the top border on the right: a count, a sort order. */
   meta?: ReactNode;
-  as?: "section" | "div" | "article" | "aside";
+  /** Set into the bottom border on the right: a position like "3 of 10". */
+  footer?: ReactNode;
+  as?: "section" | "div" | "article" | "aside" | "nav";
 }
 
-/** A terminal window: thin border, optional title bar, padded body. */
 export function Pane({
   title,
+  index,
   meta,
+  footer,
   focused,
   tone,
   padding,
@@ -52,44 +66,32 @@ export function Pane({
   ...props
 }: PaneProps) {
   const titleId = useId();
-  const hasHeader = title != null || meta != null;
+  const accent = focused ? "text-accent" : tone === "danger" ? "text-ansi-red" : "text-fg-muted";
   return (
     <Tag
-      aria-labelledby={title != null ? titleId : undefined}
+      aria-labelledby={title != null && !props["aria-label"] ? titleId : undefined}
       data-focused={focused ? "" : undefined}
       className={cn(paneVariants({ focused, tone }), className)}
       {...props}
     >
-      {hasHeader && (
-        <header
-          className={cn(
-            "flex h-pane-header shrink-0 items-center justify-between gap-3 border-b bg-chrome px-3 text-xs",
-            focused ? "border-accent" : tone === "danger" ? "border-ansi-red" : "border-line",
+      {(title != null || meta != null) && (
+        <div className="pointer-events-none absolute inset-x-2 top-0 flex -translate-y-1/2 items-center justify-between gap-3 text-xs">
+          {title != null ? (
+            <span id={titleId} className={cn(legend, "pointer-events-auto min-w-0 truncate", accent, focused && "font-bold")}>
+              {index != null && <span className={focused ? "" : "text-fg-subtle"}>[{index}]─</span>}
+              {title}
+            </span>
+          ) : (
+            <span />
           )}
-        >
-          <span
-            id={titleId}
-            className={cn(
-              "min-w-0 truncate",
-              focused ? "text-accent" : tone === "danger" ? "text-ansi-red" : "text-fg-muted",
-            )}
-          >
-            {title}
-          </span>
-          {meta != null && <span className="flex shrink-0 items-center gap-2 text-fg-subtle">{meta}</span>}
-        </header>
+          {meta != null && <span className={cn(legend, "pointer-events-auto shrink-0 text-fg-subtle")}>{meta}</span>}
+        </div>
       )}
       <div className={bodyVariants({ padding })}>{children}</div>
+      {footer != null && (
+        <span className={cn(legend, "absolute bottom-0 right-2 translate-y-1/2 text-xs text-fg-subtle")}>{footer}</span>
+      )}
     </Tag>
-  );
-}
-
-/** Decorative window controls for a pane title bar. */
-export function PaneControls() {
-  return (
-    <span aria-hidden className="select-none tracking-wider">
-      [-][□][x]
-    </span>
   );
 }
 
@@ -106,7 +108,7 @@ const gridVariants = cva("grid gap-pane-gap", {
 
 export interface PaneGridProps extends ComponentPropsWithoutRef<"div">, VariantProps<typeof gridVariants> {}
 
-/** Tiles panes with i3-style gaps. Columns collapse to one on small screens. */
+/** Tiles panes with even gaps. Columns collapse to one on small screens. */
 export function PaneGrid({ cols, className, ...props }: PaneGridProps) {
   return <div className={cn(gridVariants({ cols }), className)} {...props} />;
 }

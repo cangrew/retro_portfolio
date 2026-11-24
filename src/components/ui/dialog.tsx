@@ -14,12 +14,27 @@ export const DialogClose = BaseDialog.Close;
 export interface DialogContentProps extends Omit<WithClassName<ComponentPropsWithoutRef<typeof BaseDialog.Popup>>, "title"> {
   /** Shown in the title bar and used as the dialog's accessible name. */
   title: ReactNode;
-  /** Hide the [x] close control (keep a DialogClose somewhere else). */
+  /** Hide the "esc close" control in the bottom border (keep a DialogClose somewhere else). */
   hideClose?: boolean;
+  /** Key hints set into the bottom border on the left, e.g. "↑↓ move". */
+  hints?: ReactNode;
+  /** Classes for the body (padding, gap). */
+  bodyClassName?: string;
 }
 
-/** A modal pane: accent border, title bar with [x], dimmed backdrop. */
-export function DialogContent({ title, hideClose = false, className, children, ...props }: DialogContentProps) {
+/**
+ * A modal panel, like a TUI popup: accent border with the title set into the
+ * top edge and the close key hint ("esc close") set into the bottom edge.
+ */
+export function DialogContent({
+  title,
+  hideClose = false,
+  hints,
+  className,
+  bodyClassName,
+  children,
+  ...props
+}: DialogContentProps) {
   const container = usePortalContainer();
   return (
     <BaseDialog.Portal container={container}>
@@ -40,18 +55,23 @@ export function DialogContent({ title, hideClose = false, className, children, .
         )}
         {...props}
       >
-        <header className="flex h-pane-header shrink-0 items-center justify-between gap-3 border-b border-accent bg-chrome px-3">
-          <BaseDialog.Title className="min-w-0 truncate text-xs font-medium text-accent">{title}</BaseDialog.Title>
-          {!hideClose && (
-            <BaseDialog.Close
-              aria-label="Close"
-              className="text-xs text-fg-subtle hover:text-ansi-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
-            >
-              [x]
-            </BaseDialog.Close>
-          )}
-        </header>
-        <div className="flex min-h-0 flex-col gap-4 overflow-y-auto p-pane-padding">{children}</div>
+        <BaseDialog.Title className="absolute left-2 top-0 max-w-[calc(100%-1rem)] -translate-y-1/2 truncate bg-overlay px-1 text-xs font-bold leading-none text-accent">
+          {title}
+        </BaseDialog.Title>
+        <div className={cn("flex min-h-0 flex-col gap-4 overflow-y-auto p-pane-padding pb-5 pt-6", bodyClassName)}>{children}</div>
+        {hints != null && (
+          <span className="absolute bottom-0 left-2 translate-y-1/2 bg-overlay px-1 text-xs leading-none text-fg-subtle">
+            {hints}
+          </span>
+        )}
+        {!hideClose && (
+          <BaseDialog.Close
+            aria-label="Close"
+            className="absolute bottom-0 right-2 translate-y-1/2 bg-overlay px-1 text-xs leading-none text-fg-subtle hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+          >
+            <span className="text-accent">esc</span> close
+          </BaseDialog.Close>
+        )}
       </BaseDialog.Popup>
     </BaseDialog.Portal>
   );

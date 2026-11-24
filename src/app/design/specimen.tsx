@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { PromptHeading } from "@/components/ui/prompt";
 
 /** A labelled example on the /design page, with an optional usage snippet. */
 export function Specimen({
@@ -42,9 +41,9 @@ export function DesignSection({
   return (
     <section id={id} aria-labelledby={`${id}-title`} className="scroll-mt-20 space-y-5">
       <div className="space-y-2">
-        <PromptHeading id={`${id}-title`} level={2} path={`~/design/${id}`}>
+        <h2 id={`${id}-title`} className="text-xl font-bold text-fg">
           {title}
-        </PromptHeading>
+        </h2>
         {intro && <div className="max-w-prose text-sm text-fg-muted">{intro}</div>}
       </div>
       {children}

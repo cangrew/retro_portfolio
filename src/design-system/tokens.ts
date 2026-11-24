@@ -36,15 +36,15 @@ export const COLOR_TOKENS = [
   { name: "overlay", role: "surface", usage: "Dialogs, menus, tooltips" },
   { name: "fg", role: "text", usage: "Body text" },
   { name: "fg-muted", role: "text", usage: "Secondary text, descriptions, inactive tabs" },
-  { name: "fg-subtle", role: "text", usage: "Metadata, placeholders, prompt punctuation" },
+  { name: "fg-subtle", role: "text", usage: "Metadata, placeholders, column headers" },
   { name: "line", role: "line", usage: "Default 1px borders and dividers" },
   { name: "line-strong", role: "line", usage: "Hovered borders, emphasized dividers" },
   { name: "accent", role: "accent", usage: "Focused pane, active tab, primary action, links" },
   { name: "accent-fg", role: "accent", usage: "Text on an accent fill" },
   { name: "ansi-red", role: "ansi", usage: "Errors, destructive actions" },
-  { name: "ansi-green", role: "ansi", usage: "Prompt user@host, success" },
+  { name: "ansi-green", role: "ansi", usage: "Success, additions" },
   { name: "ansi-yellow", role: "ansi", usage: "Warnings, highlights" },
-  { name: "ansi-blue", role: "ansi", usage: "Prompt path, directories" },
+  { name: "ansi-blue", role: "ansi", usage: "Paths, directories" },
   { name: "ansi-magenta", role: "ansi", usage: "Research, keywords" },
   { name: "ansi-cyan", role: "ansi", usage: "Links on hover, info" },
 ] as const satisfies readonly ColorTokenMeta[];
@@ -160,9 +160,9 @@ export const TYPE_SCALE = [
  * layout tokens sit on top of it for the terminal frame.
  */
 export const LAYOUT = {
-  "pane-gap": { value: "0.5rem", usage: "Gap between tiled panes, like i3 gaps" },
+  "pane-gap": { value: "0.875rem", usage: "Gap between panes; leaves room for titles set in the border" },
   "pane-padding": { value: "1rem", usage: "Padding inside a pane body" },
-  "pane-header": { value: "1.75rem", usage: "Height of a pane title bar" },
+  "pane-header": { value: "1.75rem", usage: "Height of the mobile top bar" },
   "statusbar": { value: "1.5rem", usage: "Height of the bottom status bar" },
   "content-max": { value: "72rem", usage: "Max width of page content" },
   "prose-max": { value: "72ch", usage: "Max width of long-form text" },
