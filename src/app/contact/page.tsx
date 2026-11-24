@@ -11,7 +11,7 @@ export default function ContactPage() {
     <main className="space-y-10">
       <PageHeader title="Contact">Reach out on any of these. I usually reply within one to three business days.</PageHeader>
 
-      <Section title="channels" className="max-w-2xl">
+      <Section title="channels" className="max-w-prose">
         <RowList>
           {CHANNELS.map(({ label, display, href }) => {
             const external = !href.startsWith("mailto");
@@ -23,11 +23,13 @@ export default function ContactPage() {
                   rel={external ? "noopener noreferrer" : undefined}
                   className={`${rowClass} min-h-[2.75rem] items-center`}
                 >
-                  <span className={`w-20 shrink-0 ${rowSubtle}`}>{label}</span>
-                  <span className="min-w-0 flex-1 truncate">{display}</span>
-                  <span aria-hidden className={rowMuted}>
-                    {external ? "↗" : "→"}
-                  </span>
+                  <span className={`w-16 shrink-0 ${rowSubtle}`}>{label}</span>
+                  <span className="min-w-0 break-all">{display}</span>
+                  {external && (
+                    <span aria-hidden className={rowMuted}>
+                      ↗
+                    </span>
+                  )}
                 </a>
               </li>
             );

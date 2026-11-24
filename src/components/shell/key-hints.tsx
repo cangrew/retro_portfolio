@@ -26,7 +26,8 @@ const Sep = () => <span aria-hidden className="text-line-strong">|</span>;
 export function KeyHints() {
   const { setPaletteOpen, setHelpOpen, shortcutsEnabled } = useShell();
   return (
-    <div className="fixed inset-x-0 bottom-0 z-40 hidden h-statusbar items-center justify-between gap-4 border-t border-line bg-canvas px-pane-gap text-2xs text-fg-subtle md:flex">
+    <div className="fixed inset-x-0 bottom-0 z-40 hidden h-statusbar border-t border-line bg-canvas px-pane-gap text-2xs text-fg-subtle md:block">
+      <div className="mx-auto flex h-full max-w-content items-center justify-between gap-4">
       <div className="flex min-w-0 items-center gap-2 overflow-hidden">
         {shortcutsEnabled ? (
           <>
@@ -49,6 +50,7 @@ export function KeyHints() {
         )}
       </div>
       <ThemeSwitcher className="h-full border-0 px-1 text-2xs" />
+      </div>
     </div>
   );
 }

@@ -11,6 +11,8 @@ import { rowClass, rowMuted, rowSubtle } from "@/components/ui/row-styles";
 import { Category } from "@/components/content/category";
 import { EDUCATION, EXPERIENCE, LINKS, PROFILE, SKILLS, type Entry } from "@/data/profile";
 
+const OWNER = "Andres Delgado";
+
 const byDate = <T extends { date: string }>(a: T, b: T) => new Date(b.date).getTime() - new Date(a.date).getTime();
 
 function Entries({ entries }: { entries: Entry[] }) {
@@ -55,28 +57,29 @@ export default function HomePage() {
   const posts = allPosts.slice(0, 3);
 
   return (
-    <main className="space-y-12">
+    <main>
       <Analytics />
-
-      <header className="space-y-4">
-        <h1 className="text-3xl font-bold text-fg sm:text-4xl">Andres Delgado</h1>
-        <p className="max-w-prose text-lg leading-relaxed text-fg-muted">
-          PhD student in computer architecture at UCF. I study how processors keep confidential workloads safe:
-          trusted execution environments, memory encryption, and what those defenses cost.
-        </p>
-        <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
-          {LINKS.map((l) => (
-            <li key={l.label}>
-              <a href={l.href} {...external(l.href)}>
-                {l.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </header>
 
       <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
         <div className="min-w-0 space-y-12">
+          <header className="space-y-4">
+            <h1 className="text-3xl font-bold text-fg sm:text-4xl">Andres Delgado</h1>
+            <p className="max-w-prose text-lg leading-relaxed text-fg-muted">
+              PhD student in computer architecture at UCF. I study how processors keep confidential workloads safe:
+              trusted execution environments, memory encryption, and what those defenses cost.
+            </p>
+            <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
+              {LINKS.map((l) => (
+                <li key={l.label}>
+                  <a href={l.href} {...external(l.href)}>
+                    {l.label}
+                  </a>
+                  {l.href.startsWith("http") && <span aria-hidden className="ml-1 text-fg-subtle">↗</span>}
+                </li>
+              ))}
+            </ul>
+          </header>
+
           <Section id="about" title="about" className="scroll-mt-28">
             <div className="max-w-prose space-y-3 leading-relaxed">
               <p>
@@ -106,7 +109,14 @@ export default function HomePage() {
                       pub.title
                     )}
                   </p>
-                  <p className="text-sm text-fg-muted">{pub.authors.join(", ")}</p>
+                  <p className="text-sm text-fg-muted">
+                    {pub.authors.map((a, i) => (
+                      <span key={a}>
+                        {i > 0 && ", "}
+                        {a === OWNER ? <strong className="font-semibold text-fg">{a}</strong> : a}
+                      </span>
+                    ))}
+                  </p>
                   <p className="text-sm text-fg-subtle">
                     {pub.venue} · {pub.year}
                   </p>

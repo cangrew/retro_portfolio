@@ -10,7 +10,7 @@ import { PAGES, pageForPath } from "./site-map";
 const LINKS = [
   { label: "github", href: "https://github.com/cangrew" },
   { label: "linkedin", href: "https://linkedin.com/in/andresddelgado" },
-  { label: "resume.pdf", href: "/resume/resume.pdf" },
+  { label: "resume", href: "/resume/resume.pdf" },
 ];
 
 /**

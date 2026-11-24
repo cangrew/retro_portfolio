@@ -23,15 +23,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   return (
     <main className="space-y-8">
-      <p className="text-sm">
-        <Link href="/blog">← blog</Link>
-      </p>
-      <PageHeader title={post.title}>{post.description}</PageHeader>
-      <p className="flex flex-wrap gap-x-4 text-sm text-fg-subtle">
-        <span>{post.date.slice(0, 10)}</span>
-        <span>{post.readingTime} min read</span>
-        <Tags tags={post.tags} />
-      </p>
+      <div className="space-y-3">
+        <p className="text-sm">
+          <Link href="/blog">← blog</Link>
+        </p>
+        <PageHeader title={post.title}>{post.description}</PageHeader>
+        <div className="space-y-0.5 text-sm text-fg-subtle">
+          <p>
+            {post.date.slice(0, 10)} · {post.readingTime} min read
+          </p>
+          <Tags tags={post.tags} className="block text-xs" />
+        </div>
+      </div>
       <article className="max-w-prose min-w-0 border-t border-line pt-2">
         <MarkdownContent markdown={post.content} />
       </article>
