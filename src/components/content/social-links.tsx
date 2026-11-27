@@ -25,9 +25,12 @@ export const LINK_NAMES: Record<LinkKind, string> = {
   resume: "Resume (PDF)",
 };
 
-/** Opens outside the site: a new tab. mailto: and the resume PDF stay in this one. */
+/**
+ * Opens in a new tab: outside links, and PDFs, so the resume shows in the
+ * browser's viewer instead of replacing the site. mailto: stays in this tab.
+ */
 export function isExternal(href: string) {
-  return href.startsWith("http");
+  return href.startsWith("http") || href.endsWith(".pdf");
 }
 
 export function externalProps(href: string) {

@@ -16,7 +16,7 @@ export const HERO = {
   org: "University of Central Florida",
   location: "Orlando, FL",
   summary:
-    "I study how processors keep confidential workloads safe: trusted execution environments, memory encryption, and what those defenses cost. I measure it with gem5 full-system simulation, run at scale on Azure, and build the software around it.",
+    "I find out what confidential computing really costs. I model memory encryption and trusted execution in gem5 full-system simulations run at scale on Azure, and write Linux kernel modules for persistent memory over CXL. On the industry side, I designed the commissions system Findway Solutions runs on and moved them off Excel.",
   /** One line each, newest first. Shown beside the intro. */
   highlights: [
     ["research", "Graduate Research Assistant, UCF · 2024–now"],
