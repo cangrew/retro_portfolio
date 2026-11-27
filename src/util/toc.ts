@@ -6,14 +6,26 @@ export interface TocEntry {
   depth: 2 | 3;
 }
 
-/** Markdown inline syntax that does not appear in a heading's rendered text. */
+/**
+ * A heading's rendered text: what rehype-slug slugs. Code spans keep every
+ * character; outside them, links and images keep their text, HTML tags go,
+ * and emphasis markers go (an underscore inside a word is literal Markdown).
+ */
 function plain(heading: string) {
   return heading
-    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/<[^>]+>/g, "")
-    .replace(/[`*_~]/g, "")
     .replace(/\s+#+\s*$/, "")
+    .split(/(`+[^`]*`+)/)
+    .map((part, i) =>
+      i % 2 === 1
+        ? part.replace(/^`+\s?|\s?`+$/g, "")
+        : part
+            .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
+            .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+            .replace(/<[^>]+>/g, "")
+            .replace(/[*~]/g, "")
+            .replace(/(^|\W)_+|_+(?=\W|$)/g, "$1"),
+    )
+    .join("")
     .trim();
 }
 

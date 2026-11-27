@@ -72,6 +72,13 @@ describe('tableOfContents', () => {
   })
 })
 
+describe('tableOfContents ids match the rendered headings', () => {
+  it.each(['## Using `foo_bar`', '## *Emphasis* and _more_', '## snake_case name', '## A [link](/x) here'])('%s', (md) => {
+    const [entry] = tableOfContents(md)
+    expect(html(md)).toContain(`id="${entry.id}"`)
+  })
+})
+
 describe('parseImages', () => {
   it('accepts bare paths and { src, alt, caption } objects', () => {
     expect(parseImages(['/a.png', { src: '/b.png', alt: 'B', caption: 'cap' }, 3])).toEqual([
