@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useTheme } from "@/lib/theme/theme-provider";
 import { PAGES } from "./site-map";
 import { useShell } from "./shell-context";
 
@@ -17,13 +16,11 @@ function isTyping(target: EventTarget | null): boolean {
  * - ⌘K / Ctrl+K: command palette (always on)
  * - : or /: command palette
  * - 1-8: jump to a page
- * - t: switch theme
  * - ?: keyboard help
  * Single-key shortcuts are skipped while typing, while a dialog is open, or when turned off.
  */
 export function useShortcuts() {
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
   const { paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, drawerOpen, shortcutsEnabled } = useShell();
 
   useEffect(() => {
@@ -53,13 +50,9 @@ export function useShortcuts() {
           e.preventDefault();
           setHelpOpen(true);
           break;
-        case "t":
-          e.preventDefault();
-          setTheme(theme === "light" ? "dark" : "light");
-          break;
       }
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [router, theme, setTheme, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, drawerOpen, shortcutsEnabled]);
+  }, [router, paletteOpen, setPaletteOpen, helpOpen, setHelpOpen, drawerOpen, shortcutsEnabled]);
 }

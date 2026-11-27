@@ -35,7 +35,6 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from "@/components/ui/menu";
-import { ThemeSwitcher } from "@/components/ui/theme-switcher";
 import { Specimen } from "./specimen";
 
 function MenuDemo() {
@@ -255,9 +254,6 @@ function Gallery() {
           </Specimen>
           <Specimen label="Menu" code={`<Menu><MenuTrigger /><MenuContent><MenuRadioItem /></MenuContent></Menu>`}>
             <MenuDemo />
-          </Specimen>
-          <Specimen label="ThemeSwitcher (switches the page theme)">
-            <ThemeSwitcher />
           </Specimen>
           <ShellSpecimen />
         </div>

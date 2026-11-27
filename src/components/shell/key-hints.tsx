@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { ThemeSwitcher } from "@/components/ui/theme-switcher";
 import { PAGES } from "./site-map";
 import { useShell } from "./shell-context";
 
@@ -37,8 +36,6 @@ export function KeyHints() {
             <Sep />
             <Hint k=":" onClick={() => setPaletteOpen(true)}>command</Hint>
             <Sep />
-            <Hint k="t">theme</Hint>
-            <Sep />
             <Hint k="?" onClick={() => setHelpOpen(true)}>help</Hint>
           </>
         ) : (
@@ -49,7 +46,6 @@ export function KeyHints() {
           </>
         )}
       </div>
-      <ThemeSwitcher className="h-full border-0 px-1 text-2xs" />
       </div>
     </footer>
   );
