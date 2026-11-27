@@ -27,7 +27,7 @@ import BlogPage from '../page'
 describe('BlogPage', () => {
   it('renders blog post title', () => {
     render(<BlogPage />)
-    expect(screen.getByText('Test Post Title')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Test Post Title' })).toBeInTheDocument()
   })
 
   it('renders blog post description', () => {
@@ -35,24 +35,25 @@ describe('BlogPage', () => {
     expect(screen.getByText('A test post description')).toBeInTheDocument()
   })
 
-  it('renders reading time in short format', () => {
+  it('renders reading time', () => {
     render(<BlogPage />)
-    expect(screen.getByText('5m')).toBeInTheDocument()
+    expect(screen.getByText(/5 min read/)).toBeInTheDocument()
   })
 
-  it('leaves tags to the post page', () => {
+  it('shows the latest post\'s tags and offers them as topic filters', () => {
     render(<BlogPage />)
-    expect(screen.queryByText('TypeScript')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /typescript/i })).toHaveAttribute('aria-pressed', 'false')
+    expect(screen.getAllByText('TypeScript').length).toBeGreaterThan(0)
   })
 
   it('links each post to its slug URL', () => {
     render(<BlogPage />)
-    const link = screen.getByRole('link', { name: /test post title/i })
+    const link = screen.getByRole('link', { name: 'Test Post Title' })
     expect(link).toHaveAttribute('href', '/blog/test-post')
   })
 
-  it('renders date column', () => {
+  it('renders a machine-readable date', () => {
     render(<BlogPage />)
-    expect(screen.getByText('2026-01-01')).toBeInTheDocument()
+    expect(screen.getByText('Jan 1, 2026')).toHaveAttribute('datetime', '2026-01-01')
   })
 })

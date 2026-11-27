@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" role="img" aria-label="Bar chart: miss rate falls as cache size grows">
+  <rect width="640" height="300" fill="#121212"/>
+  <g font-family="monospace" font-size="13" fill="#9399b2">
+    <text x="24" y="32">L1 miss rate by cache size</text>
+    <line x1="60" y1="260" x2="616" y2="260" stroke="#313244"/>
+    <g fill="#1793d1">
+      <rect x="84" y="70" width="60" height="190"/><rect x="174" y="120" width="60" height="140"/>
+      <rect x="264" y="160" width="60" height="100"/><rect x="354" y="190" width="60" height="70"/>
+      <rect x="444" y="210" width="60" height="50"/><rect x="534" y="222" width="60" height="38"/>
+    </g>
+    <text x="96" y="282">1K</text><text x="186" y="282">2K</text><text x="276" y="282">4K</text>
+    <text x="366" y="282">8K</text><text x="452" y="282">16K</text><text x="542" y="282">32K</text>
+  </g>
+</svg>

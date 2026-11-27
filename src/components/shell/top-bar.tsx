@@ -5,13 +5,11 @@ import { usePathname } from "next/navigation";
 import { Pane } from "@/components/ui/pane";
 import { onTabRowKeyDown } from "@/components/ui/row-list";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { buttonVariants } from "@/components/ui/button-variants";
+import { LINK_ICONS, LINK_NAMES, externalProps, isExternal } from "@/components/content/social-links";
+import { LINKS } from "@/data/profile";
 import { PAGES, pageForPath } from "./site-map";
-
-const LINKS = [
-  { label: "github", href: "https://github.com/cangrew" },
-  { label: "linkedin", href: "https://linkedin.com/in/andresddelgado" },
-  { label: "resume", href: "/resume/resume.pdf" },
-];
 
 /**
  * The menu, as the top panel of the TUI: the pages as a row of numbered tabs,
@@ -48,17 +46,30 @@ export function TopBar({ focused }: { focused: boolean }) {
             );
           })}
         </ul>
-        <ul className="hidden shrink-0 gap-4 pr-2 text-sm xl:flex">
-          {LINKS.map((l) => (
-            <li key={l.label}>
-              <a href={l.href} target="_blank" rel="noopener noreferrer" className="text-fg-muted no-underline hover:text-fg">
-                {l.label}{" "}
-                <span aria-hidden className="text-fg-subtle">
-                  ↗
-                </span>
-              </a>
-            </li>
-          ))}
+        <ul className="flex shrink-0 items-center gap-1 pr-1" aria-label="Links">
+          {LINKS.map((l) => {
+            const Icon = LINK_ICONS[l.kind];
+            const name = LINK_NAMES[l.kind] + (isExternal(l.href) ? " (opens in a new tab)" : "");
+            return (
+              <li key={l.kind}>
+                <Tooltip>
+                  <TooltipTrigger
+                    render={
+                      <a
+                        href={l.href}
+                        {...externalProps(l.href)}
+                        aria-label={name}
+                        className={buttonVariants({ variant: "ghost", size: "icon", className: "size-8" })}
+                      />
+                    }
+                  >
+                    <Icon aria-hidden />
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">{LINK_NAMES[l.kind]}</TooltipContent>
+                </Tooltip>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </Pane>

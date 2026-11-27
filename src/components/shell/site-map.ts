@@ -9,7 +9,7 @@ export const PAGES = [
 export type Page = (typeof PAGES)[number];
 
 /** Sections of the homepage the command palette can jump to. */
-export const HOME_SECTIONS = ["about", "research", "projects", "experience", "writing", "education", "skills"] as const;
+export const HOME_SECTIONS = ["about", "experience", "research", "projects", "writing", "education", "skills"] as const;
 
 /** The page a path belongs to: "/projects/foo" → projects. */
 export function pageForPath(pathname: string): Page | undefined {

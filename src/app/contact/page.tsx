@@ -1,40 +1,41 @@
 import { PageHeader } from "@/components/content/page-header";
 import { Section } from "@/components/ui/section";
-import { RowList } from "@/components/ui/row-list";
-import { rowClass, rowMuted, rowSubtle } from "@/components/ui/row-styles";
+import { LINK_ICONS, LINK_NAMES, externalProps, isExternal } from "@/components/content/social-links";
 import { LINKS } from "@/data/profile";
 
-const CHANNELS = LINKS.filter((l) => l.label !== "resume");
+export const metadata = { title: "Contact" };
 
 export default function ContactPage() {
   return (
     <main className="space-y-10">
       <PageHeader title="Contact">Reach out on any of these. I usually reply within one to three business days.</PageHeader>
 
-      <Section title="channels" className="max-w-prose">
-        <RowList>
-          {CHANNELS.map(({ label, display, href }) => {
-            const external = !href.startsWith("mailto");
+      <Section title="channels" className="max-w-3xl">
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {LINKS.map(({ kind, display, href }) => {
+            const Icon = LINK_ICONS[kind];
+            const external = isExternal(href);
             return (
-              <li key={label}>
+              <li key={kind}>
                 <a
                   href={href}
-                  target={external ? "_blank" : undefined}
-                  rel={external ? "noopener noreferrer" : undefined}
-                  className={`${rowClass} min-h-[2.75rem] items-center`}
+                  {...externalProps(href)}
+                  className="group flex min-h-[3.5rem] items-center gap-3 border border-line px-3 py-2.5 text-fg no-underline transition-colors duration-fast hover:border-accent hover:bg-chrome hover:text-fg focus-visible:border-accent"
                 >
-                  <span className={`w-16 shrink-0 ${rowSubtle}`}>{label}</span>
-                  <span className="min-w-0 break-all">{display}</span>
-                  {external && (
-                    <span aria-hidden className={rowMuted}>
-                      ↗
-                    </span>
-                  )}
+                  <Icon aria-hidden className="size-5 shrink-0 text-fg-muted group-hover:text-accent" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-sm font-bold">{LINK_NAMES[kind]}</span>
+                    <span className="block break-all text-xs text-fg-muted">{display}</span>
+                  </span>
+                  <span aria-hidden className="text-fg-subtle group-hover:text-accent">
+                    {external ? "↗" : "→"}
+                  </span>
+                  {external && <span className="sr-only">(opens in a new tab)</span>}
                 </a>
               </li>
             );
           })}
-        </RowList>
+        </ul>
       </Section>
     </main>
   );

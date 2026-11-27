@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direct-mapped cache demo</title>
+<style>
+  body { margin: 0; padding: 16px; background: #121212; color: #cdd6f4; font: 14px/1.5 ui-monospace, monospace; }
+  button { font: inherit; background: #1b1b1d; color: #cdd6f4; border: 1px solid #62657d; padding: 4px 10px; cursor: pointer; }
+  button:hover { border-color: #1793d1; }
+  button:focus-visible { outline: 2px solid #1793d1; outline-offset: 2px; }
+  .sets { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin: 12px 0; }
+  .set { border: 1px solid #313244; padding: 6px; text-align: center; min-height: 2.5em; }
+  .hit { border-color: #a6e3a1; color: #a6e3a1; }
+  .miss { border-color: #f38ba8; color: #f38ba8; }
+  .muted { color: #9399b2; }
+</style>
+</head>
+<body>
+  <p class="muted">A direct-mapped cache with 8 sets. Each access maps address mod 8 to a set.</p>
+  <button id="next">access next address</button> <button id="reset">reset</button>
+  <div class="sets" id="sets"></div>
+  <p id="log" aria-live="polite"></p>
+  <script>
+    const trace = [0, 8, 1, 0, 16, 1, 9, 8, 2, 0];
+    let sets = Array(8).fill(null), i = 0, hits = 0;
+    const el = document.getElementById("sets"), log = document.getElementById("log");
+    function draw(hl, kind) {
+      el.innerHTML = sets.map((v, s) => `<div class="set ${s === hl ? kind : ""}">${s}: ${v ?? "-"}</div>`).join("");
+    }
+    document.getElementById("next").onclick = () => {
+      if (i >= trace.length) { log.textContent = `done: ${hits}/${trace.length} hits`; return; }
+      const a = trace[i++], s = a % 8, hit = sets[s] === a;
+      if (hit) hits++; else sets[s] = a;
+      draw(s, hit ? "hit" : "miss");
+      log.textContent = `addr ${a} → set ${s}: ${hit ? "hit" : "miss"} (${hits}/${i} hits)`;
+    };
+    document.getElementById("reset").onclick = () => { sets = Array(8).fill(null); i = hits = 0; log.textContent = ""; draw(-1); };
+    draw(-1);
+  </script>
+</body>
+</html>

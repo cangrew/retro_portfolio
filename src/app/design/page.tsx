@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { THEMES } from "@/design-system/tokens";
 import { PageHeader } from "@/components/content/page-header";
 import { Pane } from "@/components/ui/pane";
+import MarkdownContent from "@/components/md-content";
 import { ComponentGallery } from "./component-gallery";
 import { DesignSection } from "./specimen";
 import {
@@ -26,7 +27,37 @@ const CONTENTS = [
   { id: "surfaces", label: "borders, radii, shadows" },
   { id: "motion", label: "motion" },
   { id: "components", label: "components" },
+  { id: "content", label: "post and project content" },
 ];
+
+/** Every Markdown feature a post or project can use, rendered by the same component the pages use. */
+const CONTENT_SAMPLE = `## A heading
+
+Body text with **bold**, *emphasis*, \`inline code\`, ~~struck~~ text, a [link inside the site](/projects)
+and an [outside link](https://www.gem5.org). Footnotes work too.[^1]
+
+![Bar chart of L1 miss rate falling as cache size grows from 1K to 32K](/design/sample-figure.svg "An image on its own line becomes a figure; its title is the caption.")
+
+### An embedded HTML artifact
+
+<iframe src="/design/artifact-demo.html" title="Direct-mapped cache demo" height="260"></iframe>
+
+| policy | L1 miss | L2 miss |
+|--------|--------:|--------:|
+| LRU    |   4.2%  |   1.1%  |
+| FIFO   |   4.9%  |   1.3%  |
+
+- [x] task lists
+- [ ] still to do
+
+> A quote, set off by a rule.
+
+\`\`\`cpp
+uint64_t set = (addr >> offset_bits) & (num_sets - 1);
+\`\`\`
+
+[^1]: Footnotes collect at the end of the post.
+`;
 
 const PRINCIPLES = [
   ["One typeface", "JetBrains Mono with ligatures, for headings, body and UI alike."],
@@ -92,6 +123,24 @@ export default function DesignPage() {
         }
       >
         <ComponentGallery themes={THEMES} />
+      </DesignSection>
+
+      <DesignSection
+        id="content"
+        title="Post and project content"
+        intro={
+          <p>
+            Markdown in <code className="text-fg">content/blog</code> and <code className="text-fg">content/projects</code>,
+            rendered by <code className="text-fg">md-content.tsx</code>. Raw HTML is allowed, so a post can embed an
+            iframe, a video or an HTML artifact kept in <code className="text-fg">public/</code>.
+          </p>
+        }
+      >
+        <Pane title="sample.mdx">
+          <article className="max-w-prose">
+            <MarkdownContent markdown={CONTENT_SAMPLE} />
+          </article>
+        </Pane>
       </DesignSection>
     </main>
   );

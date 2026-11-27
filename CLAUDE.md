@@ -19,16 +19,23 @@ Personal portfolio site for Andres Delgado (andresddelgado.com) -- Next.js 15 Ap
 
 Project content lives in `content/projects/*.mdx` files with frontmatter (title, description, date, url, published, private). The content is parsed at build time by `src/util/mdx.ts` using `gray-matter` -- **not** contentlayer2. The `contentlayer.config.ts` and contentlayer imports are vestigial/unused; the actual content directory is `content/projects/` (not `src/content/projects/` as contentlayer config states).
 
-MDX body content is rendered client-side via `react-markdown` in `src/components/md-content.tsx`.
+Blog posts live in `content/blog/*.mdx` (title, description, date, published, tags).
+
+The body is rendered on the server by `react-markdown` in `src/components/md-content.tsx` (GFM, KaTeX math, raw HTML, heading ids). `/design#content` shows every feature. In a post or project:
+
+- Images: `![alt text](/path.png "Caption")`. An image alone on its line becomes a `<figure>`; the title is the caption, the alt text is for screen readers. Put files in `public/`.
+- Embedded HTML artifacts and pages: `<iframe src="/artifacts/name/index.html" title="What it is"></iframe>` on its own line. It gets a 16:9 frame (or `height="400"`), a caption with an "open full screen" link, lazy loading and a sandbox (`allow-scripts allow-popups allow-forms`; pass `sandbox="…"` to change it). Always give a `title`. `<video>` works too.
+- `##` and `###` headings feed the "contents" list on post and project pages (`src/util/toc.ts` uses the same slugger as rehype-slug).
+- Projects can also set `thumbnail` (cover image) and `images` (gallery: a list of paths or `{ src, alt, caption }`).
 
 ### Routing
 
 Four tabs: home, projects, blog, contact. Less is more: a visitor should get the gist from the homepage alone.
 
-- `/` -- Home: an extended resume (about, research and publications, experience, selected projects, recent posts, profile, education, skills). The facts live in `src/data/profile.ts`.
-- `/projects`, `/projects/[slug]` -- All published projects; detail pages are SSG via `generateStaticParams`
-- `/blog`, `/blog/[slug]` -- Posts
-- `/contact` -- Contact channels
+- `/` -- Home: an extended resume. The hero comes first and must answer who, where, what and how much experience (`HERO` in `src/data/profile.ts`); then about, experience, research, selected projects, recent posts, education, skills. The facts live in `src/data/profile.ts`.
+- `/projects`, `/projects/[slug]` -- All published projects in a two-column grid by category with a category filter (`project-index.tsx`); detail pages are SSG via `generateStaticParams`
+- `/blog`, `/blog/[slug]` -- Newest post featured, the rest by year, topics as filters (`blog-index.tsx`); posts get a contents list and older/newer links
+- `/contact` -- Contact channels as icon links. Social links everywhere come from `LINKS` in `profile.ts` and the icons in `content/social-links.tsx`
 - `/about`, `/research`, `/resume` and `/brain` were folded into the homepage; `next.config.ts` redirects them. `/design` is the unlisted design-system reference.
 
 ### Key Components
