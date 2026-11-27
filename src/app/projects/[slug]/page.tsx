@@ -89,7 +89,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 {caseStudy.map(([label, value]) => (
                   <div key={label} className="contents">
                     <dt className="font-bold text-accent">{label}</dt>
-                    <dd className="leading-relaxed text-fg-muted">{value}</dd>
+                    <dd className="text-justify leading-relaxed text-fg-muted hyphens-auto">{value}</dd>
                   </div>
                 ))}
               </dl>

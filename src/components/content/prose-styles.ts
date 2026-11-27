@@ -5,6 +5,7 @@
  *
  * No "use client" here: server modules import these strings.
  */
+/* Body text (p, li, blockquote) is justified, with hyphenation so lines don't open wide gaps. */
 export const PROSE = {
   /** Wraps the whole rendered document; long words and URLs wrap instead of overflowing. */
   root: "min-w-0 break-words [&>:first-child]:mt-0",
@@ -12,16 +13,16 @@ export const PROSE = {
   h2: "mt-8 mb-3 text-lg font-bold text-fg before:text-fg-subtle before:content-['##_']",
   h3: "mt-6 mb-2 text-base font-bold text-fg before:text-fg-subtle before:content-['###_']",
   h4: "mt-5 mb-2 text-base font-medium text-fg-muted before:text-fg-subtle before:content-['####_']",
-  p: "my-3 leading-relaxed text-fg",
+  p: "my-3 text-justify hyphens-auto leading-relaxed text-fg",
   a: "text-accent underline underline-offset-2 hover:text-ansi-cyan",
   code: "bg-chrome px-1 text-[0.9em] text-ansi-yellow",
   preWrap: "relative my-4",
   preLang: "absolute right-0 top-0 bg-chrome px-1.5 py-0.5 text-xs text-fg-subtle",
   pre: "overflow-x-auto border border-line bg-pane p-3 text-sm leading-relaxed [&_code]:bg-transparent [&_code]:p-0 [&_code]:text-fg",
-  blockquote: "my-4 border-l-2 border-line-strong pl-4 text-fg-muted",
+  blockquote: "my-4 border-l-2 border-line-strong pl-4 text-justify hyphens-auto text-fg-muted",
   ul: "my-3 list-['-_'] space-y-1 pl-5 marker:text-fg-subtle",
   ol: "my-3 list-decimal space-y-1 pl-6 marker:text-fg-subtle",
-  li: "pl-1",
+  li: "pl-1 text-justify hyphens-auto",
   taskList: "my-3 space-y-1 [&_input]:mr-2 [&_input]:accent-accent",
   strong: "font-bold text-fg",
   em: "italic text-fg",
