@@ -107,21 +107,6 @@ export default function HomePage() {
 
       <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
         <div className="min-w-0 space-y-12">
-          <Section id="about" title="about" className="scroll-mt-28">
-            <div className="max-w-prose space-y-3 leading-relaxed">
-              <p>
-                I work on memory encryption and the secure processor stack, studying where today&apos;s defenses for
-                confidential computing succeed and where they break down. I measure their microarchitectural cost with
-                the gem5 full-system simulator, running large experiments on Azure. I came to the PhD straight from my
-                bachelor&apos;s.
-              </p>
-              <p className="text-fg-muted">
-                Outside research I play classical and electric guitar (metal and hardcore, mostly), read a lot of
-                science fiction, and keep up with philosophy and religion. I&apos;m an alumnus of Phi Mu Alpha
-                Sinfonia, Mu Eta chapter, where I served as chapter president.
-              </p>
-            </div>
-          </Section>
 
           <Section id="experience" title="experience" className="scroll-mt-28">
             <Entries entries={EXPERIENCE} />
@@ -191,6 +176,15 @@ export default function HomePage() {
               </p>
             </Section>
           )}
+
+          {/* The hero covers the work; this is the rest of the person. */}
+          <Section id="about" title="outside the lab" className="scroll-mt-28">
+            <p className="max-w-prose leading-relaxed text-fg-muted">
+              I came to the PhD straight from my bachelor&apos;s. Outside research I play classical and electric guitar
+              (metal and hardcore, mostly), read a lot of science fiction, and keep up with philosophy and religion.
+              I&apos;m an alumnus of Phi Mu Alpha Sinfonia, Mu Eta chapter, where I served as chapter president.
+            </p>
+          </Section>
         </div>
 
         <aside className="min-w-0 space-y-12">

@@ -32,7 +32,7 @@ The body is rendered on the server by `react-markdown` in `src/components/md-con
 
 Four tabs: home, projects, blog, contact. Less is more: a visitor should get the gist from the homepage alone.
 
-- `/` -- Home: an extended resume. The hero comes first and must answer who, where, what and how much experience (`HERO` in `src/data/profile.ts`); then about, experience, research, selected projects, recent posts, education, skills. The facts live in `src/data/profile.ts`.
+- `/` -- Home: an extended resume. The hero comes first and must answer who, where, what and how much experience (`HERO` in `src/data/profile.ts`); then experience, research, selected projects, recent posts, a short "outside the lab" note, education, skills. The facts live in `src/data/profile.ts`.
 - `/projects`, `/projects/[slug]` -- All published projects in a two-column grid by category with a category filter (`project-index.tsx`); detail pages are SSG via `generateStaticParams`
 - `/blog`, `/blog/[slug]` -- Newest post featured, the rest by year, topics as filters (`blog-index.tsx`); posts get a contents list and older/newer links
 - `/contact` -- Contact channels as icon links. Social links everywhere come from `LINKS` in `profile.ts` and the icons in `content/social-links.tsx`

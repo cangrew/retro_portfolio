@@ -16,7 +16,7 @@ export const HERO = {
   org: "University of Central Florida",
   location: "Orlando, FL",
   summary:
-    "I study how processors keep confidential workloads safe: trusted execution environments, memory encryption, and what those defenses cost. I measure it with gem5 full-system simulation, and I build the software around it.",
+    "I study how processors keep confidential workloads safe: trusted execution environments, memory encryption, and what those defenses cost. I measure it with gem5 full-system simulation, run at scale on Azure, and build the software around it.",
   /** One line each, newest first. Shown beside the intro. */
   highlights: [
     ["research", "Graduate Research Assistant, UCF · 2024–now"],
