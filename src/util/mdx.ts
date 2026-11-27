@@ -1,7 +1,19 @@
 import path from 'path'
 import { notFound } from 'next/navigation'
 import { getAllContent, getContent } from './content'
-import { Project, ProjectCategory, PROJECT_CATEGORIES } from './types'
+import { Project, ProjectCategory, ProjectImage, PROJECT_CATEGORIES } from './types'
+
+export function parseImages(value: unknown): ProjectImage[] {
+  if (!Array.isArray(value)) return []
+  return value.flatMap((v): ProjectImage[] => {
+    if (typeof v === 'string') return [{ src: v, alt: '' }]
+    if (v && typeof v === 'object' && typeof (v as { src?: unknown }).src === 'string') {
+      const o = v as { src: string; alt?: unknown; caption?: unknown }
+      return [{ src: o.src, alt: typeof o.alt === 'string' ? o.alt : '', caption: typeof o.caption === 'string' ? o.caption : undefined }]
+    }
+    return []
+  })
+}
 
 function parseCategory(value: unknown, slug: string): ProjectCategory {
   if (PROJECT_CATEGORIES.includes(value as ProjectCategory)) {
@@ -31,7 +43,7 @@ function mapProject(
     private: Boolean(data.private ?? true),
     tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
     thumbnail: data.thumbnail ? String(data.thumbnail) : undefined,
-    images: Array.isArray(data.images) ? (data.images as string[]) : [],
+    images: parseImages(data.images),
     problem: data.problem ? String(data.problem) : undefined,
     approach: data.approach ? String(data.approach) : undefined,
     results: data.results ? String(data.results) : undefined,

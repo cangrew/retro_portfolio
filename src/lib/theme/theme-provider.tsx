@@ -5,7 +5,9 @@ import { ThemeProvider as NextThemesProvider, useTheme as useNextTheme } from "n
 import { DEFAULT_THEME, THEMES, THEME_STORAGE_KEY, type ThemeName } from "@/design-system/tokens";
 
 /**
- * Theme switching via next-themes. It sets `data-theme` on <html> before the
+ * The site renders in the dark theme only (there is no switcher). next-themes
+ * still sets `data-theme` on <html>, which /design's light specimens rely on.
+ * It It sets `data-theme` on <html> before the
  * first paint, so there is no flash and no hand-written inline script.
  */
 export function ThemeProvider({ children }: { children: ReactNode }) {
@@ -14,6 +16,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       attribute="data-theme"
       themes={[...THEMES]}
       defaultTheme={DEFAULT_THEME}
+      // The site is dark only; a visitor's old saved "light" choice is ignored.
+      forcedTheme={DEFAULT_THEME}
       enableSystem={false}
       storageKey={THEME_STORAGE_KEY}
       disableTransitionOnChange

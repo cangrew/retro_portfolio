@@ -1,12 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { ThemeSwitcher } from "@/components/ui/theme-switcher";
 import { MobileDrawer } from "./mobile-drawer";
 import { useShell } from "./shell-context";
 import { pageForPath } from "./site-map";
 
-/** Phones get a slim top bar: menu, the current page, theme, command palette. */
+/** Phones get a slim top bar: menu, the current page, command palette. */
 export function MobileBar() {
   const { setPaletteOpen } = useShell();
   const page = pageForPath(usePathname());
@@ -20,7 +19,6 @@ export function MobileBar() {
           </>
         )}
       </span>
-      <ThemeSwitcher className="min-w-0 px-1 md:hidden" />
       <button
         type="button"
         aria-label="Open command palette"

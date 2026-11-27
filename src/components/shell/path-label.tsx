@@ -10,12 +10,12 @@ import { shellPath } from "./site-map";
  * so the span remounts once after hydration (a new key) instead of React
  * flagging the difference as a hydration error.
  */
-export function PathLabel({ className }: { className?: string }) {
+export function PathLabel({ className, "aria-hidden": ariaHidden }: { className?: string; "aria-hidden"?: boolean }) {
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   return (
-    <span key={mounted ? "client" : "server"} className={className} suppressHydrationWarning>
+    <span key={mounted ? "client" : "server"} className={className} aria-hidden={ariaHidden} suppressHydrationWarning>
       {shellPath(pathname)}
     </span>
   );

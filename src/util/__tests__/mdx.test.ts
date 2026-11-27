@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import path from 'path'
 import { getAllContent, getContent } from '../content'
 import { Project, ProjectCategory } from '../types'
+import { parseImages } from '../mdx'
 
 const PROJECT_FIXTURE_DIR = path.join(process.cwd(), 'src/test/fixtures/projects')
 
@@ -17,7 +18,7 @@ function mapProject(data: Record<string, unknown>, slug: string, content: string
     private: Boolean(data.private ?? true),
     tags: Array.isArray(data.tags) ? (data.tags as string[]) : [],
     thumbnail: data.thumbnail ? String(data.thumbnail) : undefined,
-    images: Array.isArray(data.images) ? (data.images as string[]) : [],
+    images: parseImages(data.images),
     problem: data.problem ? String(data.problem) : undefined,
     approach: data.approach ? String(data.approach) : undefined,
     results: data.results ? String(data.results) : undefined,

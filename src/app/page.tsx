@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { MapPin } from "lucide-react";
 import { Analytics } from "@vercel/analytics/react";
 import { getAllProjects } from "@/util/mdx";
 import { getAllBlogPosts } from "@/util/blog";
@@ -9,7 +11,9 @@ import { Kbd } from "@/components/ui/kbd";
 import { RowList } from "@/components/ui/row-list";
 import { rowClass, rowMuted, rowSubtle } from "@/components/ui/row-styles";
 import { Category } from "@/components/content/category";
-import { EDUCATION, EXPERIENCE, LINKS, PROFILE, SKILLS, type Entry } from "@/data/profile";
+import { SocialLinks } from "@/components/content/social-links";
+import { EDUCATION, EXPERIENCE, HERO, SKILLS, type Entry } from "@/data/profile";
+import portrait from "@/public/profile1.jpg";
 
 const OWNER = "Andres Delgado";
 
@@ -38,8 +42,49 @@ function Entries({ entries }: { entries: Entry[] }) {
   );
 }
 
-function external(href: string) {
-  return href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {};
+/**
+ * The first screen: who Andres is, where, what he does and how much
+ * experience he has, with the links to reach him. Everything else on the
+ * page expands on one of these lines.
+ */
+function Hero() {
+  return (
+    <header className="grid gap-x-10 gap-y-8 border-b border-line pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)]">
+      <div className="flex min-w-0 flex-col gap-5 sm:flex-row sm:items-start">
+        <Image
+          src={portrait}
+          alt="Portrait of Andres Delgado"
+          width={128}
+          height={128}
+          priority
+          sizes="128px"
+          className="size-24 shrink-0 border border-line-strong object-cover sm:size-32"
+        />
+        <div className="min-w-0 space-y-4">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-fg sm:text-4xl">{HERO.name}</h1>
+            <p className="text-lg text-accent">
+              {HERO.role}
+              <span className="text-fg-muted"> at {HERO.org}</span>
+            </p>
+            <p className="flex items-center gap-1.5 text-sm text-fg-muted">
+              <MapPin aria-hidden className="size-4 shrink-0 text-fg-subtle" />
+              <span>
+                <span className="sr-only">Location: </span>
+                {HERO.location}
+              </span>
+            </p>
+          </div>
+          <p className="max-w-prose leading-relaxed text-fg-muted">{HERO.summary}</p>
+          <SocialLinks primary="email" />
+        </div>
+      </div>
+
+      <Section title="at a glance" className="self-center">
+        <KeyValue items={HERO.highlights} className="gap-y-2" />
+      </Section>
+    </header>
+  );
 }
 
 /**
@@ -58,40 +103,13 @@ export default function HomePage() {
     <main>
       <Analytics />
 
-      <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
-        <div className="min-w-0 space-y-12">
-          <header className="space-y-4">
-            <h1 className="text-3xl font-bold text-fg sm:text-4xl">Andres Delgado</h1>
-            <p className="max-w-prose leading-relaxed text-fg-muted sm:text-lg">
-              PhD student in computer architecture at UCF. I study how processors keep confidential workloads safe:
-              trusted execution environments, memory encryption, and what those defenses cost.
-            </p>
-            <ul className="flex flex-wrap gap-x-5 gap-y-1 text-sm">
-              {LINKS.map((l) => (
-                <li key={l.label}>
-                  <a href={l.href} {...external(l.href)}>
-                    {l.label}
-                  </a>
-                  {l.href.startsWith("http") && <span aria-hidden className="ml-1 text-fg-subtle">↗</span>}
-                </li>
-              ))}
-            </ul>
-          </header>
+      <Hero />
 
-          <Section id="about" title="about" className="scroll-mt-28">
-            <div className="max-w-prose space-y-3 leading-relaxed">
-              <p>
-                I work on memory encryption and the secure processor stack, studying where today&apos;s defenses for
-                confidential computing succeed and where they break down. I measure their microarchitectural cost with
-                the gem5 full-system simulator, running large experiments on Azure. I came to the PhD straight from my
-                bachelor&apos;s.
-              </p>
-              <p className="text-fg-muted">
-                Outside research I play classical and electric guitar (metal and hardcore, mostly), read a lot of
-                science fiction, and keep up with philosophy and religion. I&apos;m an alumnus of Phi Mu Alpha
-                Sinfonia, Mu Eta chapter, where I served as chapter president.
-              </p>
-            </div>
+      <div className="mt-10 grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,22rem)]">
+        <div className="min-w-0 space-y-12">
+
+          <Section id="experience" title="experience" className="scroll-mt-28">
+            <Entries entries={EXPERIENCE} />
           </Section>
 
           <Section id="research" title="research" meta={`${publications.length} publication${publications.length === 1 ? "" : "s"}`} className="scroll-mt-28">
@@ -140,9 +158,6 @@ export default function HomePage() {
             </p>
           </Section>
 
-          <Section id="experience" title="experience" className="scroll-mt-28">
-            <Entries entries={EXPERIENCE} />
-          </Section>
 
           {posts.length > 0 && (
             <Section id="writing" title="writing" meta={`${posts.length} of ${allPosts.length}`} className="scroll-mt-28">
@@ -161,12 +176,18 @@ export default function HomePage() {
               </p>
             </Section>
           )}
+
+          {/* The hero covers the work; this is the rest of the person. */}
+          <Section id="about" title="outside the lab" className="scroll-mt-28">
+            <p className="max-w-prose leading-relaxed text-fg-muted">
+              I came to the PhD straight from my bachelor&apos;s. Outside research I play classical and electric guitar
+              (metal and hardcore, mostly), read a lot of science fiction, and keep up with philosophy and religion.
+              I&apos;m an alumnus of Phi Mu Alpha Sinfonia, Mu Eta chapter, where I served as chapter president.
+            </p>
+          </Section>
         </div>
 
         <aside className="min-w-0 space-y-12">
-          <Section title="profile">
-            <KeyValue items={PROFILE} />
-          </Section>
           <Section id="education" title="education" className="scroll-mt-28">
             <Entries entries={EDUCATION} />
           </Section>

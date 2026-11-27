@@ -19,16 +19,23 @@ Personal portfolio site for Andres Delgado (andresddelgado.com) -- Next.js 15 Ap
 
 Project content lives in `content/projects/*.mdx` files with frontmatter (title, description, date, url, published, private). The content is parsed at build time by `src/util/mdx.ts` using `gray-matter` -- **not** contentlayer2. The `contentlayer.config.ts` and contentlayer imports are vestigial/unused; the actual content directory is `content/projects/` (not `src/content/projects/` as contentlayer config states).
 
-MDX body content is rendered client-side via `react-markdown` in `src/components/md-content.tsx`.
+Blog posts live in `content/blog/*.mdx` (title, description, date, published, tags).
+
+The body is rendered on the server by `react-markdown` in `src/components/md-content.tsx` (GFM, KaTeX math, raw HTML, heading ids). `/design#content` shows every feature. In a post or project:
+
+- Images: `![alt text](/path.png "Caption")`. An image alone on its line becomes a `<figure>`; the title is the caption, the alt text is for screen readers. Put files in `public/`.
+- Embedded HTML artifacts and pages: `<iframe src="/artifacts/name/index.html" title="What it is"></iframe>` on its own line. It gets a 16:9 frame (or `height="400"`), a caption with an "open full screen" link, lazy loading and a sandbox (`allow-scripts allow-popups allow-forms`; pass `sandbox="…"` to change it). Always give a `title`. `<video>` works too.
+- `##` and `###` headings feed the "contents" list on post and project pages (`src/util/toc.ts` uses the same slugger as rehype-slug).
+- Projects can also set `thumbnail` (cover image) and `images` (gallery: a list of paths or `{ src, alt, caption }`).
 
 ### Routing
 
 Four tabs: home, projects, blog, contact. Less is more: a visitor should get the gist from the homepage alone.
 
-- `/` -- Home: an extended resume (about, research and publications, experience, selected projects, recent posts, profile, education, skills). The facts live in `src/data/profile.ts`.
-- `/projects`, `/projects/[slug]` -- All published projects; detail pages are SSG via `generateStaticParams`
-- `/blog`, `/blog/[slug]` -- Posts
-- `/contact` -- Contact channels
+- `/` -- Home: an extended resume. The hero comes first and must answer who, where, what and how much experience (`HERO` in `src/data/profile.ts`); then experience, research, selected projects, recent posts, a short "outside the lab" note, education, skills. The facts live in `src/data/profile.ts`.
+- `/projects`, `/projects/[slug]` -- All published projects in a two-column grid by category with a category filter (`project-index.tsx`); detail pages are SSG via `generateStaticParams`
+- `/blog`, `/blog/[slug]` -- Newest post featured, the rest by year, topics as filters (`blog-index.tsx`); posts get a contents list and older/newer links
+- `/contact` -- Contact channels as icon links. Social links everywhere come from `LINKS` in `profile.ts` and the icons in `content/social-links.tsx`
 - `/about`, `/research`, `/resume` and `/brain` were folded into the homepage; `next.config.ts` redirects them. `/design` is the unlisted design-system reference.
 
 ### Key Components
@@ -46,9 +53,9 @@ Tailwind utilities generated from the design tokens only; there are no legacy `r
 The terminal design system is the root of every page; see `/design` for the live reference.
 
 - Tokens: `src/design-system/tokens.ts` (colors per theme, type scale, layout, motion). `tailwind.config.ts` turns them into CSS variables and utilities (`bg-pane`, `text-fg-muted`, `border-accent`, `duration-fast`). Do not hard-code hex colors; add a token.
-- Themes: `dark` (default) and `light`, switched by next-themes via `data-theme` on `<html>` (`src/lib/theme/theme-provider.tsx`). The Win95 theme is retired.
+- Themes: the site is dark only, forced by next-themes (`forcedTheme`) via `data-theme` on `<html>` (`src/lib/theme/theme-provider.tsx`); there is no theme switcher. The `light` palette stays in the tokens for `/design` and possible future use. The Win95 theme is retired.
 - Font: JetBrains Mono only, with ligatures (`src/lib/fonts.ts`).
-- Components: `src/components/ui` (Button, Pane, PaneGrid, Section, RowList, KeyValue, Meter, Badge, Tabs, Dialog, Tooltip, Menu, Kbd, ThemeSwitcher), built on Base UI and styled with cva.
+- Components: `src/components/ui` (Button, Pane, PaneGrid, Section, RowList, KeyValue, Meter, Badge, Tabs, Dialog, Tooltip, Menu, Kbd), built on Base UI and styled with cva.
 - Class strings that server components need (`buttonVariants`, `rowClass`) live in files without "use client" (`button-variants.ts`, `row-styles.ts`). Importing a value from a "use client" module into a server component gives a client reference, not the value.
 - `tokens.test.ts` enforces WCAG AA contrast for every text color.
 - Style: borrow the component style of TUI tools (panels with the title set into the border, accent border on the focused panel, the menu as a top panel of tabs, key hints along the bottom). Never fake app chrome such as window controls or imitation git panels.

@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Command } from "cmdk";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Kbd } from "@/components/ui/kbd";
-import { useTheme } from "@/lib/theme/theme-provider";
 import { HOME_SECTIONS, PAGES, type SearchIndex } from "./site-map";
 import { useShell } from "./shell-context";
 
@@ -66,7 +65,6 @@ export function matchCommand(value: string, search: string, keywords?: string[])
 
 export function CommandPalette({ index }: { index: SearchIndex }) {
   const router = useRouter();
-  const { theme, setTheme } = useTheme();
   const { paletteOpen, setPaletteOpen, setHelpOpen, shortcutsEnabled, setShortcutsEnabled } = useShell();
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -163,13 +161,6 @@ export function CommandPalette({ index }: { index: SearchIndex }) {
             )}
 
             <Command.Group heading="actions" className={groupClass}>
-              <Item
-                value={`theme ${theme === "light" ? "dark" : "light"}`}
-                onSelect={() => run(() => setTheme(theme === "light" ? "dark" : "light"))}
-                command={<>{theme === "light" ? "dark" : "light"} theme</>}
-                label="switch the color theme"
-                hint={shortcutsEnabled ? <Kbd>t</Kbd> : undefined}
-              />
               <Item
                 value="resume pdf"
                 keywords={["cv", "download"]}

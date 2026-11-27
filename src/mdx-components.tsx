@@ -11,7 +11,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     p: (props) => <p {...props} className={PROSE.p} />,
     a: (props) => <a {...props} className={PROSE.a} />,
     code: (props) => <code {...props} className={props.className ?? PROSE.code} />,
-    pre: (props) => <pre {...props} className={PROSE.pre} />,
+    pre: (props) => <pre {...props} className={`my-4 ${PROSE.pre}`} />,
     blockquote: (props) => <blockquote {...props} className={PROSE.blockquote} />,
     ul: (props) => <ul {...props} className={PROSE.ul} />,
     ol: (props) => <ol {...props} className={PROSE.ol} />,

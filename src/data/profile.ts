@@ -9,19 +9,30 @@ export interface Entry {
   bullets: string[];
 }
 
-export const LINKS = [
-  { label: "email", display: "andresdaviddelgado@gmail.com", href: "mailto:andresdaviddelgado@gmail.com" },
-  { label: "github", display: "github.com/cangrew", href: "https://github.com/cangrew" },
-  { label: "linkedin", display: "linkedin.com/in/andresddelgado", href: "https://linkedin.com/in/andresddelgado" },
-  { label: "resume", display: "resume.pdf", href: "/resume/resume.pdf" },
-] as const;
+/** The first thing a visitor reads: who, where, what, and how much experience. */
+export const HERO = {
+  name: "Andres Delgado",
+  role: "PhD student in computer architecture",
+  org: "University of Central Florida",
+  location: "Orlando, FL",
+  summary:
+    "I find out what confidential computing really costs. I model memory encryption and trusted execution in gem5 full-system simulations run at scale on Azure, and write Linux kernel modules for persistent memory over CXL. On the industry side, I designed the commissions system Findway Solutions runs on and moved them off Excel.",
+  /** One line each, newest first. Shown beside the intro. */
+  highlights: [
+    ["research", "Graduate Research Assistant, UCF · 2024–now"],
+    ["industry", "Developer / Data Analyst, Findway Solutions · 2023–now"],
+    ["published", "LOaPP, IEEE SEED 2024"],
+    ["education", "PhD CS (in progress) · BS CS + Math minor, UCF 2023"],
+    ["languages", "English, Spanish, French"],
+  ],
+} as const;
 
-export const PROFILE = [
-  ["role", "PhD student, computer science"],
-  ["school", "University of Central Florida"],
-  ["focus", "computer architecture, hardware security"],
-  ["location", "Orlando, FL"],
-  ["speaks", "English, Spanish, French"],
+/** Social and contact links. `kind` picks the icon; the order is the order on the page. */
+export const LINKS = [
+  { label: "email", kind: "email", display: "andresdaviddelgado@gmail.com", href: "mailto:andresdaviddelgado@gmail.com" },
+  { label: "github", kind: "github", display: "github.com/cangrew", href: "https://github.com/cangrew" },
+  { label: "linkedin", kind: "linkedin", display: "linkedin.com/in/andresddelgado", href: "https://linkedin.com/in/andresddelgado" },
+  { label: "resume", kind: "resume", display: "resume.pdf", href: "/resume/resume.pdf" },
 ] as const;
 
 export const EXPERIENCE: Entry[] = [

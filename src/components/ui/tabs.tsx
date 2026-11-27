@@ -30,7 +30,7 @@ export function TabsTab({ className, index, children, ...props }: TabsTabProps) 
   return (
     <BaseTabs.Tab
       className={cn(
-        "inline-flex h-8 shrink-0 items-center whitespace-nowrap px-3 font-mono text-sm text-fg-muted",
+        "group inline-flex h-8 shrink-0 items-center whitespace-nowrap px-3 font-mono text-sm text-fg-muted",
         "transition-colors duration-instant hover:bg-chrome hover:text-fg",
         "focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent",
         "data-[active]:bg-accent data-[active]:text-accent-fg",
@@ -39,7 +39,7 @@ export function TabsTab({ className, index, children, ...props }: TabsTabProps) 
       )}
       {...props}
     >
-      {index != null && <span className="opacity-70">{index}:</span>}
+      {index != null && <span className="text-fg-subtle group-data-[active]:text-accent-fg">{index}:</span>}
       {children}
     </BaseTabs.Tab>
   );

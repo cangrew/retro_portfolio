@@ -51,7 +51,8 @@ export function AppShell({ index, children }: { index: SearchIndex; children: Re
           as="div"
           id="content"
           tabIndex={-1}
-          title={<PathLabel />}
+          // The path repeats the page's h1 for sighted users; screen readers get the h1.
+          title={<PathLabel aria-hidden />}
           focused={!navFocused}
           padding="none"
           className="min-h-[calc(100dvh-3rem-var(--statusbar)-var(--pane-gap)*3)] outline-none lg:min-h-[calc(100dvh-7rem-var(--statusbar))]"

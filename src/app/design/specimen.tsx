@@ -18,7 +18,7 @@ export function Specimen({
       <p className="text-xs text-fg-subtle"># {label}</p>
       <div className="flex min-w-0 flex-wrap items-center gap-3">{children}</div>
       {code && (
-        <pre className="overflow-x-auto border border-line bg-canvas px-3 py-2 text-xs text-fg-muted">
+        <pre tabIndex={0} className="overflow-x-auto border border-line bg-canvas px-3 py-2 text-xs text-fg-muted">
           <code>{code}</code>
         </pre>
       )}

@@ -10,12 +10,19 @@ export interface BaseContent {
 export type ProjectCategory = "personal" | "research" | "professional";
 export const PROJECT_CATEGORIES = ["personal", "research", "professional"] as const satisfies readonly ProjectCategory[];
 
+/** A picture in a project's gallery. Frontmatter may give a bare path or { src, alt, caption }. */
+export interface ProjectImage {
+  src: string
+  alt: string
+  caption?: string
+}
+
 export interface Project extends BaseContent {
   url?: string
   private?: boolean
   tags?: string[]
   thumbnail?: string
-  images?: string[]
+  images?: ProjectImage[]
   problem?: string
   approach?: string
   results?: string
